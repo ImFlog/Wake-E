@@ -1,6 +1,6 @@
 package com.wake_e;
 
-import android.support.v7.app.ActionBarActivity;
+import android.R;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
