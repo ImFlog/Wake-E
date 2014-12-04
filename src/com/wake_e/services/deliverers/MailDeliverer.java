@@ -1,6 +1,6 @@
 package com.wake_e.services.deliverers;
 
-import java.util.Set;
+import java.util.Queue;
 
 import com.wake_e.model.Mail;
 
@@ -9,9 +9,9 @@ import com.wake_e.model.Mail;
  * @author Wake-E team
  */
 
-public class MailDeliverer extends FunctionalitiesDeliverer<Set<Mail>> {
+public class MailDeliverer implements FunctionalitiesDeliverer<Queue<Mail>> {
     //mails to deliver
-    private Set<Mail> mails;
+    private Queue<Mail> mails;
 
     
     /**
@@ -25,7 +25,7 @@ public class MailDeliverer extends FunctionalitiesDeliverer<Set<Mail>> {
      * @brief deliver mails
      * @return today's mails
      */
-    public Set<Mail> deliver() {
+    public Queue<Mail> deliver() {
 	// TODO implement me
 	return this.mails;
     }

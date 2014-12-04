@@ -1,6 +1,6 @@
 package com.wake_e.services.deliverers;
 
-import java.util.Set;
+import java.util.Queue;
 
 import com.wake_e.model.Meteo;
 
@@ -9,9 +9,9 @@ import com.wake_e.model.Meteo;
  * @author Wake-E team
  */
 
-public class MeteoDeliverer extends FunctionalitiesDeliverer<Meteo> {
+public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
     //The meteos to deliver
-    private Set<Meteo> meteos;
+    private Queue<Meteo> meteos;
 
     
     /**
@@ -32,7 +32,7 @@ public class MeteoDeliverer extends FunctionalitiesDeliverer<Meteo> {
     @Override
     public Meteo deliver() {
 	// TODO implement me
-	return null;
+	return this.meteos.peek();
     }
 
 }

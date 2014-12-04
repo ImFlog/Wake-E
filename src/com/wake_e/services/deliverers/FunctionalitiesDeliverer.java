@@ -5,14 +5,8 @@ package com.wake_e.services.deliverers;
  * @author Wake-E team
  * @param <T>
  */
-public abstract class FunctionalitiesDeliverer<T> {
+public interface FunctionalitiesDeliverer<T> {
 
-    /**
-     * 
-     */
-    public FunctionalitiesDeliverer() {
-	super();
-    }
 
     /**
      * @brief deliver the functionality

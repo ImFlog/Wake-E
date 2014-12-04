@@ -1,6 +1,6 @@
 package com.wake_e.services.deliverers;
 
-import java.util.List;
+import java.util.Queue;
 
 import com.wake_e.model.Event;
 
@@ -9,15 +9,14 @@ import com.wake_e.model.Event;
  * @author Wake-E team
  */
 
-public class AgendaDeliverer extends FunctionalitiesDeliverer<Event> {
+public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
     // The type of agenda mapped : local or Google ?
     //TODO : constantes données par l'utilisateur via les paramètres ?
     @SuppressWarnings("unused")
     private String type;
     
     //Today's events
-    @SuppressWarnings("unused")
-    private List<Event> events;
+    private Queue<Event> events;
 
 
     /**
@@ -37,8 +36,8 @@ public class AgendaDeliverer extends FunctionalitiesDeliverer<Event> {
      * @brief deliver the next event of the day
      */
     public Event deliver() {
-	/*TODO : pop the first evet of the list*/
-	return null;
+	/*TODO : pop the first event of the list*/
+	return events.poll();
     }
 
 }
