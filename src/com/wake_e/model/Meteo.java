@@ -30,9 +30,9 @@ public class Meteo {
      * @return an icon regarding the meteo's caracteristics
      */
     //TODO : trouver la classe qui correspondra à l'icone en android
-    public Image image() {
+    public int image() {
 	// TODO implement me
-	return null;
+	return 0;
     }
     
     /**

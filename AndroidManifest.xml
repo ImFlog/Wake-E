@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.wake_e.fragment.PageHomePageFragment" android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.fragment.PageReveilFragment" android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.fragment.PageMeteoFragment" android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.fragment.PageAgendaFragment" android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.fragment.station.PageMailFragment" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

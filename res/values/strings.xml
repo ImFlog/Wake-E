@@ -2,7 +2,20 @@
 <resources>
 
     <string name="app_name">Wake-e</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="mail">Mail</string>
+    <string name="agenda">Agenda</string>
+    <string name="meteo">Météo</string>
+    <string name="heure_def">00:00</string>
+    <string name="reveil_estime">Réveil estimé</string>
     <string name="action_settings">Settings</string>
+    <string name="from_def">Emilien Notarianni</string>
+    <string name="subjet_def">[API12] Default</string>
+    <string name="body_def">        Hac ex causa conlaticia stipe Valerius humatur ille Publicola et subsidiis amicorum mariti inops cum liberis uxor alitur Reguli et dotatur ex aerario filia Scipionis, cum nobilitas florem adultae virginis diuturnum absentia pauperis erubesceret patris.</string>
+    <string name="heure_agenda_def">8h00 à 9h00</string>
+    <string name="subjet_agenda_def">API12 - Réunion</string>
+    <string name="lieu_agenda_def">        Centre d\'innovation</string>
+    <string name="snooze">SNOOZE</string>
+    <string name="title_activity_page_reveil_fragment">PageReveilFragment</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

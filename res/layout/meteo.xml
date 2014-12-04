@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/background"
+    android:gravity="center"
+    tools:context="com.wakee.MainActivity" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:gravity="top"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/w_fioriture"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/agendaHeure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/heure_agenda_def"
+                android:textColor="@color/orange"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/agendaSubjet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/subjet_agenda_def"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/agendaLieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_fonce"
+            android:gravity="right"
+            android:padding="10dp"
+            android:text="@string/lieu_agenda_def"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/w_bottom_element" />
+
+    </LinearLayout>
+
+</RelativeLayout>
