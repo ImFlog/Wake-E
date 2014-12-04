@@ -13,17 +13,20 @@ import com.wake_e.services.managers.SlidesManager;
  */
 public class Controller {
     //all our deliverers
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unused" })
     private HashMap<String,FunctionalitiesDeliverer> functionalitiesDeliverer;
     
     //TODO : faire une hashmap comme pour les deliverers
     //slides manager
+    @SuppressWarnings("unused")
     private SlidesManager slidesManager;
 
     //alarms manager
+    @SuppressWarnings("unused")
     private AlarmsManager alarmsManager;
 
     //locations manager
+    @SuppressWarnings("unused")
     private LocationsManager locationsManager;
 
 

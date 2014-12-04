@@ -2,10 +2,15 @@ package com.wake_e;
 
 import android.R;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
+/**
+ * @brief Our main activity
+ * @author Wake-E team
+ */
 public class MainActivity extends ActionBarActivity {
 
     @Override

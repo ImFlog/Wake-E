@@ -1,40 +1,44 @@
 package com.wake_e.utils;
 
-
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
+ * @brief A point is coordinate
+ * @author Wake-E team
  */
+public class Point {
+    
+    //point's latitude
+    private double latitude;
 
-public class Point
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private double latitude;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private double longitude;
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 */
-	public Point(){
-		super();
-	}
+    //point's longitude
+    private double longitude;
+
+    
+    /**
+     * @param latitude 
+     * @param longitude 
+     */
+    public Point(double latitude, double longitude) {
+	super();
+	this.latitude = latitude;
+	this.longitude = longitude;
+    }
+
+
+    /**
+     * @brief get point's latitude
+     * @return point's latitude
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+
+    /**
+     * @brief get point's longitude
+     * @return point's longitude
+     */
+    public double getLongitude() {
+        return longitude;
+    }
 
 }
-
