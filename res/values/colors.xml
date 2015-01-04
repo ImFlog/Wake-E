@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <item name="background" type="color">#2D2D2D</item>
+    <item name="background_trans" type="color">#111111FF</item>
     <item name="background_fonce" type="color">#202020</item>
     <item name="white" type="color">#FFFFFF</item>
     <item name="orange" type="color">#F27935</item>
+    <item name="black_trans" type="color">#000000FF</item>
+    <item name="transparent" type="color">#66000000</item>
+    <item name="bg_fonce_trans" type="color">#BF202020</item>
 </resources>
