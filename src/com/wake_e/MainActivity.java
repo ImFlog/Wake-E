@@ -1,31 +1,23 @@
 package com.wake_e;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.wake_e.adapt.MailAdapter;
 import com.wake_e.adapt.MyPagerAdapter;
 import com.wake_e.fragment.PageHomePageFragment;
 import com.wake_e.fragment.PageReveilFragment;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
-import com.wake_e.tools.FontUtil;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
-import com.wake_e.R;
+import com.wake_e.services.managers.SlidesManager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -53,18 +45,18 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.viewpager);
 
-		// Cr�ation de la liste de Fragments que fera d�filer le PagerAdapter
-		List<Fragment> fragments = new Vector<Fragment>();
 
 		// Ajout des Fragments dans la liste
-		fragments.add(Fragment.instantiate(this,PageHomePageFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageReveilFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageHomePageFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageReveilFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
 
-		// Cr�ation de l'adapter qui s'occupera de l'affichage de la liste de
+		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
+		// Creation de la liste de Fragments que fera defiler le PagerAdapter
+		List<Fragment> fragments = SlidesManager.getInstance(this).getAllFragments();
 		this.mPagerAdapter = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
 
 		ViewPager pager = (ViewPager) super.findViewById(R.id.pager);
