@@ -56,7 +56,6 @@ public class SlidesManager {
     public List<Fragment> getAllFragments(){
 	List<Fragment> fragments = new Vector<Fragment>();
 	fragments.addAll(this.visibleViews);
-	fragments.add(this.homePage);
 	return fragments;
     }
 
