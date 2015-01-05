@@ -1,12 +1,6 @@
 package com.wake_e;
 
 import java.util.List;
-import java.util.Vector;
-
-import com.wake_e.adapt.MyPagerAdapter;
-import com.wake_e.fragment.station.PageAgendaFragment;
-import com.wake_e.fragment.station.PageMailFragment;
-import com.wake_e.fragment.station.PageMeteoFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,9 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.wake_e.adapt.MyPagerAdapter;
+import com.wake_e.services.managers.SlidesManager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -41,14 +37,19 @@ public class MainActivity extends FragmentActivity {
 		
 		//super.setContentView(R.layout.viewpager);
 
-		// Création de la liste de Fragments que fera défiler le PagerAdapter
-		List<Fragment> fragments = new Vector<Fragment>();
 
 
-		fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
-		fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
+		// Ajout des Fragments dans la liste
+//		fragments.add(Fragment.instantiate(this,PageHomePageFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageReveilFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
+//		fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
 
+		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
+		// Fragments
+		// Creation de la liste de Fragments que fera defiler le PagerAdapter
+		List<Fragment> fragments = SlidesManager.getInstance(this).getAllFragments();
 
 		this.mPagerAdapter = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
 
