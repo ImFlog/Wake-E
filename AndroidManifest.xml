@@ -27,6 +27,7 @@
         <activity android:name="com.wake_e.fragment.PageMeteoFragment" android:screenOrientation="portrait" />
         <activity android:name="com.wake_e.fragment.PageAgendaFragment" android:screenOrientation="portrait" />
         <activity android:name="com.wake_e.fragment.station.PageMailFragment" android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.SettingsActivity"></activity>
     </application>
 
 </manifest>

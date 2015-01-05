@@ -49,7 +49,7 @@ public class Mail {
     /**
      * @return TRUE if is read, FALSE else
      */
-    public boolean isRead(){
+    public boolean isRead() {
 	return this.isRead;
     }
 
