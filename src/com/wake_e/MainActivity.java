@@ -1,7 +1,6 @@
 package com.wake_e;
 
 import java.util.List;
-import java.util.Vector;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,11 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.wake_e.adapt.MyPagerAdapter;
-import com.wake_e.fragment.PageHomePageFragment;
-import com.wake_e.fragment.PageReveilFragment;
-import com.wake_e.fragment.station.PageAgendaFragment;
-import com.wake_e.fragment.station.PageMailFragment;
-import com.wake_e.fragment.station.PageMeteoFragment;
 import com.wake_e.services.managers.SlidesManager;
 
 public class MainActivity extends FragmentActivity {
