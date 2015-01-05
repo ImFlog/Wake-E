@@ -2,6 +2,7 @@ package com.wake_e;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,8 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -34,17 +37,6 @@ public class MainActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
-		
-		//super.setContentView(R.layout.viewpager);
-
-
-
-		// Ajout des Fragments dans la liste
-//		fragments.add(Fragment.instantiate(this,PageHomePageFragment.class.getName()));
-//		fragments.add(Fragment.instantiate(this,PageReveilFragment.class.getName()));
-//		fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
-//		fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
-//		fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
 
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
@@ -64,6 +56,8 @@ public class MainActivity extends FragmentActivity {
 		ll.setY(0);
 		pager.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	    
+		ImageView settings = (ImageView) findViewById(R.id.parametre);
+		settings.setOnClickListener(switchToSettings);
 	}
 	
 	@Override
@@ -122,5 +116,15 @@ public class MainActivity extends FragmentActivity {
 	    	//pager.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY() - relative.getHeight()));
 		    return true;
 		}
+	};
+	
+	private OnClickListener switchToSettings = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+			startActivity(i);
+		}
+		
 	};
 }
