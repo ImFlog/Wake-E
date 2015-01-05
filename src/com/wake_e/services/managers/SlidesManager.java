@@ -92,8 +92,6 @@ public class SlidesManager {
 	} catch (IOException e) {
 	    // A la moindre erreur on charge tout automatiquement
 	    this.visibleViews.clear();
-	    this.visibleViews.add(Fragment.instantiate(context, PageHomePageFragment.class.getName()));
-	    this.visibleViews.add(Fragment.instantiate(context,PageReveilFragment.class.getName()));
 	    this.visibleViews.add(Fragment.instantiate(context,PageMailFragment.class.getName()));
 	    this.visibleViews.add(Fragment.instantiate(context,PageAgendaFragment.class.getName()));
 	    this.visibleViews.add(Fragment.instantiate(context,PageMeteoFragment.class.getName()));

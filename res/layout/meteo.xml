@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:background="@color/background"
     android:gravity="center"
     tools:context="com.wakee.MainActivity" >
 
@@ -49,7 +48,7 @@
             android:id="@+id/agendaLieu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background_fonce"
+            android:background="@color/bg_fonce_trans"
             android:gravity="right"
             android:padding="10dp"
             android:text="@string/lieu_agenda_def"
