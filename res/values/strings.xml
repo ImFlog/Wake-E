@@ -17,5 +17,6 @@
     <string name="snooze">SNOOZE</string>
     <string name="title_activity_page_reveil_fragment">PageReveilFragment</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_ss">MainActivity</string>
 
 </resources>
