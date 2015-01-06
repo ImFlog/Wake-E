@@ -9,7 +9,7 @@ import com.wake_e.model.Event;
  * @author Wake-E team
  */
 
-public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
+public class AgendaDeliverer extends FunctionnalitiesDeliverer<Event> {
     // The type of agenda mapped : local or Google ?
     //TODO : constantes données par l'utilisateur via les paramètres ?
     @SuppressWarnings("unused")
@@ -17,14 +17,15 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
     
     //Today's events
     private Queue<Event> events;
-
-
+    
+    
     /**
      * 
      */
     public AgendaDeliverer() {
 	super();
     }
+
 
     /**
      * @brief retrieve today's events from the synchronized agenda

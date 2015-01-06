@@ -5,13 +5,18 @@ package com.wake_e.services.deliverers;
  * @author Wake-E team
  * @param <T>
  */
-public interface FunctionalitiesDeliverer<T> {
-
-
+public abstract class FunctionnalitiesDeliverer<T> {
     /**
      * @brief deliver the functionality
      * @return the delivery
      */
     public abstract T deliver();
+    
+    
+    private static FunctionnalitiesDeliverer<?> deliverer;
+    
 
+    public static FunctionnalitiesDeliverer<?> getInstance(){
+	return FunctionnalitiesDeliverer.deliverer;
+    }
 }

@@ -9,10 +9,10 @@ import com.wake_e.model.Meteo;
  * @author Wake-E team
  */
 
-public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
+public class MeteoDeliverer extends FunctionnalitiesDeliverer<Meteo> {
     //The meteos to deliver
     private Queue<Meteo> meteos;
-
+    
     
     /**
      * 
@@ -20,7 +20,7 @@ public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
     public MeteoDeliverer() {
 	super();
     }
-
+    
     /**
      * @brief deliver today's meteo
      * @return today's meteo
