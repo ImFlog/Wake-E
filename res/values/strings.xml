@@ -24,4 +24,8 @@
     <string name="slides">Slides</string>
     <string name="destination">Destination</string>
     <string name="home">Domicile</string>
+    <string name="temperature_def">0°C</string>
+    <string name="wind_def">0km/h</string>
+    <string name="humidity_def">0%</string>
+    <string name="city_def">Nice</string>
 </resources>
