@@ -18,5 +18,10 @@
     <string name="title_activity_page_reveil_fragment">PageReveilFragment</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_ss">MainActivity</string>
-
+    <string name="params">Paramètres</string>
+    <string name="synchro">Synchronisation</string>
+    <string name="trajet">Trajets</string>
+    <string name="slides">Slides</string>
+    <string name="destination">Destination</string>
+    <string name="home">Domicile</string>
 </resources>
