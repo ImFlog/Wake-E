@@ -1,20 +1,14 @@
 package com.wake_e.services.managers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
 import android.content.Context;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 
 import com.wake_e.fragment.PageHomePageFragment;
-import com.wake_e.fragment.station.PageAgendaFragment;
-import com.wake_e.fragment.station.PageMailFragment;
-import com.wake_e.fragment.station.PageMeteoFragment;
+import com.wake_e.model.sqlite.WakeEDBHelper;
+import com.wake_e.utils.Slide;
 
 /**
  * @brief Used to manager the slides in the morning
@@ -24,77 +18,63 @@ import com.wake_e.fragment.station.PageMeteoFragment;
 public class SlidesManager {
     // une liste ordonnée des vues visibles dans le slide. Paramétrable
     // via les paramètres globaux.
-    private List<Fragment> visibleViews;
+    private List<Slide> slides;
     private Fragment homePage;
-
 
     /**
      * 
      */
     private SlidesManager() {
 	super();
-	visibleViews = new Vector<Fragment>();
+	slides = new Vector<Slide>();
     }
 
-    public SlidesManager(Context context){
+    public SlidesManager(Context context, WakeEDBHelper db){
 	this();
 	homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
-	this.loadSlidesFile(context);
+	this.loadSlides(db);
     }
 
     /**
      * @return slide's views
      */
-    public List<Fragment> getVisibleViews() {
-	return this.visibleViews;
+    public List<Fragment> getVisibleFragments(Context context) {
+	Vector<Fragment> visibles = new Vector<Fragment>();
+	for(Slide s : slides){
+	    if(s.visible()){
+		visibles.add(Fragment.instantiate(context, s.getSlideClass()));
+	    }
+	}
+	return visibles;
     }
     
-//    /**
-//     * @return all fragments (slide's views + home page)
-//     */
-//    public List<Fragment> getAllFragments(){
-//	List<Fragment> fragments = new Vector<Fragment>();
-//	fragments.addAll(this.visibleViews);
-//	return fragments;
-//    }
+    /**
+     * @return slide's views
+     */
+    public List<Slide> getVisibleSlides() {
+	Vector<Slide> visibles = new Vector<Slide>();
+	for(Slide s : slides){
+	    if(s.visible()){
+		visibles.add(s);
+	    }
+	}
+	return visibles;
+    }
 
     /**
-     * @brief charger le fichier contenant les slides que l'utilisateur veut
-     *        voir
-     * @param context
-     *            le contexte
+     * @brief charger la base contenant les slides que l'utilisateur veut voir
+     * @param context le contexte
      */
-    private void loadSlidesFile(Context context) {
-
-
-	// Find the directory for the SD Card using the API
-	// *Don't* hardcode "/sdcard"
-	File sdcard = Environment.getExternalStorageDirectory();
-
-	// Get the text file
-	File file = new File(sdcard + "/wake_e", "slides.txt");
-
-	try {
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-	    String line;
-
-	    // A line represent a class name
-	    // e.g : com.wake_e.fragment.PageHomePageFragment
-	    while ((line = br.readLine()) != null) {
-		visibleViews.add(Fragment.instantiate(context, line));
-	    }
-	    br.close();
-	} catch (IOException e) {
-	    // A la moindre erreur on charge tout automatiquement
-	    this.visibleViews.add(Fragment.instantiate(context,PageMailFragment.class.getName()));
-	    this.visibleViews.add(Fragment.instantiate(context,PageAgendaFragment.class.getName()));
-	    this.visibleViews.add(Fragment.instantiate(context,PageMeteoFragment.class.getName()));
-	}
-    }
-
-    
+    private void loadSlides(WakeEDBHelper db) {
+	this.slides = db.getAllSlides();
+    } 
     
     public Fragment getHomePage() {
 	return homePage;
     }
+    
+    public List<Slide> getSlides(){
+	return this.slides;
+    }
+    
 }

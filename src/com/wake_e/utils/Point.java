@@ -41,4 +41,9 @@ public class Point {
         return longitude;
     }
 
+
+    public String toSQLite() {
+	return this.latitude + ";" + this.longitude;
+    }
+
 }
