@@ -121,7 +121,7 @@ public class Alarm
      * @return the wake up time in string
      */
     public String toStringWakeUp() {
-	return this.computeWakeUp().toLocaleString();
+	return this.computeWakeUp().toString();
     }
 
     /**

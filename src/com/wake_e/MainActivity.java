@@ -36,22 +36,12 @@ public class MainActivity extends FragmentActivity {
 
 	super.onCreate(savedInstanceState);
 	super.setContentView(R.layout.home_page);
-
-	// super.setContentView(R.layout.viewpager);
-
-	// Ajout des Fragments dans la liste
-	// fragments.add(Fragment.instantiate(this,PageHomePageFragment.class.getName()));
-	// fragments.add(Fragment.instantiate(this,PageReveilFragment.class.getName()));
-	// fragments.add(Fragment.instantiate(this,PageMailFragment.class.getName()));
-	// fragments.add(Fragment.instantiate(this,PageAgendaFragment.class.getName()));
-	// fragments.add(Fragment.instantiate(this,PageMeteoFragment.class.getName()));
-
+	
+	// Creation de la liste de Fragments que fera defiler le PagerAdapter
+	List<Fragment> fragments = Controller.getInstance(this).getVisibleFragments();
+	
 	// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 	// Fragments
-	// Creation de la liste de Fragments que fera defiler le PagerAdapter
-	List<Fragment> fragments = Controller.getInstance()
-		.getSlidesManager(this).getVisibleViews();
-
 	this.mPagerAdapter = new MyPagerAdapter(
 		super.getSupportFragmentManager(), fragments);
 
