@@ -1,6 +1,7 @@
 package com.wake_e.services.deliverers;
 
 import java.util.Queue;
+import java.util.concurrent.SynchronousQueue;
 
 import com.wake_e.model.Mail;
 
@@ -9,16 +10,18 @@ import com.wake_e.model.Mail;
  * @author Wake-E team
  */
 
-public class MailDeliverer implements FunctionalitiesDeliverer<Queue<Mail>> {
+public class MailDeliverer extends FunctionnalitiesDeliverer<Queue<Mail>> {
     //mails to deliver
     private Queue<Mail> mails;
 
+    
     
     /**
      * 
      */
     public MailDeliverer() {
 	super();
+	this.mails = new SynchronousQueue<Mail>();
     }
 
     /**

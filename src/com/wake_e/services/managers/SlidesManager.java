@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 
 import com.wake_e.fragment.PageHomePageFragment;
-import com.wake_e.fragment.PageReveilFragment;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
@@ -28,7 +27,6 @@ public class SlidesManager {
     private List<Fragment> visibleViews;
     private Fragment homePage;
 
-    private static SlidesManager manager;
 
     /**
      * 
@@ -38,9 +36,10 @@ public class SlidesManager {
 	visibleViews = new Vector<Fragment>();
     }
 
-    private SlidesManager(Context context){
+    public SlidesManager(Context context){
 	this();
 	homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
+	this.loadSlidesFile(context);
     }
 
     /**
@@ -50,14 +49,14 @@ public class SlidesManager {
 	return this.visibleViews;
     }
     
-    /**
-     * @return all fragments (slide's views + home page)
-     */
-    public List<Fragment> getAllFragments(){
-	List<Fragment> fragments = new Vector<Fragment>();
-	fragments.addAll(this.visibleViews);
-	return fragments;
-    }
+//    /**
+//     * @return all fragments (slide's views + home page)
+//     */
+//    public List<Fragment> getAllFragments(){
+//	List<Fragment> fragments = new Vector<Fragment>();
+//	fragments.addAll(this.visibleViews);
+//	return fragments;
+//    }
 
     /**
      * @brief charger le fichier contenant les slides que l'utilisateur veut
@@ -65,11 +64,8 @@ public class SlidesManager {
      * @param context
      *            le contexte
      */
-    public void loadSlidesFile(Context context) {
+    private void loadSlidesFile(Context context) {
 
-	// Empty the fragments list
-	this.visibleViews.clear();
-	this.visibleViews.add(Fragment.instantiate(context, PageHomePageFragment.class.getName()));
 
 	// Find the directory for the SD Card using the API
 	// *Don't* hardcode "/sdcard"
@@ -90,21 +86,14 @@ public class SlidesManager {
 	    br.close();
 	} catch (IOException e) {
 	    // A la moindre erreur on charge tout automatiquement
-	    this.visibleViews.clear();
 	    this.visibleViews.add(Fragment.instantiate(context,PageMailFragment.class.getName()));
 	    this.visibleViews.add(Fragment.instantiate(context,PageAgendaFragment.class.getName()));
 	    this.visibleViews.add(Fragment.instantiate(context,PageMeteoFragment.class.getName()));
 	}
     }
 
-    public static SlidesManager getInstance(Context context) {
-	if (SlidesManager.manager == null) {
-	    SlidesManager.manager = new SlidesManager(context);
-	    SlidesManager.manager.loadSlidesFile(context);
-	}
-	return SlidesManager.manager;
-    }
-
+    
+    
     public Fragment getHomePage() {
 	return homePage;
     }
