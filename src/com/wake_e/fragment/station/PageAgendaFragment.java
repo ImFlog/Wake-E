@@ -5,9 +5,13 @@ import java.util.List;
 
 import com.wake_e.R;
 import com.wake_e.adapt.AgendaAdapter;
+import com.wake_e.services.deliverers.AgendaDeliverer;
 
 import android.support.v4.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CalendarContract.Calendars;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,9 @@ public class PageAgendaFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.station, container, false);
 		if (v != null){
+			
+			AgendaDeliverer deliverer = new AgendaDeliverer(this.getActivity());
+			
 			List<String> agenda = new ArrayList<String>();
 			
 			agenda.add("Task 1");
