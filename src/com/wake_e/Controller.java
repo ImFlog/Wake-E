@@ -18,7 +18,6 @@ import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
 import com.wake_e.services.deliverers.AgendaDeliverer;
-import com.wake_e.services.deliverers.FunctionnalitiesDeliverer;
 import com.wake_e.services.deliverers.MailDeliverer;
 import com.wake_e.services.deliverers.MeteoDeliverer;
 import com.wake_e.services.managers.AlarmsManager;
@@ -31,9 +30,17 @@ import com.wake_e.services.managers.SlidesManager;
  */
 public class Controller {
     // all our deliverers
-    private HashMap<String, FunctionnalitiesDeliverer<?>> functionalitiesDeliverer;
+    private AgendaDeliverer agendaDeliverer;
+    private MailDeliverer mailDeliverer;
+    private MeteoDeliverer meteoDeliverer;
+    
+    //the db helper
     private WakeEDBHelper db;
+    
+    //the app context
     private Context context;
+    
+    //all our managers
     private SlidesManager slidesManager;
     private CredentialsManager credentialsManager;
     private AlarmsManager alarmsManager;
@@ -46,13 +53,10 @@ public class Controller {
      */
     private Controller(Context context) {
 	super();
-	this.functionalitiesDeliverer = new HashMap<String, FunctionnalitiesDeliverer<?>>();
-	this.functionalitiesDeliverer.put(WakeEConstants.AGENDA_DELIVERER,
-		new AgendaDeliverer());
-	this.functionalitiesDeliverer.put(WakeEConstants.MAIL_DELIVERER,
-		new MailDeliverer());
-	this.functionalitiesDeliverer.put(WakeEConstants.METEO_DELIVERER,
-		new MeteoDeliverer());
+	this.agendaDeliverer = new AgendaDeliverer();
+	this.mailDeliverer = new MailDeliverer();
+	this.meteoDeliverer = new MeteoDeliverer();
+	
 	this.context = context;
 	this.db = new WakeEDBHelper(context);
 	this.slidesManager = new SlidesManager(context, db);
@@ -184,12 +188,19 @@ public class Controller {
     }
     
     /**
-     * @brief deliver a functionnality
-     * @param delivererType
-     * @return
+     * @brief get the AgendaDeliverer
+     * @return the AgendaDeliverer
      */
-    public FunctionnalitiesDeliverer<?> getFunctionnalitiesDeliverer(
-	    String delivererType) {
-	return this.functionalitiesDeliverer.get(delivererType);
+    public AgendaDeliverer getAgendaDeliverer(){
+	return this.agendaDeliverer;
     }
+    
+    /**
+     * @brief get the MeteoDeliverer
+     * @return the MeteoDeliverer
+     */
+    public MeteoDeliverer getMeteoDeliverer(){
+	return null;
+    }
+    
 }
