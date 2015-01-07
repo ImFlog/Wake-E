@@ -12,7 +12,10 @@ import com.wake_e.services.deliverers.AgendaDeliverer;
 import com.wake_e.services.deliverers.FunctionnalitiesDeliverer;
 import com.wake_e.services.deliverers.MailDeliverer;
 import com.wake_e.services.deliverers.MeteoDeliverer;
+import com.wake_e.services.managers.CredentialsManager;
 import com.wake_e.services.managers.SlidesManager;
+import com.wake_e.utils.Credentials;
+import com.wake_e.utils.Slide;
 
 /**
  * @brief Singleton and main controller of the application
@@ -24,9 +27,10 @@ public class Controller {
     private WakeEDBHelper db;
     private Context context;
     private SlidesManager slidesManager;
-    
+    private CredentialsManager credentialsManager;
+
     private static Controller controller;
-    
+
     /**
      * @param context le contexte de l'application
      */
@@ -44,17 +48,61 @@ public class Controller {
 	this.slidesManager = new SlidesManager(context, db);
     }
 
+    /**
+     * @brief get the Controller instance
+     * @param context the app context
+     * @return the Controller instance
+     */
     public static Controller getInstance(Context context) {
 	if (Controller.controller == null) {
 	    Controller.controller = new Controller(context);
 	}
 	return Controller.controller;
     }
-    
+
+    //########### SLIDES ###########
+    /**
+     * @brief retrieve visible fragments
+     * @return the visible fragments
+     */
     public List<Fragment> getVisibleFragments(){
 	return this.slidesManager.getVisibleFragments(this.context);
     }
-    
+
+    /**
+     * @brief update slides
+     * @param slides the slides
+     */
+    public void updateSlides(){
+	this.slidesManager.updateSlides(this.db);
+    }
+
+    /**
+     * @brief get all slides
+     * @return all slides
+     */
+    public List<Slide> getSlides(){
+	return this.slidesManager.getSlides();
+    }
+
+    //########### CREDENTIALS ###########
+
+    /**
+     * @brief update credentials
+     * @param c the credentials
+     */
+    public void updateCredentials(Credentials c){
+	this.credentialsManager.updateCredentials(this.db, c);
+    }
+
+    /**
+     * @brief get credentials
+     * @return credentials
+     */
+    public Credentials getCredentials(){
+	return this.credentialsManager.getCredentials();
+    } 
+
     /**
      * @brief deliver a functionnality
      * @param delivererType

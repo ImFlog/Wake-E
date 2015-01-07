@@ -19,6 +19,7 @@ import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
 import com.wake_e.tools.SlidesComparator;
+import com.wake_e.utils.Credentials;
 import com.wake_e.utils.Slide;
 
 /**
@@ -36,12 +37,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
     // Table Names
     private static final String TABLE_SLIDES = "slides";
+    private static final String TABLE_CREDENTIALS = "credentials";
 
     // Table Create Statements
     private static final String CREATE_TABLE_SLIDES= "CREATE TABLE "
 	    + TABLE_SLIDES + "(slide_name VARCHAR(255) PRIMARY KEY,"
-	    + " slide_class VARCHAR(255), slide_order INTEGER NOT NULL,"
+	    + " slide_class VARCHAR(255) NOT NULL, slide_order INTEGER NOT NULL,"
 	    + "slide_visible INTEGER NOT NULL)";
+
+    private static final String CREATE_TABLE_CREDENTIALS= "CREATE TABLE "
+	    + TABLE_CREDENTIALS + "(credentials_type VARCHAR(255) PRIMARY KEY,"
+	    + " credentials_uid VARCHAR(255), credentials_accessToken VARCHAR(255) NOT NULL)";
 
     /**
      * @param context
@@ -49,10 +55,9 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
      * @param factory
      * @param version
      */
-    public WakeEDBHelper(Context context, String name, CursorFactory factory,
+    private WakeEDBHelper(Context context, String name, CursorFactory factory,
 	    int version) {
 	super(context, name, factory, version);
-	// TODO Auto-generated constructor stub
     }
 
     /**
@@ -69,7 +74,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
      * @param version
      * @param errorHandler
      */
-    public WakeEDBHelper(Context context, String name, CursorFactory factory,
+    private WakeEDBHelper(Context context, String name, CursorFactory factory,
 	    int version, DatabaseErrorHandler errorHandler) {
 	super(context, name, factory, version, errorHandler);
     }
@@ -81,9 +86,11 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 	// creating required tables
 	db.execSQL(CREATE_TABLE_SLIDES);
+	db.execSQL(CREATE_TABLE_CREDENTIALS);
 	this.populateSlides(db);
     }
 
+    //###### SLIDES #####
 
     private void populateSlides(SQLiteDatabase db) {
 	Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
@@ -156,6 +163,57 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	Collections.sort(slides, new SlidesComparator());
 	return slides;
     }
+
+    //###### CREDENTIALS #####
+
+    private void createCredentials(SQLiteDatabase db, Credentials c) {
+	ContentValues values = new ContentValues();
+
+	values.put("credentials_type", c.getType());
+	values.put("credentials_uid", c.getUserId());
+	values.put("credentials_accessToken", c.getAccessToken());
+	db.insert(TABLE_CREDENTIALS, null, values);
+	values.clear();
+    }
+
+    /**
+     * @brief update credentials
+     * @param credentials
+     */
+    public void updateCredentials(Credentials c) {
+
+	//We get the database in writeable mode
+	SQLiteDatabase db = this.getWritableDatabase();
+
+	//First we erase everything
+	db.execSQL("delete from "+ TABLE_CREDENTIALS);
+
+	//Then we create new credentials
+	this.createCredentials(db, c);
+    }
+
+
+    /**
+     * @brief retrieve credentials
+     * @return credentials
+     */
+    public Credentials getCredentials() {
+	Credentials cr = null;
+
+	String selectQuery = "SELECT * FROM " + TABLE_CREDENTIALS;
+
+	SQLiteDatabase db = this.getReadableDatabase();
+	Cursor c = db.rawQuery(selectQuery, null);
+	// looping through all rows and adding to list
+	if (c.moveToFirst()) {
+	    cr = new Credentials(c.getString(c.getColumnIndex("credentials_uid")),
+		    c.getString(c.getColumnIndex("credentials_type")),
+		    c.getString(c.getColumnIndex("credentials_accessToken")));
+	}
+	return cr;
+    }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

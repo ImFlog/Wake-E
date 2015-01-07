@@ -69,12 +69,28 @@ public class SlidesManager {
 	this.slides = db.getAllSlides();
     } 
     
+    /**
+     * @brief get the Home Page
+     * @return the Home Page fragment
+     */
     public Fragment getHomePage() {
 	return homePage;
     }
     
+    /**
+     * @brief get a reference to the slides list : THIS IS NOT A COPY
+     * @return the slides list
+     */
     public List<Slide> getSlides(){
 	return this.slides;
+    }
+    
+    /**
+     * @brief update the slides table in the database
+     * @param db the WakeEDBHelper
+     */
+    public void updateSlides(WakeEDBHelper db) {
+	db.updateSlides(this.slides);
     }
     
 }
