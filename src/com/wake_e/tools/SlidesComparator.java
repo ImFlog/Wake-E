@@ -2,7 +2,7 @@ package com.wake_e.tools;
 
 import java.util.Comparator;
 
-import com.wake_e.utils.Slide;
+import com.wake_e.model.Slide;
 
 /**
  * @brief Sort slides by their order

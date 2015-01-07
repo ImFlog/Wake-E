@@ -37,7 +37,6 @@ public class AgendaDeliverer extends FunctionnalitiesDeliverer<Event> {
      * @brief deliver the next event of the day
      */
     public Event deliver() {
-	/*TODO : pop the first event of the list*/
 	return events.poll();
     }
 

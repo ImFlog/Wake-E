@@ -2,20 +2,28 @@ package com.wake_e;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.xml.datatype.Duration;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.wake_e.constants.WakeEConstants;
+import com.wake_e.model.Credentials;
+import com.wake_e.model.Location;
+import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
+import com.wake_e.services.AlarmIntentService;
+import com.wake_e.services.AlarmSynchroIntentService;
 import com.wake_e.services.deliverers.AgendaDeliverer;
 import com.wake_e.services.deliverers.FunctionnalitiesDeliverer;
 import com.wake_e.services.deliverers.MailDeliverer;
 import com.wake_e.services.deliverers.MeteoDeliverer;
+import com.wake_e.services.managers.AlarmsManager;
 import com.wake_e.services.managers.CredentialsManager;
 import com.wake_e.services.managers.SlidesManager;
-import com.wake_e.utils.Credentials;
-import com.wake_e.utils.Slide;
 
 /**
  * @brief Singleton and main controller of the application
@@ -28,11 +36,13 @@ public class Controller {
     private Context context;
     private SlidesManager slidesManager;
     private CredentialsManager credentialsManager;
+    private AlarmsManager alarmsManager;
 
     private static Controller controller;
 
     /**
-     * @param context le contexte de l'application
+     * @param context
+     *            le contexte de l'application
      */
     private Controller(Context context) {
 	super();
@@ -46,11 +56,13 @@ public class Controller {
 	this.context = context;
 	this.db = new WakeEDBHelper(context);
 	this.slidesManager = new SlidesManager(context, db);
+	this.alarmsManager = new AlarmsManager();
     }
 
     /**
      * @brief get the Controller instance
-     * @param context the app context
+     * @param context
+     *            the app context
      * @return the Controller instance
      */
     public static Controller getInstance(Context context) {
@@ -60,20 +72,21 @@ public class Controller {
 	return Controller.controller;
     }
 
-    //########### SLIDES ###########
+    // ########### SLIDES ###########
     /**
      * @brief retrieve visible fragments
      * @return the visible fragments
      */
-    public List<Fragment> getVisibleFragments(){
+    public List<Fragment> getVisibleFragments() {
 	return this.slidesManager.getVisibleFragments(this.context);
     }
 
     /**
      * @brief update slides
-     * @param slides the slides
+     * @param slides
+     *            the slides
      */
-    public void updateSlides(){
+    public void updateSlides() {
 	this.slidesManager.updateSlides(this.db);
     }
 
@@ -81,17 +94,18 @@ public class Controller {
      * @brief get all slides
      * @return all slides
      */
-    public List<Slide> getSlides(){
+    public List<Slide> getSlides() {
 	return this.slidesManager.getSlides();
     }
 
-    //########### CREDENTIALS ###########
+    // ########### CREDENTIALS ###########
 
     /**
      * @brief update credentials
-     * @param c the credentials
+     * @param c
+     *            the credentials
      */
-    public void updateCredentials(Credentials c){
+    public void updateCredentials(Credentials c) {
 	this.credentialsManager.updateCredentials(this.db, c);
     }
 
@@ -99,10 +113,76 @@ public class Controller {
      * @brief get credentials
      * @return credentials
      */
-    public Credentials getCredentials(){
+    public Credentials getCredentials() {
 	return this.credentialsManager.getCredentials();
-    } 
+    }
 
+    // ########### ALARMS ###########
+    
+    /**
+     * @brief create a new alarm
+     * @param context the app context
+     * @param depart the start location
+     * @param arrivee the end location
+     * @param preparationDuration the preparation duration
+     * @param ringtone the ringtone
+     */
+    public void createAlarm(Context context, Location depart, Location arrivee,
+	    Duration preparationDuration, String ringtone) {
+	this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone);
+    }
+    
+    /**
+     * @brief delete an alarm
+     * @param alarmId
+     */
+    public void deleteAlarm(UUID alarmId){
+	this.alarmsManager.removeAlarm(alarmId);
+    }
+    
+    /**
+     * @brief enable or disable an alarm
+     * @param alarmId
+     * @param enabled TRUE=enabled FALSE=disabled
+     * @param context 
+     */
+    public void enableAlarm(UUID alarmId, boolean enabled, Context context){
+	this.alarmsManager.enableAlarm(alarmId, enabled, context);
+    }
+    
+    /**
+     * @brief get the enabled alarm
+     * @return the enabled alarm
+     */
+    public AlarmIntentService getEnabledAlarm(){
+	return this.alarmsManager.getEnabledAlarm();
+    }
+    
+    /**
+     * @brief get all alarms
+     * @return all alarms
+     */
+    public Set<AlarmIntentService> getAlarms(){
+	return this.alarmsManager.getAlarms();
+    }
+    
+    /**
+     * @brief get the alarm synchro
+     * @return the alarm synchro
+     */
+    public AlarmSynchroIntentService getAlarmSynchro(){
+	return this.alarmsManager.getAlarmSynchro();
+    }
+    
+    /**
+     * @brief enable the alarm synchro
+     * @param enabled TRUE=enabled FALSE=disabled
+     * @param context 
+     */
+    public void enabledAlarmSynchro(boolean enabled, Context context){
+	this.alarmsManager.enableAlarmSynchro(enabled, context);
+    }
+    
     /**
      * @brief deliver a functionnality
      * @param delivererType

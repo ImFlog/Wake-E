@@ -1,7 +1,7 @@
 package com.wake_e.services.managers;
 
+import com.wake_e.model.Credentials;
 import com.wake_e.model.sqlite.WakeEDBHelper;
-import com.wake_e.utils.Credentials;
 
 public class CredentialsManager {
     

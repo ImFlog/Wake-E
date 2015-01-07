@@ -1,4 +1,4 @@
-package com.wake_e.utils;
+package com.wake_e.model;
 
 public class Credentials {
     
