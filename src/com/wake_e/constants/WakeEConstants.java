@@ -26,6 +26,24 @@ public class WakeEConstants
 	
 	public static final String METEO_DELIVERER = "METEO_DELIVERER";
 	
+	// API CALLS
+	
+	/**
+	 * Scope for gmail api auth.
+	 */
+	public static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+
+	/**
+	 * API calls authorization code.
+	 */
+	public static final int AUTHORIZATION_CODE = 1993;
+
+	/**
+	 * Api calls account code.
+	 */
+	public static final int ACCOUNT_CODE = 1601;
+	
+	
 	/**
 	 */
 	private WakeEConstants(){

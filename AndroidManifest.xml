@@ -4,6 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
@@ -22,13 +26,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.wake_e.fragment.PageHomePageFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageReveilFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageMeteoFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageAgendaFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.station.PageMailFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.SettingsActivity"></activity>
-        
+        <activity
+            android:name="com.wake_e.fragment.PageHomePageFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wake_e.fragment.PageReveilFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wake_e.fragment.PageMeteoFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wake_e.fragment.PageAgendaFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wake_e.fragment.station.PageMailFragment"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.wake_e.SettingsActivity" />
+        <activity android:name="com.wake_e.CredentialActivity" />
+
         <service android:name="com.wake_e.services.AlarmIntentService" />
     </application>
 

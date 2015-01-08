@@ -2,19 +2,11 @@ package com.wake_e.model;
 
 public class Credentials {
     
-    private String type, userId, accessToken;
+    private String type, accessToken;
     
-    public Credentials(String userId, String type, String accessToken) {
-	this.userId = userId;
+    public Credentials(String type, String accessToken) {
 	this.type = type;
 	this.accessToken = accessToken;
-    }
-
-    /**
-     * @return the userId
-     */
-    public String getUserId() {
-	return userId;
     }
 
     /**

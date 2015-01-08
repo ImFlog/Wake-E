@@ -1,14 +1,19 @@
 package com.wake_e;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class SettingsActivity extends Activity {
+	public static SettingsActivity that;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		that = this;
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.settings);
 		TextView agenda = (TextView) findViewById(R.id.agenda);
@@ -28,8 +33,9 @@ public class SettingsActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-
+			Intent intent = new Intent(that, CredentialActivity.class);
+			intent.putExtra("type", "calendar");
+		    startActivity(intent);
 		}
 	};
 
@@ -37,11 +43,11 @@ public class SettingsActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-
+			Intent intent = new Intent(that, CredentialActivity.class);
+			intent.putExtra("type", "gmail");
+		    startActivity(intent);
 		}
 	};
-
 
 	private OnClickListener homeSettings = new OnClickListener() {
 
@@ -51,6 +57,7 @@ public class SettingsActivity extends Activity {
 
 		}
 	};
+
 	private OnClickListener destSettings = new OnClickListener() {
 
 		@Override

@@ -16,81 +16,81 @@ import com.wake_e.model.sqlite.WakeEDBHelper;
  */
 
 public class SlidesManager {
-    // une liste ordonnée des vues visibles dans le slide. Paramétrable
-    // via les paramètres globaux.
-    private List<Slide> slides;
-    private Fragment homePage;
+	// une liste ordonnée des vues visibles dans le slide. Paramétrable
+	// via les paramètres globaux.
+	private List<Slide> slides;
+	private Fragment homePage;
 
-    /**
-     * 
-     */
-    private SlidesManager() {
-	super();
-	slides = new Vector<Slide>();
-    }
-
-    public SlidesManager(Context context, WakeEDBHelper db){
-	this();
-	homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
-	this.loadSlides(db);
-    }
-
-    /**
-     * @return slide's views
-     */
-    public List<Fragment> getVisibleFragments(Context context) {
-	Vector<Fragment> visibles = new Vector<Fragment>();
-	for(Slide s : slides){
-	    if(s.visible()){
-		visibles.add(Fragment.instantiate(context, s.getSlideClass()));
-	    }
+	/**
+	 * 
+	 */
+	private SlidesManager() {
+		super();
+		slides = new Vector<Slide>();
 	}
-	return visibles;
-    }
-    
-    /**
-     * @return slide's views
-     */
-    public List<Slide> getVisibleSlides() {
-	Vector<Slide> visibles = new Vector<Slide>();
-	for(Slide s : slides){
-	    if(s.visible()){
-		visibles.add(s);
-	    }
-	}
-	return visibles;
-    }
 
-    /**
-     * @brief charger la base contenant les slides que l'utilisateur veut voir
-     * @param context le contexte
-     */
-    private void loadSlides(WakeEDBHelper db) {
-	this.slides = db.getAllSlides();
-    } 
-    
-    /**
-     * @brief get the Home Page
-     * @return the Home Page fragment
-     */
-    public Fragment getHomePage() {
-	return homePage;
-    }
-    
-    /**
-     * @brief get a reference to the slides list : THIS IS NOT A COPY
-     * @return the slides list
-     */
-    public List<Slide> getSlides(){
-	return this.slides;
-    }
-    
-    /**
-     * @brief update the slides table in the database
-     * @param db the WakeEDBHelper
-     */
-    public void updateSlides(WakeEDBHelper db) {
-	db.updateSlides(this.slides);
-    }
-    
+	public SlidesManager(Context context, WakeEDBHelper db){
+		this();
+		homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
+		this.loadSlides(db);
+	}
+
+	/**
+	 * @return slide's views
+	 */
+	public List<Fragment> getVisibleFragments(Context context) {
+		Vector<Fragment> visibles = new Vector<Fragment>();
+		for(Slide s : slides){
+			if(s.visible()){
+				visibles.add(Fragment.instantiate(context, s.getSlideClass()));
+			}
+		}
+		return visibles;
+	}
+
+	/**
+	 * @return slide's views
+	 */
+	public List<Slide> getVisibleSlides() {
+		Vector<Slide> visibles = new Vector<Slide>();
+		for(Slide s : slides){
+			if(s.visible()){
+				visibles.add(s);
+			}
+		}
+		return visibles;
+	}
+
+	/**
+	 * @brief charger la base contenant les slides que l'utilisateur veut voir
+	 * @param context le contexte
+	 */
+	private void loadSlides(WakeEDBHelper db) {
+		this.slides = db.getAllSlides();
+	} 
+
+	/**
+	 * @brief get the Home Page
+	 * @return the Home Page fragment
+	 */
+	public Fragment getHomePage() {
+		return homePage;
+	}
+
+	/**
+	 * @brief get a reference to the slides list : THIS IS NOT A COPY
+	 * @return the slides list
+	 */
+	public List<Slide> getSlides(){
+		return this.slides;
+	}
+
+	/**
+	 * @brief update the slides table in the database
+	 * @param db the WakeEDBHelper
+	 */
+	public void updateSlides(WakeEDBHelper db) {
+		db.updateSlides(this.slides);
+	}
+
 }
