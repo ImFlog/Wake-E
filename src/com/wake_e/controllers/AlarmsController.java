@@ -1,36 +1,23 @@
-package com.wake_e;
+package com.wake_e.controllers;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.datatype.Duration;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 
-import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
-import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
-import com.wake_e.services.deliverers.AgendaDeliverer;
-import com.wake_e.services.deliverers.MailDeliverer;
-import com.wake_e.services.deliverers.MeteoDeliverer;
 import com.wake_e.services.managers.AlarmsManager;
-import com.wake_e.services.managers.CredentialsManager;
-import com.wake_e.services.managers.SlidesManager;
 
 /**
  * @brief Singleton and main controller of the application
  * @author Wake-E team
  */
-public class Controller {
-    // all our deliverers
-    private AgendaDeliverer agendaDeliverer;
-    private MailDeliverer mailDeliverer;
-    private MeteoDeliverer meteoDeliverer;
+public class AlarmsController {
     
     //the db helper
     private WakeEDBHelper db;
@@ -39,25 +26,19 @@ public class Controller {
     private Context context;
     
     //all our managers
-    private SlidesManager slidesManager;
-    private CredentialsManager credentialsManager;
     private AlarmsManager alarmsManager;
 
-    private static Controller controller;
+    private static AlarmsController controller;
 
     /**
      * @param context
      *            le contexte de l'application
      */
-    private Controller(Context context) {
+    private AlarmsController(Context context) {
 	super();
-	this.agendaDeliverer = new AgendaDeliverer();
-	this.mailDeliverer = new MailDeliverer();
-	this.meteoDeliverer = new MeteoDeliverer();
 	
 	this.context = context;
 	this.db = new WakeEDBHelper(context);
-	this.slidesManager = new SlidesManager(context, db);
 	this.alarmsManager = new AlarmsManager();
     }
 
@@ -67,56 +48,11 @@ public class Controller {
      *            the app context
      * @return the Controller instance
      */
-    public static Controller getInstance(Context context) {
-	if (Controller.controller == null) {
-	    Controller.controller = new Controller(context);
+    public static AlarmsController getInstance(Context context) {
+	if (AlarmsController.controller == null) {
+	    AlarmsController.controller = new AlarmsController(context);
 	}
-	return Controller.controller;
-    }
-
-    // ########### SLIDES ###########
-    /**
-     * @brief retrieve visible fragments
-     * @return the visible fragments
-     */
-    public List<Fragment> getVisibleFragments() {
-	return this.slidesManager.getVisibleFragments(this.context);
-    }
-
-    /**
-     * @brief update slides
-     * @param slides
-     *            the slides
-     */
-    public void updateSlides() {
-	this.slidesManager.updateSlides(this.db);
-    }
-
-    /**
-     * @brief get all slides
-     * @return all slides
-     */
-    public List<Slide> getSlides() {
-	return this.slidesManager.getSlides();
-    }
-
-    // ########### CREDENTIALS ###########
-
-    /**
-     * @brief update credentials
-     * @param c
-     *            the credentials
-     */
-    public void updateCredentials(Credentials c) {
-	this.credentialsManager.updateCredentials(this.db, c);
-    }
-
-    /**
-     * @brief get credentials
-     * @return credentials
-     */
-    public Credentials getCredentials() {
-	return this.credentialsManager.getCredentials();
+	return AlarmsController.controller;
     }
 
     // ########### ALARMS ###########
@@ -185,20 +121,5 @@ public class Controller {
 	this.alarmsManager.enableAlarmSynchro(enabled, context);
     }
     
-    /**
-     * @brief get the AgendaDeliverer
-     * @return the AgendaDeliverer
-     */
-    public AgendaDeliverer getAgendaDeliverer(){
-	return this.agendaDeliverer;
-    }
-    
-    /**
-     * @brief get the MeteoDeliverer
-     * @return the MeteoDeliverer
-     */
-    public MeteoDeliverer getMeteoDeliverer(){
-	return null;
-    }
     
 }
