@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.wake_e.utils;
+package com.wake_e.model;
 
 /**
  * @author nugetchar

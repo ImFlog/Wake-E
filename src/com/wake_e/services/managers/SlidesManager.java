@@ -7,8 +7,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.wake_e.fragment.PageHomePageFragment;
+import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
-import com.wake_e.utils.Slide;
 
 /**
  * @brief Used to manager the slides in the morning

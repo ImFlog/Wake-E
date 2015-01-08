@@ -19,8 +19,8 @@ import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
 import com.wake_e.model.Credentials;
+import com.wake_e.model.Slide;
 import com.wake_e.tools.SlidesComparator;
-import com.wake_e.utils.Slide;
 
 /**
  * @author The Wake-E team

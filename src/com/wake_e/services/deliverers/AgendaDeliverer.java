@@ -9,7 +9,7 @@ import com.wake_e.model.Event;
  * @author Wake-E team
  */
 
-public class AgendaDeliverer extends FunctionnalitiesDeliverer<Event> {
+public class AgendaDeliverer{
     // The type of agenda mapped : local or Google ?
     //TODO : constantes données par l'utilisateur via les paramètres ?
     @SuppressWarnings("unused")
@@ -37,7 +37,6 @@ public class AgendaDeliverer extends FunctionnalitiesDeliverer<Event> {
      * @brief deliver the next event of the day
      */
     public Event deliver() {
-	/*TODO : pop the first event of the list*/
 	return events.poll();
     }
 
