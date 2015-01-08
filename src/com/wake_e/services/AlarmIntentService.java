@@ -1,8 +1,15 @@
-package com.wake_e.model;
+package com.wake_e.services;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.xml.datatype.Duration;
+
+import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
+
+import com.wake_e.model.Location;
 
 
 /**
@@ -10,7 +17,7 @@ import javax.xml.datatype.Duration;
  * @brief Class representing an Alarm
  */
 
-public class Alarm
+public class AlarmIntentService extends IntentService
 {
 
     //Alarm's id
@@ -41,14 +48,14 @@ public class Alarm
      * @param ringtone 
      * @brief Alarm's constructor
      */
-    public Alarm(Location depart, Location arrivee, Duration preparationDuration, String ringtone){
-	super();
+    public AlarmIntentService(Location depart, Location arrivee, Duration preparationDuration, String ringtone){
+	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
 	this.enabled = true;
 	this.depart = depart;
 	this.arrivee = arrivee;
 	this.preparationDuration = preparationDuration;
-	//TODO : appel à l'API google/mappi pou le travelDuration
+	//TODO : appel à l'API google/mappi pour le travelDuration
 
 	this.setRingtone(ringtone);
     }
@@ -105,7 +112,7 @@ public class Alarm
     public Location getArrivee() {
 	return arrivee;
     }
-    
+
     /**
      * @brief compute wake up time
      * @return wake up time
@@ -128,22 +135,27 @@ public class Alarm
      * @brief ring the alarm
      */
     public void ring() {
-	// TODO make the ringtone ring (thread in order not to block the app)
+	// TODO make the ringtone ring (Activity in order not to block the app)
+	// Lancement de l'activity réveil (snooze, etc)
     }
 
 
 
     /**
+     * @param context 
      * @brief enable the alarm
      */
-    public void enable() {
-	this.enabled = true;	
+    public void enable(Context context) {
+	this.enabled = true;
+	Intent intent = new Intent(context, this.getClass());
+	this.startService(intent);
     }
 
     /**
      * @brief disable the alarm
      */
     public void disable() {
+	this.stopSelf();
 	this.enabled = false;	
     }
 
@@ -160,6 +172,30 @@ public class Alarm
      */
     public void synchronize() {
 	// TODO API call, travelDuration update
+    }
+
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+	Calendar c = Calendar.getInstance();
+	boolean it_is_time = false;
+	while(!it_is_time){
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+	    }
+	    
+	    //On se synchronise
+	    this.synchronize();
+
+	    //Si l'heure du portable égale ou inférieur à l'heure de réveil
+	    //on lance une activity pour sonner
+	    if(this.computeWakeUp().equals(c.getTime())){
+		it_is_time = true;
+		this.ring();
+	    }   
+	}
+
     }
 
 
