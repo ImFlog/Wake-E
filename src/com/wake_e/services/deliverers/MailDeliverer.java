@@ -10,7 +10,7 @@ import com.wake_e.model.Mail;
  * @author Wake-E team
  */
 
-public class MailDeliverer extends FunctionnalitiesDeliverer<Queue<Mail>> {
+public class MailDeliverer{
     //mails to deliver
     private Queue<Mail> mails;
 
