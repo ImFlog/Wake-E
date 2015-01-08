@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -28,8 +27,6 @@ public class SettingsActivity extends Activity {
 		home.setOnClickListener(homeSettings);
 		dest.setOnClickListener(destSettings);
 		slides.setOnClickListener(slideSettings);
-		
-	    Log.i("Mail TOKEN", Controller.getInstance(getApplicationContext()).getCredentials().toString());
 	}
 
 	private OnClickListener agendaSync = new OnClickListener() {
