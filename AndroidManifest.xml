@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     
     <!-- if we want to display a map -->
     <uses-feature
@@ -53,10 +55,9 @@
         <activity
             android:name="com.wake_e.fragment.station.PageMailFragment"
             android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.SettingsActivity" >
-        </activity>
-        <activity android:name="com.wake_e.MapActivity" >
-        </activity>
+        <activity android:name="com.wake_e.SettingsActivity"/>
+        <activity android:name="com.wake_e.CredentialActivity" />
+        <activity android:name="com.wake_e.MapActivity"/>
 
         <service android:name="com.wake_e.services.AlarmIntentService" />
         <service android:name="com.wake_e.services.AlarmSynchroIntentService" />
