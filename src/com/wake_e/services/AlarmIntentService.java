@@ -179,14 +179,18 @@ public class AlarmIntentService extends IntentService
     protected void onHandleIntent(Intent intent) {
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;
+	int cpt = 0;
 	while(!it_is_time){
 	    try {
 		Thread.sleep(1000);
+		cpt++;
 	    } catch (InterruptedException e) {
 	    }
-	    
+
 	    //On se synchronise
-	    this.synchronize();
+	    if(cpt == 600000){
+		this.synchronize();
+	    }
 
 	    //Si l'heure du portable égale ou inférieur à l'heure de réveil
 	    //on lance une activity pour sonner
