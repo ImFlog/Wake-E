@@ -25,6 +25,7 @@
     <string name="slides">SLIDES</string>
     <string name="destination">Destination</string>
     <string name="home">Domicile</string>
+    <string name="sound">SONNERIES</string>
     <string name="add_compte">Ajouter un compte</string>
     <string name="add_localisation">Ajouter une localisation</string>
 </resources>

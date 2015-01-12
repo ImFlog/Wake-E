@@ -72,18 +72,6 @@ public class MainActivity extends FragmentActivity {
 		positionSlider = pager.getHeight();
 		ll.setY(positionSlider);
 		this.setVisible(true);
-		/*
-		pager.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, relative.getHeight() - ll.getHeight()));
-		//relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,0));
-		
-		TranslateAnimation animation = new TranslateAnimation(0.0f,0.0f,0.0f, first); //  new TranslateAnimation(xFrom,xTo, yFrom,yTo)
-	    animation.setDuration(1000);
-	    //animation.setFillAfter(true);
-	    ll.startAnimation(animation);
-	    ll.setY(first);
-	    */
-		//first = pager.getHeight();
-		
 	}
 
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {
@@ -93,7 +81,7 @@ public class MainActivity extends FragmentActivity {
 		private float yy = 0 ;
 		
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {
+		public boolean onTouch(final View v, MotionEvent event) {
 	    	switch(event.getAction())
 	    	{
 	    		case MotionEvent.ACTION_DOWN:
@@ -106,9 +94,33 @@ public class MainActivity extends FragmentActivity {
 	    			break;
 	    		case MotionEvent.ACTION_UP:
 	    			v.setY(v.getY() - yy + event.getY());
-
-	    			if (v.getY() > positionSlider) v.setY(positionSlider);
-	    			if (v.getY() < 0){v.setY(0);}
+	    			
+	    			if (v.getY() > positionSlider){ v.setY(positionSlider);}
+	    			else if (v.getY() < 0){v.setY(0);}
+	    			else if (v.getY() < positionSlider/2){
+			          while(v.getY() <= 0){
+			        	v.setY(v.getY() - 3);
+			        	try {
+							Thread.sleep(400);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			          }
+			          v.setY(0);
+	    			}
+	    			else{
+				          while(v.getY() >= positionSlider){
+					        	v.setY(v.getY() - 3);
+					        	try {
+									Thread.sleep(400);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+					          }
+					          v.setY(positionSlider);
+	    			}
 	    			break;
 	    	}
 	    	
