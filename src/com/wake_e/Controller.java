@@ -146,8 +146,8 @@ public class Controller {
 	 * @param ringtone the ringtone
 	 */
 	public void createAlarm(Context context, Location depart, Location arrivee,
-			Duration preparationDuration, String ringtone) {
-		this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone);
+			Duration preparationDuration, String ringtone, String transport) {
+		this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone, transport);
 	}
 
 	/**

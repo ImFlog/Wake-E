@@ -8,26 +8,12 @@ package com.wake_e.constants;
 
 public class WakeEConstants
 {
-	/**
-	 * String to access the Mail Deliverer in the WakeE's HashMap
-	 */
-	
-	public static final String MAIL_DELIVERER = "MAIL_DELIVERER";
-	
-	/**
-	 * String to access the Agenda Deliverer in the WakeE's HashMap
-	 */
-	
-	public static final String AGENDA_DELIVERER = "AGENDA_DELIVERER";
-	
-	/**
-	 * String to access the Meteo Deliverer in the WakeE's HashMap
-	 */
-	
-	public static final String METEO_DELIVERER = "METEO_DELIVERER";
-	
-	// API CALLS
-	
+
+    /**
+     * @brief APIs's calls constants
+     * @author Wake-E team
+     */
+    public static final class WakeEAPICalls{
 	/**
 	 * Scope for gmail api auth.
 	 */
@@ -42,17 +28,48 @@ public class WakeEConstants
 	 * Api calls account code.
 	 */
 	public static final int ACCOUNT_CODE = 1601;
-	
+    }
+
+
+    /**
+     * @brief Parsing constants
+     * @author Wake-E team
+     */
+    public static final class WakeEParsing{
 	/**
 	 * Point split character
 	 */
 	public static final String POINT_SPLIT_CHARACTER = ";";
-	
+    }
+
+
+    /**
+     * @brief Transports types constants
+     * @author Wake-E team
+     */
+    public static final class WakeETransports{
 	/**
+	 * transport voiture
 	 */
-	private WakeEConstants(){
-		super();
-	}
+	public static final String TRANSPORT_VOITURE = "voiture";
+
+	/**
+	 * transport commun
+	 */
+	public static final String TRANSPORT_COMMUN = "commun";
+
+	/**
+	 * transport velo
+	 */
+	public static final String TRANSPORT_VELO = "velo";
+
+    }
+
+    /**
+     */
+    private WakeEConstants(){
+	super();
+    }
 
 }
 

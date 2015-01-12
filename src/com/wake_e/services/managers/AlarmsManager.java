@@ -18,12 +18,11 @@ import com.wake_e.services.AlarmSynchroIntentService;
  */
 
 public class AlarmsManager {
-    //the synchronized alarm of the application
+    // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
 
-    //list of set alarms
+    // list of set alarms
     private Set<AlarmIntentService> alarms;
-
 
     /**
      * 
@@ -32,28 +31,28 @@ public class AlarmsManager {
 	super();
     }
 
-
     /**
      * @brief create an alarm and add it to the list
      */
-    //TODO spécifier les paramètres en fonction de ce que nous donnera la vue
+    // TODO spécifier les paramètres en fonction de ce que nous donnera la vue
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone) {
+	    Duration preparationDuration, String ringtone, String transport) {
 	Intent intent = new Intent(context, AlarmIntentService.class);
-	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee, preparationDuration, ringtone);
+	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee,
+		preparationDuration, ringtone, transport);
 	alarm.startService(intent);
 	this.alarms.add(alarm);
 	this.disabledAllTheOthers(alarm.getId());
     }
 
-
     /**
      * @brief remove an alarm
-     * @param alarmId the id of the alarm to remove
+     * @param alarmId
+     *            the id of the alarm to remove
      */
     public void removeAlarm(UUID alarmId) {
-	for(AlarmIntentService a : alarms){
-	    if(a.getId() == alarmId){
+	for (AlarmIntentService a : alarms) {
+	    if (a.getId() == alarmId) {
 		a.stopSelf();
 		this.alarms.remove(a);
 		return;
@@ -63,12 +62,13 @@ public class AlarmsManager {
 
     /**
      * @brief retrieve an alarm
-     * @param alarmId the alarm id
+     * @param alarmId
+     *            the alarm id
      * @return the alarm
      */
     public AlarmIntentService getAlarm(UUID alarmId) {
-	for(AlarmIntentService a : alarms){
-	    if(a.getId().equals(alarmId)){
+	for (AlarmIntentService a : alarms) {
+	    if (a.getId().equals(alarmId)) {
 		return a;
 	    }
 	}
@@ -78,19 +78,20 @@ public class AlarmsManager {
     /**
      * @brief enable or disable an alarm
      * @param alarmId
-     * @param enabled TRUE=enabled FALSE=disabled
-     * @param context 
+     * @param enabled
+     *            TRUE=enabled FALSE=disabled
+     * @param context
      */
     public void enableAlarm(UUID alarmId, boolean enabled, Context context) {
 	AlarmIntentService a = this.getAlarm(alarmId);
-	if(a != null){
-	    if(enabled){
-		if(!a.isEnabled()){
+	if (a != null) {
+	    if (enabled) {
+		if (!a.isEnabled()) {
 		    a.enable(context);
 		    this.disabledAllTheOthers(alarmId);
 		}
-	    }else{
-		if(a.isEnabled()){
+	    } else {
+		if (a.isEnabled()) {
 		    a.disable();
 		}
 	    }
@@ -102,11 +103,11 @@ public class AlarmsManager {
      * @return the enabled alarm
      */
     public AlarmIntentService getEnabledAlarm() {
-	if(this.alarmSynchro.isEnabled()){
+	if (this.alarmSynchro.isEnabled()) {
 	    return this.alarmSynchro;
 	}
-	for(AlarmIntentService a : this.alarms){
-	    if(a.isEnabled()){
+	for (AlarmIntentService a : this.alarms) {
+	    if (a.isEnabled()) {
 		return a;
 	    }
 	}
@@ -131,29 +132,31 @@ public class AlarmsManager {
 
     /**
      * @brief enable the alarm synchro
-     * @param enabled TRUE=enabled FALSE=disabled
-     * @param context 
+     * @param enabled
+     *            TRUE=enabled FALSE=disabled
+     * @param context
      */
     public void enableAlarmSynchro(boolean enabled, Context context) {
 	this.alarmSynchro.enable(context);
-	this.disabledAllTheOthers(this.alarmSynchro.getId());	
+	this.disabledAllTheOthers(this.alarmSynchro.getId());
     }
 
     /**
      * @brief disable all the others alarms
-     * @param alarmId the alarm ID
+     * @param alarmId
+     *            the alarm ID
      */
-    private void disabledAllTheOthers(UUID alarmId){
-	if(this.getAlarm(alarmId) == null){
+    private void disabledAllTheOthers(UUID alarmId) {
+	if (this.getAlarm(alarmId) == null) {
 	    return;
 	}
 
-	for(AlarmIntentService a : this.alarms){
-	    if(!a.getId().equals(alarmId)){
+	for (AlarmIntentService a : this.alarms) {
+	    if (!a.getId().equals(alarmId)) {
 		a.disable();
 	    }
 	}
-	if(!this.alarmSynchro.getId().equals(alarmId)){
+	if (!this.alarmSynchro.getId().equals(alarmId)) {
 	    this.alarmSynchro.disable();
 	}
     }
