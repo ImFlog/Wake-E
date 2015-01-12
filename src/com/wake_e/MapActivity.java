@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
@@ -17,9 +18,15 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.test_map);
 
+	GoogleMapOptions options = new GoogleMapOptions();
+	options.mapType(GoogleMap.MAP_TYPE_NORMAL).compassEnabled(true)
+	.rotateGesturesEnabled(true).tiltGesturesEnabled(true).mapToolbarEnabled(true);
+
+	//MapFragment mapFragment = MapFragment.newInstance(options);
 	MapFragment mapFragment = (MapFragment) getFragmentManager()
-		.findFragmentById(R.id.map);
+	.findFragmentById(R.id.map);
 	mapFragment.getMapAsync(this);
+
     }
 
     @Override
