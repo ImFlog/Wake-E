@@ -29,4 +29,7 @@
         <activity android:name="com.wake_e.fragment.station.PageMailFragment" android:screenOrientation="portrait" />
     </application>
 
+	<uses-permission android:name="android.permission.READ_CALENDAR" />
+
+
 </manifest>

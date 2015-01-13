@@ -9,63 +9,87 @@ import java.util.UUID;
  */
 
 public class Event {
-    // event's id
-    private UUID id;
+	// event's id
+	private long id;
 
-    // event's name
-    private String name;
+	// event's name
+	private String name;
 
-    // event's date
-    private Date date;
+	// event's date
+	private Date begin;
 
-    // event's location
-    private Location location;
+	// event's date
+	private Date end;
 
-    @SuppressWarnings("unused")
-    private Event() {
-	super();
-    }
+	// event's location
+	private String location;
+	
+	private String description;
 
-    /**
-     * @param id
-     * @param name
-     * @param date
-     * @param location
-     */
-    public Event(UUID id, String name, Date date, Location location) {
-	this.id = id;
-	this.name = name;
-	this.date = date;
-	this.location = location;
+	@SuppressWarnings("unused")
+	private Event() {
+		super();
+	}
 
-    }
+	/**
+	 * @param id
+	 * @param name
+	 * @param begin
+	 * @param end
+	 * @param location
+	 */
+	public Event(long id, String name, Date begin, Date end, String location, String description) {
+		this.id = id;
+		this.name = name;
+		this.begin = begin;
+		this.end = end;
+		this.location = location;
+		this.description = description;
+	}
 
-    /**
-     * @return the location
-     */
-    public Location getLocation() {
-	return location;
-    }
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
 
-    /**
-     * @return the date
-     */
-    public Date getDate() {
-	return date;
-    }
+	/**
+	 * @return the begin date
+	 */
+	public Date getBegin() {
+		return begin;
+	}
+	
+	/**
+	 * @return the ed date
+	 */
+	public Date getEnd() {
+		return end;
+	}
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-	return name;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @return the id
-     */
-    public UUID getId() {
-	return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+	
+	/**
+	 * @return the id
+	 */
+	public String getDescription() {
+		return description;
+	}
 
+	public String toString() {
+		return this.id+" : "+this.name+" ("+this.begin.toString()+" - "+this.end.toString()+")";
+	}
 }

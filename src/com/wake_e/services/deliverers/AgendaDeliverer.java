@@ -1,10 +1,14 @@
 package com.wake_e.services.deliverers;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import android.database.Cursor;
 import android.provider.CalendarContract.Calendars;
+import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Instances;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -22,8 +26,8 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 	private String type;
 
 	// Today's events
-	private Queue<Event> events;
-	
+	private ArrayList<Event> events;
+
 	private FragmentActivity activity = null;
 
 	/**
@@ -32,51 +36,70 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 	public AgendaDeliverer(FragmentActivity activity) {
 		super();
 		this.activity = activity;
-		
-		String[] projection = new String[] { Calendars._ID, Calendars.NAME,
-				Calendars.ACCOUNT_NAME, Calendars.ACCOUNT_TYPE };
-		Cursor calCursor = activity.getApplicationContext().getContentResolver().query(Calendars.CONTENT_URI,
-				projection, Calendars.VISIBLE + " = 1", null,
-				Calendars._ID + " ASC");
-		if (calCursor.moveToFirst()) {
-			do {
-				long id = calCursor.getLong(0);
-				String displayName = calCursor.getString(1);
-				Log.i("CALENDAR", displayName);
-			} while (calCursor.moveToNext());
-		}
-		
-		
-		
-		long begin = new Date().getTime();// starting time in milliseconds
-		long end = begin+1000*60*60*24*7;// ending time in milliseconds
-		String[] proj = 
-		      new String[]{
-		            Instances._ID, 
-		            Instances.BEGIN, 
-		            Instances.END, 
-		            Instances.EVENT_ID};
-		Cursor cursor = Instances.query(activity.getContentResolver(), proj, begin, end);
-		Log.i("calendar", "nb:"+cursor.getCount());
+		this.events = new ArrayList<Event>();
+		long begin = new Date().getTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(begin);
+		cal.add(Calendar.DATE, 1);
+		long end = cal.getTime().getTime();
+		String[] proj = new String[] { Instances._ID, Instances.BEGIN,
+				Instances.END, Instances.EVENT_ID };
+		Cursor cursor = Instances.query(activity.getContentResolver(), proj,
+				begin, end);
 		if (cursor.getCount() > 0) {
-			Log.i("calendar", cursor.getString(0));
-			/*
-			for(String n : cursor.getColumnNames()) {
-			   Log.i("Calendar", n);
-		   	}
-		   */
-		} else {
-			
-		}
-	    
+			loadEvents(cursor);
+		} 
 	}
 
 	/**
 	 * @brief retrieve today's events from the synchronized agenda
 	 */
-	public void getEvents() {
-		
+	public ArrayList<Event> getEvents() {
+		return events;
+	}
 
+	/**
+	 * Get Events from cursor.
+	 * @param c
+	 */
+	public void loadEvents(Cursor c) {
+		if (c.moveToFirst()) {
+			do {
+				Long id = c.getLong(c.getColumnIndex("event_id"));
+				long selectedEventId = id;
+				String[] proj = new String[] { Events._ID, Events.DTSTART,
+						Events.DTEND, Events.TITLE, Events.DESCRIPTION, Events.EVENT_LOCATION};
+				Cursor cursor = activity
+						.getApplicationContext()
+						.getContentResolver()
+						.query(Events.CONTENT_URI,
+								proj,
+								Events._ID + " = ? ",
+								new String[] { Long.toString(selectedEventId) },
+								null);
+				if (cursor.moveToFirst()) {
+					events.add(toEvent(cursor));
+				}
+
+			} while (c.moveToNext());
+		}
+		c.close();
+	}
+	
+	/**
+	 * Create Event from cursor.
+	 * @param c
+	 * @return Event
+	 */
+	private Event toEvent(Cursor c) {
+		long id = c.getLong(c.getColumnIndex("_id"));
+		String name = c.getString(c.getColumnIndex("title"));
+		Date begin = new Date(c.getLong(c.getColumnIndex("dtstart")));
+		Date end = new Date(c.getLong(c.getColumnIndex("dtend")));
+		String description = c.getString(c.getColumnIndex("description"));
+		String location = c.getString(c.getColumnIndex("eventLocation"));
+		Event e = new Event(id, name, begin, end, location, description);
+		return e;
 	}
 
 	/**
@@ -84,7 +107,7 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 	 */
 	public Event deliver() {
 		/* TODO : pop the first event of the list */
-		return events.poll();
+		return events.remove(0);
 	}
 
 }
