@@ -33,7 +33,7 @@ public class CredentialActivity extends Activity {
 		this.type = intent.getExtras().getString("type");
 		
 		if (this.type.equals("gmail")) {
-			this.SCOPE = WakeEConstants.GMAIL_SCOPE;
+			this.SCOPE = WakeEConstants.WakeEAPICalls.GMAIL_SCOPE;
 		} else {
 			throw new UnsupportedOperationException("Implement other scopes");
 		}
@@ -57,7 +57,7 @@ public class CredentialActivity extends Activity {
 	private void chooseAccount() {
 		Intent intent = AccountManager.newChooseAccountIntent(null, null,
 				new String[] { "com.google" }, false, null, null, null, null);
-		startActivityForResult(intent, WakeEConstants.ACCOUNT_CODE);
+		startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
 	}
 
 	private void requestToken() {
@@ -93,9 +93,9 @@ public class CredentialActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK) {
-			if (requestCode == WakeEConstants.AUTHORIZATION_CODE) {
+			if (requestCode == WakeEConstants.WakeEAPICalls.AUTHORIZATION_CODE) {
 				requestToken();
-			} else if (requestCode == WakeEConstants.ACCOUNT_CODE) {
+			} else if (requestCode == WakeEConstants.WakeEAPICalls.ACCOUNT_CODE) {
 				this.user = data
 						.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 
@@ -117,7 +117,7 @@ public class CredentialActivity extends Activity {
 
 				Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
 				if (launch != null) {
-					startActivityForResult(launch, WakeEConstants.AUTHORIZATION_CODE);
+					startActivityForResult(launch, WakeEConstants.WakeEAPICalls.AUTHORIZATION_CODE);
 				} else {
 					String token = bundle
 							.getString(AccountManager.KEY_AUTHTOKEN);

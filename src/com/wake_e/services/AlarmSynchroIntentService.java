@@ -27,8 +27,8 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
      * @brief AlarmSynchro constructor
      */
     public AlarmSynchroIntentService(Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone) {
-	super(arrivee, arrivee, preparationDuration, ringtone);
+	    Duration preparationDuration, String ringtone, String transport) {
+	super(arrivee, arrivee, preparationDuration, ringtone, transport);
     }
 
 
