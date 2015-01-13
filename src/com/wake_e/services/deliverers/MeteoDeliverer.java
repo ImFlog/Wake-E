@@ -9,10 +9,10 @@ import com.wake_e.model.Meteo;
  * @author Wake-E team
  */
 
-public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
+public class MeteoDeliverer{
     //The meteos to deliver
     private Queue<Meteo> meteos;
-
+    
     
     /**
      * 
@@ -20,7 +20,7 @@ public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
     public MeteoDeliverer() {
 	super();
     }
-
+    
     /**
      * @brief deliver today's meteo
      * @return today's meteo
@@ -29,7 +29,6 @@ public class MeteoDeliverer implements FunctionalitiesDeliverer<Meteo> {
      * plusieurs météo avec une méthode qui ne retourne qu'une météo. De même, il faut une relation
      * entre Meteo et Location
      */
-    @Override
     public Meteo deliver() {
 	// TODO implement me
 	return this.meteos.peek();

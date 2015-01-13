@@ -19,7 +19,7 @@ import com.wake_e.model.Event;
  * @brief The agenda deliverer
  * @author Wake-E team
  */
-public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
+public class AgendaDeliverer {
 	// The type of agenda mapped : local or Google ?
 	// TODO : constantes données par l'utilisateur via les paramètres ?
 	@SuppressWarnings("unused")
@@ -29,10 +29,7 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 	private ArrayList<Event> events;
 
 	private FragmentActivity activity = null;
-
-	/**
-     * 
-     */
+	
 	public AgendaDeliverer(FragmentActivity activity) {
 		super();
 		this.activity = activity;
@@ -50,7 +47,7 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 			loadEvents(cursor);
 		} 
 	}
-
+	
 	/**
 	 * @brief retrieve today's events from the synchronized agenda
 	 */
@@ -109,5 +106,4 @@ public class AgendaDeliverer implements FunctionalitiesDeliverer<Event> {
 		/* TODO : pop the first event of the list */
 		return events.remove(0);
 	}
-
 }

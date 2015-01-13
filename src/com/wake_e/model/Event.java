@@ -1,7 +1,6 @@
 package com.wake_e.model;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author Wake-E team
