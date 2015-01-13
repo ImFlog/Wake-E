@@ -7,6 +7,7 @@ import javax.xml.datatype.Duration;
 
 import android.content.Context;
 
+import com.directions.route.Routing.TravelMode;
 import com.wake_e.model.Location;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
@@ -66,7 +67,7 @@ public class AlarmsController {
      * @param ringtone the ringtone
      */
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, String transport) {
+	    Duration preparationDuration, String ringtone, TravelMode transport) {
 	this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone, transport);
     }
     

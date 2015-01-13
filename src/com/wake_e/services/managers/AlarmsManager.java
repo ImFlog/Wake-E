@@ -8,6 +8,7 @@ import javax.xml.datatype.Duration;
 import android.content.Context;
 import android.content.Intent;
 
+import com.directions.route.Routing.TravelMode;
 import com.wake_e.model.Location;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
@@ -36,7 +37,7 @@ public class AlarmsManager {
      */
     // TODO spécifier les paramètres en fonction de ce que nous donnera la vue
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, String transport) {
+	    Duration preparationDuration, String ringtone, TravelMode transport) {
 	Intent intent = new Intent(context, AlarmIntentService.class);
 	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee,
 		preparationDuration, ringtone, transport);
