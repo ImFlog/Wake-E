@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onClick(View v) {
-	    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+	    Intent i = new Intent(getApplicationContext(), MapActivity.class);
 	    startActivity(i);
 	}
 

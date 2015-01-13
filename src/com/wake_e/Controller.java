@@ -1,5 +1,6 @@
 package com.wake_e;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import com.wake_e.services.deliverers.MailDeliverer;
 import com.wake_e.services.deliverers.MeteoDeliverer;
 import com.wake_e.services.managers.AlarmsManager;
 import com.wake_e.services.managers.CredentialsManager;
+import com.wake_e.services.managers.LocationsManager;
 import com.wake_e.services.managers.SlidesManager;
 
 /**
@@ -42,6 +44,7 @@ public class Controller {
 	private SlidesManager slidesManager;
 	private CredentialsManager credentialsManager;
 	private AlarmsManager alarmsManager;
+	private LocationsManager locationsManager;
 
 	private static Controller controller;
 
@@ -60,6 +63,7 @@ public class Controller {
 		this.slidesManager = new SlidesManager(context, db);
 		this.credentialsManager = new CredentialsManager(db);
 		this.alarmsManager = new AlarmsManager();
+		this.locationsManager = new LocationsManager(context, db);
 	}
 
 	/**
@@ -197,6 +201,14 @@ public class Controller {
 		this.alarmsManager.enableAlarmSynchro(enabled, context);
 	}
 
+	
+	// ########### LOCATIONS ###########
+	
+	public Location createLocation(String address) throws IOException{
+	    return this.locationsManager.createLocation(address, this.db);
+	}
+	
+	
 	/**
 	 * @brief get the AgendaDeliverer
 	 * @return the AgendaDeliverer

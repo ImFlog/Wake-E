@@ -16,14 +16,8 @@ public class Location {
     // location's coordinates
     private Point gps;
 
-    // location's city
-    private String city;
-
     // location's address
     private String address;
-
-    // location's postal code
-    private String postalCode;
 
     @SuppressWarnings("unused")
     private Location() {
@@ -37,12 +31,10 @@ public class Location {
      * @param address
      * @param pc
      */
-    public Location(UUID id, Point gps, String city, String address, String pc) {
-	this.id = id;
+    public Location(Point gps, String address) {
+	this.id = UUID.randomUUID();
 	this.gps = gps;
-	this.city = city;
 	this.address = address;
-	this.postalCode = pc;
     }
 
     
@@ -63,15 +55,6 @@ public class Location {
 	return this.gps;
     }
 
-
-    /**
-     * @brief get the location's city
-     * @return the location's city
-     */
-    public String getCity() {
-	return this.city;
-    }
-
     /**
      * @brief get the location's address
      * @return the location's address
@@ -80,12 +63,5 @@ public class Location {
 	return this.address;
     }
 
-    /**
-     * @brief get the location's postal code
-     * @return the location's postal code
-     */
-    public String getPostalCode() {
-	return this.postalCode;
-    }
 
 }

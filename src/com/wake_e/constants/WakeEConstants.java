@@ -43,6 +43,10 @@ public class WakeEConstants
 	 */
 	public static final int ACCOUNT_CODE = 1601;
 	
+	/**
+	 * Point split character
+	 */
+	public static final String POINT_SPLIT_CHARACTER = ";";
 	
 	/**
 	 */
