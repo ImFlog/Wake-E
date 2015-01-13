@@ -1,6 +1,5 @@
 package com.wake_e.model;
 
-import com.wake_e.services.deliverers.MeteoDeliverer;
 
 /**
  * @brief Today's meteo

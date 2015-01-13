@@ -1,65 +1,74 @@
-package com.wake_e.model;
+package com.wake_e.services;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.xml.datatype.Duration;
 
+import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
+
+import com.wake_e.model.Location;
 
 /**
  * @author Wake-E team
  * @brief Class representing an Alarm
  */
 
-public class Alarm
-{
+public class AlarmIntentService extends IntentService {
 
-    //Alarm's id
+    // Alarm's id
     private UUID id;
 
-    //Path to the ringtone
+    // Path to the ringtone
     private String ringtone;
 
-    //Is the alarm enabled ?
+    // Is the alarm enabled ?
     private boolean enabled;
 
-    //Duration of the travel
+    // Duration of the travel
     private Duration travelDuration;
 
-    //Duration of the user's preparation
+    // Duration of the user's preparation
     private Duration preparationDuration;
 
-    //start location
+    // start location
     private Location depart;
 
-    //end location
+    // end location
     private Location arrivee;
 
+    private String transport;
+
     /**
-     * @param depart 
-     * @param arrivee 
-     * @param preparationDuration 
-     * @param ringtone 
+     * @param depart
+     * @param arrivee
+     * @param preparationDuration
+     * @param ringtone
      * @brief Alarm's constructor
      */
-    public Alarm(Location depart, Location arrivee, Duration preparationDuration, String ringtone){
-	super();
+    public AlarmIntentService(Location depart, Location arrivee,
+	    Duration preparationDuration, String ringtone, String transport) {
+	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
 	this.enabled = true;
 	this.depart = depart;
 	this.arrivee = arrivee;
 	this.preparationDuration = preparationDuration;
-	//TODO : appel à l'API google/mappi pou le travelDuration
+	this.transport = transport;
+	// TODO : appel à l'API google/mappi pour le travelDuration
 
 	this.setRingtone(ringtone);
     }
-
 
     /**
      * @brief get the alarm id
      * @return the alarm id
      */
     public UUID getId() {
-	return this.id;	
+	return this.id;
     }
 
     /**
@@ -69,14 +78,13 @@ public class Alarm
 	return ringtone;
     }
 
-
     /**
-     * @param ringtone the ringtone to set
+     * @param ringtone
+     *            the ringtone to set
      */
     public void setRingtone(String ringtone) {
 	this.ringtone = ringtone;
     }
-
 
     /**
      * @return the travelDuration
@@ -105,46 +113,56 @@ public class Alarm
     public Location getArrivee() {
 	return arrivee;
     }
-    
+
+    /**
+     * @return the transport
+     */
+    public String getTransport() {
+	return transport;
+    }
+
     /**
      * @brief compute wake up time
      * @return wake up time
      */
     public Date computeWakeUp() {
-	// TODO compute wake up time regarding travelDuration + preparationDuration
-	return null;	
+	// TODO compute wake up time regarding travelDuration +
+	// preparationDuration
+	return null;
     }
-
 
     /**
      * @brief get a string of the wake up time
      * @return the wake up time in string
      */
     public String toStringWakeUp() {
-	return this.computeWakeUp().toLocaleString();
+	return this.computeWakeUp().toString();
     }
 
     /**
      * @brief ring the alarm
      */
     public void ring() {
-	// TODO make the ringtone ring (thread in order not to block the app)
+	// TODO make the ringtone ring (Activity in order not to block the app)
+	// Lancement de l'activity réveil (snooze, etc)
     }
 
-
-
     /**
+     * @param context
      * @brief enable the alarm
      */
-    public void enable() {
-	this.enabled = true;	
+    public void enable(Context context) {
+	this.enabled = true;
+	Intent intent = new Intent(context, this.getClass());
+	this.startService(intent);
     }
 
     /**
      * @brief disable the alarm
      */
     public void disable() {
-	this.enabled = false;	
+	this.stopSelf();
+	this.enabled = false;
     }
 
     /**
@@ -162,6 +180,31 @@ public class Alarm
 	// TODO API call, travelDuration update
     }
 
+    @Override
+    protected void onHandleIntent(Intent intent) {
+	Calendar c = Calendar.getInstance();
+	boolean it_is_time = false;
+	int cpt = 0;
+	while (!it_is_time) {
+	    try {
+		Thread.sleep(1000);
+		cpt++;
+	    } catch (InterruptedException e) {
+	    }
+
+	    // On se synchronise
+	    if (cpt == 600000) {
+		this.synchronize();
+	    }
+
+	    // Si l'heure du portable égale ou inférieur à l'heure de réveil
+	    // on lance une activity pour sonner
+	    if (this.computeWakeUp().equals(c.getTime())) {
+		it_is_time = true;
+		this.ring();
+	    }
+	}
+
+    }
 
 }
-

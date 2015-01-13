@@ -1,9 +1,18 @@
 package com.wake_e.services.managers;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
+
 import com.wake_e.model.Location;
+import com.wake_e.model.sqlite.WakeEDBHelper;
+import com.wake_e.utils.Point;
 
 /**
  * @brief Management of all locations
@@ -14,12 +23,19 @@ public class LocationsManager {
     //Locations
     private Set<Location> locations;
 
+    //tools
+    private Geocoder geocoder;
+    private LocationManager locationManager;
+
+
 
     /**
      * 
      */
-    public LocationsManager() {
+    public LocationsManager(Context context, WakeEDBHelper db) {
 	super();
+	this.geocoder = new Geocoder(context);
+	this.loadLocations(db);
     }
 
     /**
@@ -59,5 +75,51 @@ public class LocationsManager {
 	return null;
     }
 
+    /**
+     * @brief create a new Location
+     * @param address
+     * @return a new address or null
+     * @throws IOException
+     */
+    public Location createLocation(String address, WakeEDBHelper db) throws IOException {
+
+	//Get addresses
+	List<Address> addresses = this.geocoder.getFromLocationName(address, 1);
+	Location l;
+	//If we got an address
+	if(addresses.size() > 0) {
+	    double latitude= addresses.get(0).getLatitude();
+	    double longitude= addresses.get(0).getLongitude();
+	    Point p = new Point(latitude, longitude);
+
+	    //If this Location already exists
+	    if((l=this.getLocation(p)) == null){
+		l = new Location(p, address);
+		this.addLocation(l);
+	    } else {
+		db.createLocation(l);
+	    }
+	    return l;
+	}
+	return null;
+    }
+    
+    /**
+     * @brief get a Location from a Point
+     * @param p a point
+     * @return a Location or null
+     */
+    public Location getLocation(Point p) {
+	for(Location l : this.locations){
+	    if(l.getGps().equals(p)){
+		return l;
+	    }
+	}
+	return null;
+    }
+
+    private void loadLocations(WakeEDBHelper db) {
+	this.locations.addAll(db.getLocations());
+    }
 
 }

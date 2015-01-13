@@ -1,6 +1,8 @@
-package com.wake_e.model;
+package com.wake_e.services;
 
 import javax.xml.datatype.Duration;
+
+import com.wake_e.model.Location;
 
 /**
  * @brief Cette alarme redéfinit simplement la méthode "synchronize" puisqu'elle va
@@ -10,9 +12,8 @@ import javax.xml.datatype.Duration;
  */
 
 
-//TODO Make this class a Singleton
 
-public class AlarmSynchro extends Alarm {
+public class AlarmSynchroIntentService extends AlarmIntentService {
     
     //name of the next event
     private String eventName;
@@ -25,9 +26,9 @@ public class AlarmSynchro extends Alarm {
      * @param ringtone 
      * @brief AlarmSynchro constructor
      */
-    public AlarmSynchro(Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone) {
-	super(arrivee, arrivee, preparationDuration, ringtone);
+    public AlarmSynchroIntentService(Location depart, Location arrivee,
+	    Duration preparationDuration, String ringtone, String transport) {
+	super(arrivee, arrivee, preparationDuration, ringtone, transport);
     }
 
 
