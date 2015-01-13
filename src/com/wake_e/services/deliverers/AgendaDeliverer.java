@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
@@ -28,11 +29,11 @@ public class AgendaDeliverer {
 	// Today's events
 	private ArrayList<Event> events;
 
-	private FragmentActivity activity = null;
+	private Context context = null;
 	
-	public AgendaDeliverer(FragmentActivity activity) {
+	public AgendaDeliverer(Context context) {
 		super();
-		this.activity = activity;
+		this.context = context;
 		this.events = new ArrayList<Event>();
 		long begin = new Date().getTime();
 		Calendar cal = Calendar.getInstance();
@@ -41,7 +42,7 @@ public class AgendaDeliverer {
 		long end = cal.getTime().getTime();
 		String[] proj = new String[] { Instances._ID, Instances.BEGIN,
 				Instances.END, Instances.EVENT_ID };
-		Cursor cursor = Instances.query(activity.getContentResolver(), proj,
+		Cursor cursor = Instances.query(context.getContentResolver(), proj,
 				begin, end);
 		if (cursor.getCount() > 0) {
 			loadEvents(cursor);
@@ -66,8 +67,7 @@ public class AgendaDeliverer {
 				long selectedEventId = id;
 				String[] proj = new String[] { Events._ID, Events.DTSTART,
 						Events.DTEND, Events.TITLE, Events.DESCRIPTION, Events.EVENT_LOCATION};
-				Cursor cursor = activity
-						.getApplicationContext()
+				Cursor cursor = context
 						.getContentResolver()
 						.query(Events.CONTENT_URI,
 								proj,
