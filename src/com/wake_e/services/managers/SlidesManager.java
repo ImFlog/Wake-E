@@ -6,9 +6,14 @@ import java.util.Vector;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import com.wake_e.fragment.PageHomePageFragment;
+
 import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
+import com.wake_e.fragment.PageReveilFragment;
+import com.wake_e.fragment.station.PageAgendaFragment;
+import com.wake_e.fragment.station.PageMailFragment;
+import com.wake_e.fragment.station.PageMeteoFragment;
+
 
 /**
  * @brief Used to manager the slides in the morning
@@ -31,7 +36,6 @@ public class SlidesManager {
 
 	public SlidesManager(Context context, WakeEDBHelper db){
 		this();
-		homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
 		this.loadSlides(db);
 	}
 

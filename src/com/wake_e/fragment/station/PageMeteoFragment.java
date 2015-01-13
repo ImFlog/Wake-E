@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import com.wake_e.Controller;
 import com.wake_e.R;
 import com.wake_e.adapt.MeteoAdapter;
 import com.wake_e.model.Meteo;
+import com.wake_e.services.deliverers.MeteoDeliverer;
 import com.wake_e.tools.JSONWeatherParser;
 import com.wake_e.tools.WeatherHttpClient;
 
@@ -33,37 +35,17 @@ public class PageMeteoFragment extends Fragment {
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.meteo));
 			
-		    JSONWeatherTask task = new JSONWeatherTask();
-		    task.execute(new String[]{city});
+			Controller.getInstance(v.getContext()).getMeteoDeliverer().getMeteo(this);
 		}
 		return v;/*inflater.inflate(R.layout.station, container, false);*/
 	}
-	private class JSONWeatherTask extends AsyncTask<String, Void, Meteo> {
-		
-		@Override
-		protected Meteo doInBackground(String... params) {
-			Meteo weather = new Meteo();
-			String data = ( (new WeatherHttpClient()).getWeatherData(params[0]));
-
-			try {
-				weather = JSONWeatherParser.getWeather(data);
-								
-			} catch (JSONException e) {				
-				e.printStackTrace();
-			}
-			return weather;
-		}
-		
-		
-	@Override
-		protected void onPostExecute(Meteo weather) {
-			super.onPostExecute(weather);
-			if (v != null){
-				List<Meteo> meteos = new ArrayList<Meteo>();
-				meteos.add(weather);
-				ListView gridview = (ListView) v.findViewById(R.id.content);
-			    gridview.setAdapter(new MeteoAdapter(v.getContext(),meteos));
-			}
+	
+	public void updateView(List<Meteo> weather){
+		if (v != null){
+			List<Meteo> meteos = new ArrayList<Meteo>();
+			meteos.add(weather);
+			ListView gridview = (ListView) v.findViewById(R.id.content);
+		    gridview.setAdapter(new MeteoAdapter(v.getContext(),meteos));
 		}
 	}
 }

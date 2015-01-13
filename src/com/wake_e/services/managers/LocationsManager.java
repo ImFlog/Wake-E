@@ -122,4 +122,8 @@ public class LocationsManager {
 	this.locations.addAll(db.getLocations());
     }
 
+	public Set<Location> getLocations() {
+		return this.locations;
+	}
+
 }

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
+import com.wake_e.model.Meteo;
 import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
@@ -208,7 +209,6 @@ public class Controller {
 	    return this.locationsManager.createLocation(address, this.db);
 	}
 	
-	
 	/**
 	 * @brief get the AgendaDeliverer
 	 * @return the AgendaDeliverer
@@ -223,6 +223,12 @@ public class Controller {
 	 */
 	public MeteoDeliverer getMeteoDeliverer(){
 		return null;
+	}
+	
+
+	public Set<Location> getLocations() {
+		// TODO Auto-generated method stub
+		return this.locationsManager.getLocations();
 	}
 
 }
