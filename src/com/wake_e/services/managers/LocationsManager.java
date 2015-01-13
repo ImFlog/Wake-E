@@ -92,18 +92,23 @@ public class LocationsManager {
 	    double longitude= addresses.get(0).getLongitude();
 	    Point p = new Point(latitude, longitude);
 
-	    //If this Location already exists
-	    if((l=this.getLocation(p)) == null){
-		l = new Location(p, address);
-		this.addLocation(l);
-	    } else {
-		db.createLocation(l);
-	    }
+	    String city = addresses.get(0).getLocality();
+	    String cp = addresses.get(0).getPostalCode();
+	    
+	    String address_line = addresses.get(0).getAddressLine(0);
+	    
+		    //If this Location already exists
+		    if((l=this.getLocation(p)) == null){
+			l = new Location(p, address, city, cp, address_line);
+			this.addLocation(l);
+		    } else {
+			db.createLocation(l);
+		    }
 	    return l;
 	}
 	return null;
     }
-    
+
     /**
      * @brief get a Location from a Point
      * @param p a point

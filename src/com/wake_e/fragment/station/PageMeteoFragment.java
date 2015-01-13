@@ -35,17 +35,15 @@ public class PageMeteoFragment extends Fragment {
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.meteo));
 			
-			Controller.getInstance(v.getContext()).getMeteoDeliverer().getMeteo(this);
+			Controller.getInstance(v.getContext()).getMeteoDeliverer().deliver(this);
 		}
 		return v;/*inflater.inflate(R.layout.station, container, false);*/
 	}
 	
 	public void updateView(List<Meteo> weather){
 		if (v != null){
-			List<Meteo> meteos = new ArrayList<Meteo>();
-			meteos.add(weather);
 			ListView gridview = (ListView) v.findViewById(R.id.content);
-		    gridview.setAdapter(new MeteoAdapter(v.getContext(),meteos));
+		    gridview.setAdapter(new MeteoAdapter(v.getContext(),weather));
 		}
 	}
 }

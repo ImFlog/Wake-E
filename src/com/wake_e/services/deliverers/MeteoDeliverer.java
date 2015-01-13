@@ -13,7 +13,6 @@ import com.wake_e.Controller;
 import com.wake_e.R;
 import com.wake_e.adapt.MeteoAdapter;
 import com.wake_e.fragment.station.PageMeteoFragment;
-import com.wake_e.fragment.station.PageMeteoFragment.JSONWeatherTask;
 import com.wake_e.model.Meteo;
 import com.wake_e.tools.JSONWeatherParser;
 import com.wake_e.tools.WeatherHttpClient;
@@ -38,10 +37,6 @@ public class MeteoDeliverer{
     /**
      * @brief deliver today's meteo
      * @return today's meteo
-     */
-    /*TODO - TTO :  petite incohérence dans ma conception : on ne peut pas avoir
-     * plusieurs météo avec une méthode qui ne retourne qu'une météo. De même, il faut une relation
-     * entre Meteo et Location
      */
     public List<Meteo> deliver(PageMeteoFragment view) {
 	// TODO implement me
@@ -74,8 +69,7 @@ public class MeteoDeliverer{
 		protected void onPostExecute(Meteo weather) {
 			super.onPostExecute(weather);
 			view.updateView(meteos);
-			
-			}
 		}
+	}
 
 }
