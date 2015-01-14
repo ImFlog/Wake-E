@@ -56,7 +56,7 @@ public class Controller {
      */
     private Controller(Context context) {
 	super();
-	this.agendaDeliverer = new AgendaDeliverer(null);
+	//this.agendaDeliverer = new AgendaDeliverer(null);
 	this.mailDeliverer = new MailDeliverer();
 	this.meteoDeliverer = new MeteoDeliverer();
 

@@ -28,4 +28,6 @@
     <string name="wind_def">0km/h</string>
     <string name="humidity_def">0%</string>
     <string name="city_def">Nice</string>
+    <string name="title_activity_conf_reveil">ConfReveilActivity</string>
+
 </resources>

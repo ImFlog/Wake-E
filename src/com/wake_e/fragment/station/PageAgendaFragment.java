@@ -29,6 +29,7 @@ public class PageAgendaFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.station, container, false);
 		if (v != null) {
+			
 			AgendaDeliverer deliverer = new AgendaDeliverer(this.getActivity());
 			ArrayList<Event> events = deliverer.getEvents();
 			TextView title = (TextView) v.findViewById(R.id.title_station);
@@ -36,6 +37,7 @@ public class PageAgendaFragment extends Fragment {
 			ListView gridview = (ListView) v.findViewById(R.id.content);
 
 			gridview.setAdapter(new AgendaAdapter(v.getContext(), events));
+			
 		}
 		return v;/* inflater.inflate(R.layout.station, container, false); */
 	}
