@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.xml.datatype.Duration;
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import com.directions.route.Routing.TravelMode;
+import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.model.Slide;
@@ -154,9 +152,9 @@ public class Controller {
      *            the ringtone
      */
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
+	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
 	this.alarmsManager.createAlarm(context, depart, arrivee,
-		preparationDuration, ringtone, transport);
+		preparationDuration, ringtone, transport, endHour);
     }
 
     /**

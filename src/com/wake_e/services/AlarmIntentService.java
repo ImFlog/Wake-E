@@ -1,16 +1,28 @@
 package com.wake_e.services;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.xml.datatype.Duration;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import com.directions.route.Routing.TravelMode;
+import com.wake_e.Controller;
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Location;
 
 /**
@@ -29,11 +41,11 @@ public class AlarmIntentService extends IntentService {
     // Is the alarm enabled ?
     private boolean enabled;
 
-    // Duration of the travel
-    private Duration travelDuration;
+    // Duration of the travel in milliseconds
+    private long travelDuration;
 
-    // Duration of the user's preparation
-    private Duration preparationDuration;
+    // Duration of the user's preparation in milliseconds
+    private long preparationDuration;
 
     // start location
     private Location depart;
@@ -41,7 +53,11 @@ public class AlarmIntentService extends IntentService {
     // end location
     private Location arrivee;
 
-    private TravelMode transport;
+    // transport mode
+    private String modeTransport;
+
+    // end hour
+    private long endHour;
 
     /**
      * @param depart
@@ -51,14 +67,16 @@ public class AlarmIntentService extends IntentService {
      * @brief Alarm's constructor
      */
     public AlarmIntentService(Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
+	    long preparationDuration, String ringtone, String transport, long endHour) {
 	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
 	this.enabled = true;
 	this.depart = depart;
 	this.arrivee = arrivee;
 	this.preparationDuration = preparationDuration;
-	this.transport = transport;
+	this.modeTransport = transport;
+	this.endHour = endHour;
+
 	// TODO : appel à l'API google/mappi pour le travelDuration
 
 	this.setRingtone(ringtone);
@@ -90,14 +108,14 @@ public class AlarmIntentService extends IntentService {
     /**
      * @return the travelDuration
      */
-    public Duration getTravelDuration() {
+    public long getTravelDuration() {
 	return travelDuration;
     }
 
     /**
      * @return the preparationDuration
      */
-    public Duration getPreparationDuration() {
+    public long getPreparationDuration() {
 	return preparationDuration;
     }
 
@@ -118,18 +136,28 @@ public class AlarmIntentService extends IntentService {
     /**
      * @return the transport
      */
-    public TravelMode getTransport() {
-	return transport;
+    public String getModeTransport() {
+	return modeTransport;
+    }
+
+    /**
+     * @return the end hour
+     */
+    public long getEndHour() {
+	return endHour;
     }
 
     /**
      * @brief compute wake up time
      * @return wake up time
      */
-    public Date computeWakeUp() {
-	// TODO compute wake up time regarding travelDuration +
-	// preparationDuration
-	return null;
+    public Long computeWakeUp() {
+	Calendar c = Calendar.getInstance();
+	Long wake_up = c.getTimeInMillis() + this.travelDuration + this.preparationDuration;
+	if(wake_up > this.endHour){
+	    wake_up = c.getTimeInMillis();
+	}
+	return wake_up;
     }
 
     /**
@@ -178,13 +206,64 @@ public class AlarmIntentService extends IntentService {
      * @brief synchronize the alarm according to the Google API / Mappi API
      */
     public void synchronize() {
-	// TODO API call, travelDuration update
-//	start = new LatLng(18.015365, -77.499382);
-//	end = new LatLng(18.012590, -77.500659);
-//
-//	Routing routing = new Routing(Routing.TravelMode.WALKING);
-//	routing.registerListener(this);
-//	routing.execute(start, end);
+	StringBuilder stringBuilder = new StringBuilder();
+	try {
+	    //Construire l'URL a questionner
+	    String url = "http://route.cit.api.here.com/routing/7.2/calculateroute.json?"
+		    + "app_id=" + WakeEConstants.WakeENokiaMaps.app_id
+		    + "&app_code=" + WakeEConstants.WakeENokiaMaps.app_code
+		    + "&waypoint0=geo!" + this.depart.getGps().getLatitude() + "," + this.depart.getGps().getLongitude()
+		    + "&waypoint1=geo!" + this.arrivee.getGps().getLatitude() + "," + this.arrivee.getGps().getLongitude()
+		    + "&mode=fastest;" + this.modeTransport
+		    + ";"
+		    + "traffic:enabled";
+
+	    //Envoi de la requete
+	    HttpPost httppost = new HttpPost(url);
+
+	    HttpClient client = new DefaultHttpClient();
+	    HttpResponse response;
+
+	    stringBuilder = new StringBuilder();
+
+	    response = client.execute(httppost);
+
+	    //Reception de la reponse
+	    HttpEntity entity = response.getEntity();
+	    InputStream stream = entity.getContent();
+	    int b;
+	    while ((b = stream.read()) != -1) {
+		stringBuilder.append((char) b);
+	    }
+	} catch (ClientProtocolException e) {
+	} catch (IOException e) {
+	}
+
+	JSONObject jsonObject = new JSONObject();
+	//Parsing du JSON
+	try {
+
+	    jsonObject = new JSONObject(stringBuilder.toString());
+
+	    JSONObject response = jsonObject.getJSONObject("response");
+
+	    JSONArray array = response.getJSONArray("routes");
+
+	    JSONObject routes = array.getJSONObject(0);
+
+	    JSONArray legs = routes.getJSONArray("legs");
+
+	    JSONObject summary = legs.getJSONObject(0);
+
+	    JSONObject time = summary.getJSONObject("traffictime");
+
+	    //	    Log.i("Distance", time.toString());
+	    //Mise a jour du temps de trajet
+	    this.travelDuration = Long.valueOf(time.toString()).longValue();
+
+	} catch (JSONException e) {
+	}
+
     }
 
     @Override
@@ -200,13 +279,14 @@ public class AlarmIntentService extends IntentService {
 	    }
 
 	    // On se synchronise
-	    if (cpt == 600000) {
+	    if (cpt == 1200000) {
 		this.synchronize();
 	    }
 
 	    // Si l'heure du portable égale ou inférieur à l'heure de réveil
 	    // on lance une activity pour sonner
-	    if (this.computeWakeUp().equals(c.getTime())) {
+	    if (this.computeWakeUp() >= c.getTimeInMillis()) {
+		//check mails, agenda & meteo
 		it_is_time = true;
 		this.ring();
 	    }

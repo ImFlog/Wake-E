@@ -1,7 +1,5 @@
 package com.wake_e.constants;
 
-import com.directions.route.Routing;
-import com.directions.route.Routing.TravelMode;
 
 
 /**
@@ -9,14 +7,14 @@ import com.directions.route.Routing.TravelMode;
  * @author Wake-E team
  */
 
-public class WakeEConstants
+public abstract class WakeEConstants
 {
 
     /**
      * @brief APIs's calls constants
      * @author Wake-E team
      */
-    public static final class WakeEAPICalls{
+    public abstract class WakeEAPICalls{
 	/**
 	 * Scope for gmail api auth.
 	 */
@@ -38,7 +36,7 @@ public class WakeEConstants
      * @brief Parsing constants
      * @author Wake-E team
      */
-    public static final class WakeEParsing{
+    public abstract class WakeEParsing{
 	/**
 	 * Point split character
 	 */
@@ -50,24 +48,32 @@ public class WakeEConstants
      * @brief Transports types constants
      * @author Wake-E team
      */
-    public static final class WakeETransports{
+    public abstract class WakeETransports{
 	/**
 	 * transport voiture
 	 */
-	public static final TravelMode TRANSPORT_VOITURE = Routing.TravelMode.DRIVING;
+	public static final String TRANSPORT_VOITURE = "car";
 
 	/**
 	 * transport commun
 	 */
-	public static final TravelMode TRANSPORT_COMMUN = Routing.TravelMode.TRANSIT;
+	public static final String TRANSPORT_COMMUN = "transit";
 
 	/**
 	 * transport velo
 	 */
-	public static final TravelMode TRANSPORT_VELO = Routing.TravelMode.BIKING;
+	public static final String TRANSPORT_VELO = "biking";
 
     }
 
+    /**
+     * @brief Nokia Maps contsants
+     * @author Wake-E team
+     */
+    public abstract class WakeENokiaMaps{
+	public static final String app_id = "Kpmuj02vUeakK6N5z3mK" ;
+	public static final String app_code = "iKL-xOAc6YOvwMNalfrKeA";
+    }
     /**
      */
     private WakeEConstants(){

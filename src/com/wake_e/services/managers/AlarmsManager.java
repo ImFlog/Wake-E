@@ -3,12 +3,10 @@ package com.wake_e.services.managers;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.xml.datatype.Duration;
-
 import android.content.Context;
 import android.content.Intent;
 
-import com.directions.route.Routing.TravelMode;
+import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
@@ -37,10 +35,13 @@ public class AlarmsManager {
      */
     // TODO spécifier les paramètres en fonction de ce que nous donnera la vue
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
+	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException {
+	//On teste si une Route est trouvee avec le depart et l'arrivee
+	//Si ce n'est pas le cas, on throw une exception
+	
 	Intent intent = new Intent(context, AlarmIntentService.class);
 	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee,
-		preparationDuration, ringtone, transport);
+		preparationDuration, ringtone, transport, endHour);
 	alarm.startService(intent);
 	this.alarms.add(alarm);
 	this.disabledAllTheOthers(alarm.getId());
