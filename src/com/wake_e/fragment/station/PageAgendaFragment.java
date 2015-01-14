@@ -29,7 +29,7 @@ public class PageAgendaFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.station, container, false);
 		if (v != null) {
-			AgendaDeliverer deliverer = new AgendaDeliverer(this.getActivity());
+			AgendaDeliverer deliverer = Controller.getInstance(this.getActivity().getApplicationContext()).getAgendaDeliverer();
 			ArrayList<Event> events = deliverer.getEvents();
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.agenda));
