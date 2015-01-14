@@ -58,7 +58,9 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_LOCATIONS= "CREATE TABLE "
 	    + TABLE_LOCATIONS + "(location_uid VARCHAR(16) PRIMARY KEY,"
-	    + " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL)";
+	    + " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL,"
+	    + " location_city VARCHAR(255) NOT NULL, location_cp VARCHAR(255) NOT NULL,"
+	    + " location_address_line VARCHAR(255) NOT NULL)";
 
     /**
      * @param context
@@ -98,6 +100,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	// creating required tables
 	db.execSQL(CREATE_TABLE_SLIDES);
 	db.execSQL(CREATE_TABLE_CREDENTIALS);
+	db.execSQL(CREATE_TABLE_LOCATIONS);
 	this.populateSlides(db);
     }
 
@@ -244,10 +247,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	SQLiteDatabase db = this.getReadableDatabase();
 	Cursor c = db.rawQuery(selectQuery, null);
 	Point p;
+	
+	String city, cp, address_line, address;
+	
 	// looping through all rows and adding to list
 	while (c.moveToNext()) {
 	    p = Point.pointFromString(c.getString(c.getColumnIndex("location_point")));
-	    l.add(new Location(p, c.getString(c.getColumnIndex("location_address"))));
+	    address =  c.getString(c.getColumnIndex("location_address"));
+	    city =  c.getString(c.getColumnIndex("location_city"));
+	    cp = c.getString(c.getColumnIndex("location_cp"));
+	    address_line = c.getString(c.getColumnIndex("location_address_line"));
+	    l.add(new Location(p, address, city, cp, address_line));
 	}
 	return l;
     }
@@ -257,6 +267,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	// on upgrade drop older tables
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_SLIDES);
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_CREDENTIALS);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
 	// create new tables
 	onCreate(db);
     }
@@ -269,6 +280,10 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	values.put("location_uid", l.getId().toString());
 	values.put("location_point", l.getGps().toSQLite());
 	values.put("location_address", l.getAddress());
+	values.put("location_city", l.getCity());
+	values.put("location_cp", l.getCP());
+	values.put("location_address_line", l.getAddressLine());
+	
 
 	db.insert(TABLE_LOCATIONS, null, values);
 	db.close();
