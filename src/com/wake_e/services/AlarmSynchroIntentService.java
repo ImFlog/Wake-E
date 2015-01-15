@@ -1,8 +1,6 @@
 package com.wake_e.services;
 
-import javax.xml.datatype.Duration;
 
-import com.directions.route.Routing.TravelMode;
 import com.wake_e.model.Location;
 
 /**
@@ -28,8 +26,9 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
      * @brief AlarmSynchro constructor
      */
     public AlarmSynchroIntentService(Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
-	super(arrivee, arrivee, preparationDuration, ringtone, transport);
+	    long preparationDuration, String ringtone, String transport, long endHour) {
+	super(arrivee, arrivee, preparationDuration, ringtone, transport, endHour);
+
     }
 
 
@@ -44,6 +43,7 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
     @Override
     public void synchronize() {
         // TODO Update travelDuration regarding the agenda
+	
     }
 
 }

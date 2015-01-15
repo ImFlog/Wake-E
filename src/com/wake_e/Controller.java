@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.xml.datatype.Duration;
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import com.directions.route.Routing.TravelMode;
+import com.wake_e.exceptions.NoRouteFoundException;
+
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
-import com.wake_e.model.Meteo;
+import com.wake_e.model.Mail;
 import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
@@ -36,13 +35,13 @@ public class Controller {
     private MailDeliverer mailDeliverer;
     private MeteoDeliverer meteoDeliverer;
 
-    // the db helper
+    //the db helper
     private WakeEDBHelper db;
 
-    // the app context
-    private Context context;
+    //the app context
+    private static Context context;
 
-    // all our managers
+    //all our managers
     private SlidesManager slidesManager;
     private CredentialsManager credentialsManager;
     private AlarmsManager alarmsManager;
@@ -56,16 +55,17 @@ public class Controller {
      */
     private Controller(Context context) {
 	super();
-	//this.agendaDeliverer = new AgendaDeliverer(null);
-	this.mailDeliverer = new MailDeliverer();
+	Controller.context = context;
+	this.db = new WakeEDBHelper(context);
+
+	this.agendaDeliverer = new AgendaDeliverer(context);
+	this.mailDeliverer = new MailDeliverer(db);
 	this.meteoDeliverer = new MeteoDeliverer();
 
-	this.context = context;
-	this.db = new WakeEDBHelper(context);
 	this.slidesManager = new SlidesManager(context, db);
 	this.credentialsManager = new CredentialsManager(db);
 	this.alarmsManager = new AlarmsManager();
-	this.locationsManager = new LocationsManager(context, db);
+	this.locationsManager= new LocationsManager(context, db); 
     }
 
     /**
@@ -81,13 +81,21 @@ public class Controller {
 	return Controller.controller;
     }
 
+    /**
+     * @brief Static context getter
+     * @return the context
+     */
+    public static Context getContext() {
+	return Controller.context;
+    }
+
     // ########### SLIDES ###########
     /**
      * @brief retrieve visible fragments
      * @return the visible fragments
      */
     public List<Fragment> getVisibleFragments() {
-	return this.slidesManager.getVisibleFragments(this.context);
+	return this.slidesManager.getVisibleFragments(Controller.context);
     }
 
     /**
@@ -107,15 +115,14 @@ public class Controller {
 	return this.slidesManager.getSlides();
     }
 
-    // ########### CREDENTIALS ###########
+    //########### CREDENTIALS ###########
 
     /**
      * @brief update credentials
-     * @param c
-     *            the credentials
+     * @param c the credentials
      */
-    public void updateCredentials(Credentials c) {
-	this.credentialsManager.updateCredentials(this.db, c);
+    public void updateCredentials(Credentials c){
+	this.credentialsManager.updateCredentials(c);
     }
 
     /**
@@ -124,11 +131,10 @@ public class Controller {
      */
     public List<Credentials> getCredentials() {
 	return this.credentialsManager.getCredentials();
-    }
+    } 
 
     /**
-     * @param type
-     *            the needed type.
+     * @param type the needed type.
      * @return a credential or null.
      */
     public Credentials getCredentials(String type) {
@@ -136,46 +142,40 @@ public class Controller {
     }
 
     public void deleteCredentials(String type) {
-	this.credentialsManager.deleteCredentials(this.db, type);
+	this.credentialsManager.deleteCredentials(type);
     }
 
     // ########### ALARMS ###########
 
     /**
      * @brief create a new alarm
-     * @param context
-     *            the app context
-     * @param depart
-     *            the start location
-     * @param arrivee
-     *            the end location
-     * @param preparationDuration
-     *            the preparation duration
-     * @param ringtone
-     *            the ringtone
+     * @param context the app context
+     * @param depart the start location
+     * @param arrivee the end location
+     * @param preparationDuration the preparation duration
+     * @param ringtone the ringtone
      */
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
+	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
 	this.alarmsManager.createAlarm(context, depart, arrivee,
-		preparationDuration, ringtone, transport);
+		preparationDuration, ringtone, transport, endHour);
     }
 
     /**
      * @brief delete an alarm
      * @param alarmId
      */
-    public void deleteAlarm(UUID alarmId) {
+    public void deleteAlarm(UUID alarmId){
 	this.alarmsManager.removeAlarm(alarmId);
     }
 
     /**
      * @brief enable or disable an alarm
      * @param alarmId
-     * @param enabled
-     *            TRUE=enabled FALSE=disabled
-     * @param context
+     * @param enabled TRUE=enabled FALSE=disabled
+     * @param context 
      */
-    public void enableAlarm(UUID alarmId, boolean enabled, Context context) {
+    public void enableAlarm(UUID alarmId, boolean enabled, Context context){
 	this.alarmsManager.enableAlarm(alarmId, enabled, context);
     }
 
@@ -183,7 +183,7 @@ public class Controller {
      * @brief get the enabled alarm
      * @return the enabled alarm
      */
-    public AlarmIntentService getEnabledAlarm() {
+    public AlarmIntentService getEnabledAlarm(){
 	return this.alarmsManager.getEnabledAlarm();
     }
 
@@ -191,7 +191,7 @@ public class Controller {
      * @brief get all alarms
      * @return all alarms
      */
-    public Set<AlarmIntentService> getAlarms() {
+    public Set<AlarmIntentService> getAlarms(){
 	return this.alarmsManager.getAlarms();
     }
 
@@ -199,45 +199,58 @@ public class Controller {
      * @brief get the alarm synchro
      * @return the alarm synchro
      */
-    public AlarmSynchroIntentService getAlarmSynchro() {
-	return this.alarmsManager.getAlarmSynchro();
+    public AlarmSynchroIntentService getAlarmSynchro(){
+    	return this.alarmsManager.getAlarmSynchro();
     }
 
     /**
      * @brief enable the alarm synchro
-     * @param enabled
-     *            TRUE=enabled FALSE=disabled
-     * @param context
+     * @param enabled TRUE=enabled FALSE=disabled
+     * @param context 
      */
-    public void enabledAlarmSynchro(boolean enabled, Context context) {
-	this.alarmsManager.enableAlarmSynchro(enabled, context);
+    public void enabledAlarmSynchro(boolean enabled, Context context){
+    	this.alarmsManager.enableAlarmSynchro(enabled, context);
     }
+
 
     // ########### LOCATIONS ###########
 
-    public Location createLocation(String address) throws IOException {
-	return this.locationsManager.createLocation(address, this.db);
+    public Location createLocation(String address) throws IOException{
+    	return this.locationsManager.createLocation(address, this.db);
     }
 
+    // ########### MAILS ###########
+    public List<Mail> getMails() {
+	return this.db.getEmails();
+    }
+    /**
+     * @brief get the MailDeliverer
+     * @return the MailDeliverer
+     */
+    public MailDeliverer getMailDeliverer() {
+	return this.mailDeliverer;
+    }
+    
+    // ########### AGENDA ###########
     /**
      * @brief get the AgendaDeliverer
      * @return the AgendaDeliverer
      */
-    public AgendaDeliverer getAgendaDeliverer() {
+    public AgendaDeliverer getAgendaDeliverer(){
 	return this.agendaDeliverer;
     }
 
+ // ########### METEO ###########
     /**
      * @brief get the MeteoDeliverer
      * @return the MeteoDeliverer
      */
-    public MeteoDeliverer getMeteoDeliverer() {
-	return null;
+    public MeteoDeliverer getMeteoDeliverer(){
+    	return this.meteoDeliverer;
     }
 
 
 	public Set<Location> getLocations() {
-		// TODO Auto-generated method stub
 		return this.locationsManager.getLocations();
 	}
 }

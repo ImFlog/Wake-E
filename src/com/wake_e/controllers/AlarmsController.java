@@ -7,7 +7,7 @@ import javax.xml.datatype.Duration;
 
 import android.content.Context;
 
-import com.directions.route.Routing.TravelMode;
+import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
@@ -65,10 +65,11 @@ public class AlarmsController {
      * @param arrivee the end location
      * @param preparationDuration the preparation duration
      * @param ringtone the ringtone
+     * @throws NoRouteFoundException 
      */
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
-	this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone, transport);
+	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException {
+	this.alarmsManager.createAlarm(context, depart, arrivee, preparationDuration, ringtone, transport, endHour);
     }
     
     /**

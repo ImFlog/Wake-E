@@ -76,8 +76,8 @@ public class MeteoAdapter extends BaseAdapter {
 	        holder.temp.setText(
 	        		Double.parseDouble(df.format (
 	        				meteos.get(position).getTemperature()))
-	        		+ " °C");
-	        holder.humi.setText("Humidité " + 
+	        		+ " Â°C");
+	        holder.humi.setText("HumiditÃ© " + 
 	        		Double.parseDouble(df.format (
 	        				meteos.get(position).getHumidite()))
 	        		+ " %");

@@ -3,6 +3,7 @@ package com.wake_e.services.managers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import android.content.Context;
@@ -34,7 +35,10 @@ public class LocationsManager {
      */
     public LocationsManager(Context context, WakeEDBHelper db) {
 	super();
+	this.locations = new TreeSet<Location>();
 	this.geocoder = new Geocoder(context);
+	this.locations = new TreeSet<Location>();
+	this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 	this.loadLocations(db);
     }
 
