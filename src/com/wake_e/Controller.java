@@ -9,8 +9,10 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.wake_e.exceptions.NoRouteFoundException;
+
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
+import com.wake_e.model.Mail;
 import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
@@ -53,18 +55,17 @@ public class Controller {
      */
     private Controller(Context context) {
 	super();
-	this.context = context;
+	Controller.context = context;
 	this.db = new WakeEDBHelper(context);
-	
+
 	this.agendaDeliverer = new AgendaDeliverer(context);
 	this.mailDeliverer = new MailDeliverer(db);
 	this.meteoDeliverer = new MeteoDeliverer();
 
-
 	this.slidesManager = new SlidesManager(context, db);
 	this.credentialsManager = new CredentialsManager(db);
 	this.alarmsManager = new AlarmsManager();
-	this.locationsManager = new LocationsManager(context, db);
+	this.locationsManager= new LocationsManager(context, db); 
     }
 
     /**
@@ -80,13 +81,21 @@ public class Controller {
 	return Controller.controller;
     }
 
+    /**
+     * @brief Static context getter
+     * @return the context
+     */
+    public static Context getContext() {
+	return Controller.context;
+    }
+
     // ########### SLIDES ###########
     /**
      * @brief retrieve visible fragments
      * @return the visible fragments
      */
     public List<Fragment> getVisibleFragments() {
-	return this.slidesManager.getVisibleFragments(this.context);
+	return this.slidesManager.getVisibleFragments(Controller.context);
     }
 
     /**
@@ -210,7 +219,19 @@ public class Controller {
 	return this.locationsManager.createLocation(address, this.db);
     }
 
-
+    // ########### MAILS ###########
+    public List<Mail> getMails() {
+	return this.db.getEmails();
+    }
+    /**
+     * @brief get the MailDeliverer
+     * @return the MailDeliverer
+     */
+    public MailDeliverer getMailDeliverer() {
+	return this.mailDeliverer;
+    }
+    
+    // ########### AGENDA ###########
     /**
      * @brief get the AgendaDeliverer
      * @return the AgendaDeliverer
@@ -219,6 +240,7 @@ public class Controller {
 	return this.agendaDeliverer;
     }
 
+ // ########### METEO ###########
     /**
      * @brief get the MeteoDeliverer
      * @return the MeteoDeliverer
@@ -227,8 +249,10 @@ public class Controller {
 	return this.meteoDeliverer;
     }
 
-    public static Context getContext() {
-	// TODO Auto-generated method stub
-	return Controller.context;
-    }
+
+
+
+  
+
+
 }
