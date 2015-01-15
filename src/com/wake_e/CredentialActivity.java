@@ -1,7 +1,5 @@
 package com.wake_e;
 
-import java.util.List;
-
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Credentials;
 import android.accounts.Account;
@@ -20,10 +18,6 @@ public class CredentialActivity extends Activity {
 	private String type = null;
 	protected CredentialActivity that = this;
 
-	public String getType() {
-		return this.type;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,26 +25,20 @@ public class CredentialActivity extends Activity {
 		accountManager = AccountManager.get(this);
 		Intent intent = getIntent();
 		this.type = intent.getExtras().getString("type");
-		
+
 		if (this.type.equals("gmail")) {
 			this.SCOPE = WakeEConstants.WakeEAPICalls.GMAIL_SCOPE;
 		} else {
 			throw new UnsupportedOperationException("Implement other scopes");
 		}
 
-		boolean tokenExist = false;
-		List<Credentials> cr = controller.getCredentials();
-
-		for (Credentials c : cr) {
-		    if (c.getType() == this.type) {
-		    	tokenExist = true;
-		    }
-		}
-
-		if (!tokenExist) {
-			chooseAccount();
+		Credentials cr = controller.getCredentials(this.type);
+		if (cr != null) {
+			this.user = cr.getUser();
+			invalidateToken();
+			requestToken();
 		} else {
-			finish();
+			chooseAccount();
 		}
 	}
 
@@ -119,13 +107,11 @@ public class CredentialActivity extends Activity {
 				if (launch != null) {
 					startActivityForResult(launch, WakeEConstants.WakeEAPICalls.AUTHORIZATION_CODE);
 				} else {
-					String token = bundle
-							.getString(AccountManager.KEY_AUTHTOKEN);
+					String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
 
 					// save token
-					Credentials c = new Credentials(that.type, token);
+					Credentials c = new Credentials(that.type, that.user, token);
 					Controller.getInstance(getApplicationContext()).updateCredentials(c);
-					// Back to settings activity
 					finish();
 				}
 			} catch (Exception e) {

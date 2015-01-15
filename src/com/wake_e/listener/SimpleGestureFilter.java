@@ -5,11 +5,8 @@ import com.wake_e.MainActivity;
 import com.wake_e.StationActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -51,7 +48,8 @@ public class SimpleGestureFilter implements OnTouchListener {
 	    	activity.startActivity(intent);
 	   }
 
-	    public boolean onTouch(View v, MotionEvent event) {
+	    @Override
+		public boolean onTouch(View v, MotionEvent event) {
 	        switch (event.getAction()) {
 	        case MotionEvent.ACTION_DOWN: {
 	            downX = event.getX();

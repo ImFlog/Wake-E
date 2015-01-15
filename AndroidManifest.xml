@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    
+
     <!-- if we want to display a map -->
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -34,7 +34,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,15 +57,18 @@
         <activity
             android:name="com.wake_e.fragment.station.PageMailFragment"
             android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.SettingsActivity"/>
-        <activity android:name="com.wake_e.CredentialActivity" />
-        <activity android:name="com.wake_e.MapActivity"/>
-
+        <activity android:name="com.wake_e.MapActivity" />
+        <activity
+            android:name="com.wake_e.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wake_e.CredentialActivity"
+            android:screenOrientation="portrait" />
         <service android:name="com.wake_e.services.AlarmIntentService" />
         <service android:name="com.wake_e.services.AlarmSynchroIntentService" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCUflXYftumiYS_YLIC2FxdsDpRzOpRj5I" />
-    </application>s
+    </application>
 </manifest>

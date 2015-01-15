@@ -10,7 +10,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
-import com.directions.route.Routing.TravelMode;
 import com.wake_e.model.Location;
 
 /**
@@ -41,7 +40,7 @@ public class AlarmIntentService extends IntentService {
     // end location
     private Location arrivee;
 
-    private TravelMode transport;
+    private String transport;
 
     /**
      * @param depart
@@ -51,7 +50,7 @@ public class AlarmIntentService extends IntentService {
      * @brief Alarm's constructor
      */
     public AlarmIntentService(Location depart, Location arrivee,
-	    Duration preparationDuration, String ringtone, TravelMode transport) {
+	    Duration preparationDuration, String ringtone, String transport) {
 	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
 	this.enabled = true;
@@ -118,7 +117,7 @@ public class AlarmIntentService extends IntentService {
     /**
      * @return the transport
      */
-    public TravelMode getTransport() {
+    public String getTransport() {
 	return transport;
     }
 
