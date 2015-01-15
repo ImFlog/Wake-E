@@ -61,6 +61,13 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		positionSlider = pager.getHeight();
+		ll.setY(positionSlider);
+		this.setVisible(true);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.ss, menu);
@@ -68,8 +75,8 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void onClick(View v) {
-	    Intent i = new Intent(getApplicationContext(), MapActivity.class);
-	    startActivity(i);
+		Intent i = new Intent(getApplicationContext(), MapActivity.class);
+		startActivity(i);
 	}
 
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {

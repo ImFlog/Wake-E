@@ -29,14 +29,14 @@ public class PageMailFragment extends Fragment {
 		View v = inflater.inflate(R.layout.station, container, false);
 
 		// REMOVE THIS IN PROD, FOR TEST PURPOSE
-		MailDeliverer deliverer = Controller.getInstance(v.getContext()).getMailDeliverer();
+		/*MailDeliverer deliverer = Controller.getInstance(v.getContext()).getMailDeliverer();
 		try {
 			deliverer.deliver();
 		} catch (Exception e) {
 			Intent intent = new Intent(v.getContext(), CredentialActivity.class);
 			intent.putExtra("type", "gmail");
 			startActivity(intent);
-		}
+		}*/
 
 		List<Mail> emails = Controller.getInstance(v.getContext()).getMails();
 		if (v != null && emails.size() > 0) {
