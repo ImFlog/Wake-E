@@ -31,13 +31,12 @@
 	        android:layout_margin="0dp"
 	        android:gravity="top|center_horizontal"
 	        android:orientation="vertical" >
-	
-	        <TextView
-	            android:id="@+id/id_currTime"
+
+	        <com.wake_e.tools.DigitClockCustom
+	            android:id="@+id/digitalClock1"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:gravity="center_horizontal"
-	            android:text="@string/heure_def"
+	            android:text="DigitalClock"
 	            android:textColor="@color/background_fonce"
 	            android:textSize="90sp" />
 	

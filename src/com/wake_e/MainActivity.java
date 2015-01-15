@@ -29,6 +29,7 @@ public class MainActivity extends FragmentActivity {
 	private PagerAdapter mPagerAdapter;
 	public static MainActivity that;
 	public static ViewPager pager;
+	private ImageView active;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,9 @@ public class MainActivity extends FragmentActivity {
 
 		ImageView config = (ImageView) findViewById(R.id.reveil);
 		config.setOnClickListener(switchToConfig);
+		
+		active = (ImageView) findViewById(R.id.id_active);
+		//active.setOnClickListener(activeDesactiveReveil);
 	}
 
 	@Override
@@ -152,4 +156,13 @@ public class MainActivity extends FragmentActivity {
 			startActivity(i);
 		}
 	};
+	/*
+	private OnClickListener activeDesactiveReveil = new OnClickListener(){
+		
+		@Override
+		public void onClick(View v) {
+			if (Controller.getInstance(that))
+			active.setImageDrawable(R.drawable.);
+		}
+	}*/
 }
