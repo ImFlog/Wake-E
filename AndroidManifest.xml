@@ -58,7 +58,7 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.wake_e.MapActivity" />
         <activity
-            android:name=".ConfigActivity"
+            android:name="com.wake_e.ConfigActivity"
             android:label="@string/title_activity_config" >
         </activity>
         <activity
