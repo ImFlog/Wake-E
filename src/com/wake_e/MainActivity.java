@@ -78,8 +78,8 @@ public class MainActivity extends FragmentActivity {
 
 
 	public void onClick(View v) {
-		Intent i = new Intent(getApplicationContext(), MapActivity.class);
-		startActivity(i);
+	    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+	    startActivity(i);
 	}
 
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {

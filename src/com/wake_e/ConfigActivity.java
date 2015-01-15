@@ -1,7 +1,5 @@
 package com.wake_e;
 
-import com.wake_e.model.Location;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -17,6 +15,8 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.wake_e.model.Location;
 
 public class ConfigActivity extends Activity {
 
