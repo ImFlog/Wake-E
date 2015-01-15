@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 import com.wake_e.Controller;
+import com.wake_e.MainActivity;
 import com.wake_e.R;
 import com.wake_e.adapt.AgendaAdapter;
 import com.wake_e.model.Event;
@@ -33,6 +34,7 @@ public class PageAgendaFragment extends Fragment {
 			ArrayList<Event> events = deliverer.getEvents();
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.agenda));
+			title.setTypeface(MainActivity.future);
 			ListView gridview = (ListView) v.findViewById(R.id.content);
 
 			gridview.setAdapter(new AgendaAdapter(v.getContext(), events));

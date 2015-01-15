@@ -3,6 +3,7 @@ package com.wake_e.fragment.station;
 import java.util.List;
 
 import com.wake_e.Controller;
+import com.wake_e.MainActivity;
 import com.wake_e.R;
 import com.wake_e.adapt.MeteoAdapter;
 import com.wake_e.model.Meteo;
@@ -27,6 +28,7 @@ public class PageMeteoFragment extends Fragment {
 
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.meteo));
+			title.setTypeface(MainActivity.future);
 			
 			Controller.getInstance(v.getContext()).getMeteoDeliverer().deliver(this);
 		}

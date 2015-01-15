@@ -72,6 +72,12 @@ public class MeteoAdapter extends BaseAdapter {
 	        holder.wind 	= (TextView)convertView.findViewById(R.id.wind);
 	        holder.icon 	= (ImageView)convertView.findViewById(R.id.icon);
 	        
+	        
+	        holder.city.setTypeface(MainActivity.future);
+	        holder.temp.setTypeface(MainActivity.future);
+	        holder.humi.setTypeface(MainActivity.future);
+	        holder.wind.setTypeface(MainActivity.future);
+	        
 	        holder.city.setText(meteos.get(position).getCity());
 	        holder.temp.setText(
 	        		Double.parseDouble(df.format (

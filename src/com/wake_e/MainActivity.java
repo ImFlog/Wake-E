@@ -3,6 +3,7 @@ package com.wake_e;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wake_e.adapt.MyPagerAdapter;
+import com.wake_e.tools.DigitClockCustom;
 
 public class MainActivity extends FragmentActivity {
 
@@ -34,6 +36,9 @@ public class MainActivity extends FragmentActivity {
 	private ImageView active;
 	private TextView heureProg;
 	private TextView textHeure;
+	private DigitClockCustom dcc;
+    public static Typeface future;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,9 @@ public class MainActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
+		
+		future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
+		
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
 		List<Fragment> fragments = Controller.getInstance(this.getApplicationContext()).getVisibleFragments();
 
@@ -51,6 +59,13 @@ public class MainActivity extends FragmentActivity {
 
 		heureProg = (TextView) this.findViewById(R.id.id_heure_estimee);
 		textHeure = (TextView) this.findViewById(R.id.textView2);
+		dcc = (DigitClockCustom) this.findViewById(R.id.digitalClock1);
+		dcc.setTypeface(future);
+		
+		heureProg.setTypeface(future);
+		textHeure.setTypeface(future);
+		
+		
 		pager = (ViewPager) super.findViewById(R.id.pager);
 		pager.setAdapter(this.mPagerAdapter);
 
@@ -72,9 +87,12 @@ public class MainActivity extends FragmentActivity {
 		if (Controller.getInstance(that).getAlarm() != null &&
 				Controller.getInstance(that).getAlarm().isEnabled()){
 			active.setImageResource(R.drawable.w_active);
+			heureProg.setText(Controller.getInstance(that).getWakeUpHour());
+
 		}
 		else {
 			active.setImageResource(R.drawable.w_inactive);
+			heureProg.setText("__:__");
 		}
 		active.setOnClickListener(activeDesactiveReveil);
 	}
@@ -185,7 +203,7 @@ public class MainActivity extends FragmentActivity {
 				else{
 					Controller.getInstance(that).enableAlarm(true, that);
 					active.setImageResource(R.drawable.w_active);
-					heureProg.setText(Controller.getInstance(that).getAlarm().);
+					heureProg.setText(Controller.getInstance(that).getWakeUpHour());
 					Toast.makeText(that, "L'alarme a été activé", Toast.LENGTH_LONG).show();
 				}
 			} else {
