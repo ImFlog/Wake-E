@@ -58,6 +58,10 @@ public class MainActivity extends FragmentActivity {
 	    
 		ImageView settings = (ImageView) findViewById(R.id.parametre);
 		settings.setOnClickListener(switchToSettings);
+		
+		ImageView config = (ImageView) findViewById(R.id.reveil);
+		config.setOnClickListener(switchToConfig);
+	
 	}
 	
 	@Override
@@ -123,9 +127,7 @@ public class MainActivity extends FragmentActivity {
 	    			}
 	    			break;
 	    	}
-	    	
 	    	relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY()));
-	    	//pager.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY() - relative.getHeight()));
 		    return true;
 		}
 	};
@@ -137,6 +139,13 @@ public class MainActivity extends FragmentActivity {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
 		}
-		
+	};
+	private OnClickListener switchToConfig = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
+			startActivity(i);
+		}
 	};
 }

@@ -17,7 +17,6 @@
     <string name="lieu_agenda_def">        Centre d\'innovation</string>
     <string name="snooze">SNOOZE</string>
     <string name="title_activity_page_reveil_fragment">PageReveilFragment</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_ss">MainActivity</string>
     <string name="params">Paramètres</string>
     <string name="synchro">COMPTES</string>
@@ -28,4 +27,10 @@
     <string name="sound">SONNERIES</string>
     <string name="add_compte">Ajouter un compte</string>
     <string name="add_localisation">Ajouter une localisation</string>
+    <string name="title_activity_config">ConfigActivity</string>
+    <string name="preparation">Préparation</string>
+    <string name="heureArrivee">Heure d arrivée</string>
+    <string name="lieuArrivee">Destination</string>
+    <string name="depart">Départ</string>
+
 </resources>

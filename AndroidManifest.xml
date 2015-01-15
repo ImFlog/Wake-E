@@ -22,12 +22,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.wake_e.fragment.PageHomePageFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageReveilFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageMeteoFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.PageAgendaFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.fragment.station.PageMailFragment" android:screenOrientation="portrait" />
-        <activity android:name="com.wake_e.SettingsActivity"></activity>
+        <activity
+            android:name=".fragment.PageHomePageFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragment.PageReveilFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragment.PageMeteoFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragment.PageAgendaFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragment.station.PageMailFragment"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SettingsActivity" >
+        </activity>
+        <activity
+            android:name=".ConfigActivity"
+            android:label="@string/title_activity_config" >
+        </activity>
     </application>
 
 </manifest>
