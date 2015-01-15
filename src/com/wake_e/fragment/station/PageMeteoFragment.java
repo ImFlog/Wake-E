@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wake_e.R;
-import com.wake_e.adapt.MailAdapter;
 import com.wake_e.adapt.MeteoAdapter;
 
 import android.support.v4.app.Fragment;
@@ -24,8 +23,8 @@ public class PageMeteoFragment extends Fragment {
 		if (v != null){
 			List<String> meteos = new ArrayList<String>();
 			
-			meteos.add("Météo 1");
-			meteos.add("Météo 2");
+			meteos.add("Mï¿½tï¿½o 1");
+			meteos.add("Mï¿½tï¿½o 2");
 
 			TextView title = (TextView) v.findViewById(R.id.title_station);
 			title.setText(v.getContext().getString(R.string.meteo));

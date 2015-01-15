@@ -1,37 +1,26 @@
 package com.wake_e;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.DragEvent;
 import android.view.MotionEvent;
+
 import android.view.View;
-import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
-import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
-	
+
 	private ImageView [] slides;
 	private int size;
+	public static SettingsActivity that;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		that = this;
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.settings);
 		
@@ -75,6 +64,7 @@ public class SettingsActivity extends Activity {
 		private int selection = 0;
 		private ImageView tmp;
 		
+
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 	    	switch(event.getAction())
@@ -118,8 +108,8 @@ public class SettingsActivity extends Activity {
 	    	return true;
 		}
 	};
-	
 	private OnClickListener switchToSettings = new OnClickListener() {
+
 
 		@Override
 		public void onClick(View v) {

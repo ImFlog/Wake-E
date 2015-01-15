@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.wake_e.adapt.MyPagerAdapter;
-import com.wake_e.services.managers.SlidesManager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -30,60 +29,65 @@ public class MainActivity extends FragmentActivity {
 	private PagerAdapter mPagerAdapter;
 	public static MainActivity that;
 	public static ViewPager pager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		that = this;
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
+		// Creation de la liste de Fragments que fera defiler le PagerAdapter
+		List<Fragment> fragments = Controller.getInstance(this.getApplicationContext()).getVisibleFragments();
 
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
-		// Creation de la liste de Fragments que fera defiler le PagerAdapter
-		List<Fragment> fragments = SlidesManager.getInstance(this).getAllFragments();
-
-		this.mPagerAdapter = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
+		this.mPagerAdapter = new MyPagerAdapter(
+				super.getSupportFragmentManager(), fragments);
 
 		pager = (ViewPager) super.findViewById(R.id.pager);
 		pager.setAdapter(this.mPagerAdapter);
-		
+
 		ll = (LinearLayout) findViewById(R.id.id_station);
-	    ll.setOnTouchListener(touchListenerBouton1);
-	    relative = (RelativeLayout) findViewById(R.id.id_fullStation);
+		ll.setOnTouchListener(touchListenerBouton1);
+		relative = (RelativeLayout) findViewById(R.id.id_fullStation);
 
 		this.setVisible(false);
 		ll.setY(0);
-		pager.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-	    
+		pager.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		ImageView settings = (ImageView) findViewById(R.id.parametre);
 		settings.setOnClickListener(switchToSettings);
-		
+
 		ImageView config = (ImageView) findViewById(R.id.reveil);
 		config.setOnClickListener(switchToConfig);
-	
 	}
-	
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		positionSlider = pager.getHeight();
+		ll.setY(positionSlider);
+		this.setVisible(true);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.ss, menu);
 		return true;
 	}
-	
-	@Override
-	public void onWindowFocusChanged (boolean hasFocus) {
-		positionSlider = pager.getHeight();
-		ll.setY(positionSlider);
-		this.setVisible(true);
+
+
+	public void onClick(View v) {
+		Intent i = new Intent(getApplicationContext(), MapActivity.class);
+		startActivity(i);
 	}
 
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {
 		/**
 		 * Old Value
 		 */
-		private float yy = 0 ;
-		
+		private float yy = 0;
+
 		@Override
 		public boolean onTouch(final View v, MotionEvent event) {
 	    	switch(event.getAction())
@@ -131,7 +135,7 @@ public class MainActivity extends FragmentActivity {
 		    return true;
 		}
 	};
-	
+
 	private OnClickListener switchToSettings = new OnClickListener() {
 
 		@Override

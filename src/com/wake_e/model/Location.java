@@ -16,15 +16,18 @@ public class Location {
     // location's coordinates
     private Point gps;
 
-    // location's city
-    private String city;
-
-    // location's address
+    // location's complete address
     private String address;
 
+    // location's city
+    private String city;
+    
     // location's postal code
-    private String postalCode;
-
+    private String cp;
+    
+    // location's address line
+    private String address_line;
+    
     @SuppressWarnings("unused")
     private Location() {
 	super();
@@ -37,12 +40,13 @@ public class Location {
      * @param address
      * @param pc
      */
-    public Location(UUID id, Point gps, String city, String address, String pc) {
-	this.id = id;
+    public Location(Point gps, String address, String city, String cp, String address_line) {
+	this.id = UUID.randomUUID();
 	this.gps = gps;
-	this.city = city;
 	this.address = address;
-	this.postalCode = pc;
+	this.city = city;
+	this.cp = cp;
+	this.address_line = address_line;
     }
 
     
@@ -63,15 +67,6 @@ public class Location {
 	return this.gps;
     }
 
-
-    /**
-     * @brief get the location's city
-     * @return the location's city
-     */
-    public String getCity() {
-	return this.city;
-    }
-
     /**
      * @brief get the location's address
      * @return the location's address
@@ -79,13 +74,30 @@ public class Location {
     public String getAddress() {
 	return this.address;
     }
-
+    
     /**
-     * @brief get the location's postal code
-     * @return the location's postal code
+     * @brief get the location's city
+     * @return the location's city
      */
-    public String getPostalCode() {
-	return this.postalCode;
+    public String getCity() {
+	return this.city;
     }
+    
+    /**
+     * @brief get the location's cp
+     * @return the location's cp
+     */
+    public String getCP() {
+	return this.cp;
+    }
+    
+    /**
+     * @brief get the location's address line
+     * @return the location's address line
+     */
+    public String getAddressLine() {
+	return this.address_line;
+    }
+
 
 }

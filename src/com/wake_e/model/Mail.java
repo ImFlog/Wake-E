@@ -6,51 +6,88 @@ package com.wake_e.model;
  *
  */
 public class Mail {
-    
-    //mail's title
-    private String title;
 
-    //mail's content
-    private String content;
+	//mail's ID
+	private String id;
 
-    //is the mail read ?
-    private boolean isRead;
+	//mail's title
+	private String subject;
 
-    
-    @SuppressWarnings("unused")
-    private Mail() {
-	super();
-    }
-    
-    /**
-     * @param title
-     * @param content
-     */
-    public Mail(String title, String content){
-	this.title = title;
-	this.content = content;
-	this.isRead = false;
-    }
+	// mail sender
+	private String sender;
 
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-	return title;
-    }
+	//mail's content
+	private String content;
 
-    /**
-     * @return the content
-     */
-    public String getContent() {
-	return content;
-    }
-    
-    /**
-     * @return TRUE if is read, FALSE else
-     */
-    public boolean isRead() {
-	return this.isRead;
-    }
+	//is the mail read ?
+	private boolean isRead;
+
+
+	@SuppressWarnings("unused")
+	private Mail() {
+		super();
+	}
+
+	/**
+	 * @param title
+	 * @param content
+	 */
+	public Mail(String id, String subject, String sender, String content){
+		this.id = id;
+		this.subject = subject;
+		this.sender = sender;
+		this.content = content;
+		this.isRead = false;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public void setRead(boolean isRead) {
+		this.isRead = isRead;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId(){
+		return id;
+	}
+
+
+	/**
+	 * @return the content
+	 */
+	public String getContent() {
+		return content;
+	}
+
+	/**
+	 * @return TRUE if is read, FALSE else
+	 */
+	public boolean isRead(){
+		return this.isRead;
+	}
 
 }

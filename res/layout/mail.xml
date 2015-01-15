@@ -35,7 +35,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/mailSubjet"
+                android:id="@+id/mailSubject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
