@@ -17,6 +17,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wake_e.adapt.MyPagerAdapter;
 
@@ -30,6 +32,8 @@ public class MainActivity extends FragmentActivity {
 	public static MainActivity that;
 	public static ViewPager pager;
 	private ImageView active;
+	private TextView heureProg;
+	private TextView textHeure;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class MainActivity extends FragmentActivity {
 		this.mPagerAdapter = new MyPagerAdapter(
 				super.getSupportFragmentManager(), fragments);
 
+		heureProg = (TextView) this.findViewById(R.id.id_heure_estimee);
+		textHeure = (TextView) this.findViewById(R.id.textView2);
 		pager = (ViewPager) super.findViewById(R.id.pager);
 		pager.setAdapter(this.mPagerAdapter);
 
@@ -63,7 +69,14 @@ public class MainActivity extends FragmentActivity {
 		config.setOnClickListener(switchToConfig);
 		
 		active = (ImageView) findViewById(R.id.id_active);
-		//active.setOnClickListener(activeDesactiveReveil);
+		if (Controller.getInstance(that).getAlarm() != null &&
+				Controller.getInstance(that).getAlarm().isEnabled()){
+			active.setImageResource(R.drawable.w_active);
+		}
+		else {
+			active.setImageResource(R.drawable.w_inactive);
+		}
+		active.setOnClickListener(activeDesactiveReveil);
 	}
 
 	@Override
@@ -132,6 +145,7 @@ public class MainActivity extends FragmentActivity {
 								}
 					          }
 					          v.setY(positionSlider);
+					          
 	    			}
 	    			break;
 	    	}
@@ -156,13 +170,27 @@ public class MainActivity extends FragmentActivity {
 			startActivity(i);
 		}
 	};
-	/*
+	
 	private OnClickListener activeDesactiveReveil = new OnClickListener(){
 		
 		@Override
 		public void onClick(View v) {
-			if (Controller.getInstance(that))
-			active.setImageDrawable(R.drawable.);
+			if (Controller.getInstance(that).getAlarm() != null){
+				if (Controller.getInstance(that).getAlarm().isEnabled()){
+					Controller.getInstance(that).enableAlarm(false, that);
+					active.setImageResource(R.drawable.w_inactive);
+					heureProg.setText("__:__");
+					Toast.makeText(that, "L'alarme a été désactivé", Toast.LENGTH_LONG).show();
+				}
+				else{
+					Controller.getInstance(that).enableAlarm(true, that);
+					active.setImageResource(R.drawable.w_active);
+					heureProg.setText(Controller.getInstance(that).getAlarm().);
+					Toast.makeText(that, "L'alarme a été activé", Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();
+			}
 		}
-	}*/
+	};
 }

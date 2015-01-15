@@ -99,19 +99,26 @@
 
             <ImageView
                 android:id="@+id/reveil"
-                android:layout_width="24dp"
+                android:layout_width="124dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="20dp"
+                android:background="@color/white"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
                 android:src="@drawable/w_reveil" />
 
             <ImageView
                 android:id="@+id/parametre"
-                android:layout_width="24dp"
+                android:layout_width="124dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="20dp"
+                android:background="@color/white"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
                 android:src="@drawable/w_parameter" />
+
         </LinearLayout>
 
         <android.support.v4.view.ViewPager
