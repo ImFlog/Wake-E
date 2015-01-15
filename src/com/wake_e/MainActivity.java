@@ -58,6 +58,8 @@ public class MainActivity extends FragmentActivity {
 		ImageView settings = (ImageView) findViewById(R.id.parametre);
 		settings.setOnClickListener(switchToSettings);
 
+		ImageView config = (ImageView) findViewById(R.id.reveil);
+		config.setOnClickListener(switchToConfig);
 	}
 
 	@Override
@@ -74,6 +76,7 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 
+
 	public void onClick(View v) {
 		Intent i = new Intent(getApplicationContext(), MapActivity.class);
 		startActivity(i);
@@ -86,36 +89,50 @@ public class MainActivity extends FragmentActivity {
 		private float yy = 0;
 
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				yy = event.getY();
-				break;
-			case MotionEvent.ACTION_MOVE:
-				v.setY(v.getY() - yy + event.getY());
-				if (v.getY() > positionSlider)
-					v.setY(positionSlider);
-				if (v.getY() < 0) {
-					v.setY(0);
-				}
-				break;
-			case MotionEvent.ACTION_UP:
-				v.setY(v.getY() - yy + event.getY());
-
-				if (v.getY() > positionSlider)
-					v.setY(positionSlider);
-				if (v.getY() < 0) {
-					v.setY(0);
-				}
-				break;
-			}
-
-			relative.setLayoutParams(new RelativeLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, (int) v.getY()));
-			// pager.setLayoutParams(new
-			// LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)
-			// v.getY() - relative.getHeight()));
-			return true;
+		public boolean onTouch(final View v, MotionEvent event) {
+	    	switch(event.getAction())
+	    	{
+	    		case MotionEvent.ACTION_DOWN:
+	    	    	yy = event.getY();
+	    			break;
+	    		case MotionEvent.ACTION_MOVE:
+	    			v.setY(v.getY() - yy + event.getY());
+	    			if (v.getY() > positionSlider) v.setY(positionSlider);
+	    			if (v.getY() < 0){v.setY(0);}
+	    			break;
+	    		case MotionEvent.ACTION_UP:
+	    			v.setY(v.getY() - yy + event.getY());
+	    			
+	    			if (v.getY() > positionSlider){ v.setY(positionSlider);}
+	    			else if (v.getY() < 0){v.setY(0);}
+	    			else if (v.getY() < positionSlider/2){
+			          while(v.getY() <= 0){
+			        	v.setY(v.getY() - 3);
+			        	try {
+							Thread.sleep(400);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			          }
+			          v.setY(0);
+	    			}
+	    			else{
+				          while(v.getY() >= positionSlider){
+					        	v.setY(v.getY() - 3);
+					        	try {
+									Thread.sleep(400);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+					          }
+					          v.setY(positionSlider);
+	    			}
+	    			break;
+	    	}
+	    	relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY()));
+		    return true;
 		}
 	};
 
@@ -126,6 +143,13 @@ public class MainActivity extends FragmentActivity {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
 		}
+	};
+	private OnClickListener switchToConfig = new OnClickListener() {
 
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
+			startActivity(i);
+		}
 	};
 }
