@@ -11,6 +11,8 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import android.util.Log;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -77,22 +79,21 @@ public class MailDeliverer {
 			Gmail service = new Gmail.Builder(httpTransport, jsonFactory, credential).setApplicationName("wake_e").build();
 			ListMessagesResponse messagesResponse;
 			try {
-				// No filter for now, add one with setQ("") before execute
 				messagesResponse = service.users().messages().list("me").setQ("label:inbox").setMaxResults(Long.valueOf(10)).execute();
 				m = messagesResponse.getMessages();
 			} catch (GoogleJsonResponseException e) {
 				GoogleJsonError error = e.getDetails();
 				// We refresh the token
 				if (error.getCode() == 401 && error.getErrors().get(0).getReason().equals("authError")) {
-					throw new Exception("Auth exception");
+					Log.e("Deliverer", error.getErrors().get(0).getReason());
 				}
 			} catch (HttpResponseException e) {
 				// No Json body was returned by the API.
-				System.err.println("HTTP Status code: " + e.getStatusCode());
-				System.err.println("HTTP Reason: " + e.getMessage());
+				Log.e("Deliverer", "HTTP Status code: " + e.getStatusCode());
+				Log.e("Deliverer", "HTTP Reason: " + e.getMessage());
 			} catch (IOException e) {
 				// Other errors (e.g connection timeout, etc.).
-				System.out.println("An error occurred: " + e);
+				Log.e("Deliverer", "An error occurred: " + e);
 			}
 		}
 		return m;
@@ -126,11 +127,9 @@ public class MailDeliverer {
 					content
 					);
 		} catch (MessagingException ex) {
-			// TODO
-			ex.printStackTrace();
+			Log.e("Deliverer", ex.getMessage());
 		} catch (IOException ex) {
-			// TODO
-			ex.printStackTrace();
+			Log.e("Deliverer", ex.getMessage());
 		}
 		return messageDetails;
 	}
