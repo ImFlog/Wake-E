@@ -3,17 +3,10 @@ package com.wake_e.services.deliverers;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Instances;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-
 import com.wake_e.model.Event;
 
 /**

@@ -10,7 +10,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
 	private final List<Fragment> fragments;
 
-	//On fournit à l'adapter la liste des fragments à afficher
+	//On fournit a l'adapter la liste des fragments a afficher
 	public MyPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
 		super(fm);
 		this.fragments = fragments;
@@ -19,18 +19,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		
-		Fragment f = this.fragments.get(position);/*
-		if (position == 2){
-			
-			List<String> mails = new ArrayList<String>();
-			
-			mails.add("Mail 1");
-			mails.add("Mail 2");
-			mails.add("Mail 3");
-			
-			ListView gridview = (ListView) findViewById(R.id.content);
-		    gridview.setAdapter(new MailAdapter(MainActivity.that,mails));
-		}*/
+		Fragment f = this.fragments.get(position);
 		return f;
 	}
 

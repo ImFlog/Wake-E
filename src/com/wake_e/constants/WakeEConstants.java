@@ -1,9 +1,5 @@
 package com.wake_e.constants;
 
-import com.directions.route.Routing;
-import com.directions.route.Routing.TravelMode;
-
-
 /**
  * Wake-E's constants
  * @author Wake-E team
@@ -54,17 +50,17 @@ public class WakeEConstants
 	/**
 	 * transport voiture
 	 */
-	public static final TravelMode TRANSPORT_VOITURE = Routing.TravelMode.DRIVING;
+	public static final String TRANSPORT_VOITURE = "DRIVING";
 
 	/**
 	 * transport commun
 	 */
-	public static final TravelMode TRANSPORT_COMMUN = Routing.TravelMode.TRANSIT;
+	public static final String TRANSPORT_COMMUN = "TRANSIT";
 
 	/**
 	 * transport velo
 	 */
-	public static final TravelMode TRANSPORT_VELO = Routing.TravelMode.BIKING;
+	public static final String TRANSPORT_VELO = "BIKING";
 
     }
 
