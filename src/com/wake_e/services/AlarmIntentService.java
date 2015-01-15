@@ -77,7 +77,7 @@ public class AlarmIntentService extends IntentService {
 	this.endHour = endHour;
 
 	// TODO : appel à l'API google/mappi pour le travelDuration
-
+	this.synchronize();
 	this.setRingtone(ringtone);
     }
 
