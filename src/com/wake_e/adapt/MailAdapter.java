@@ -3,28 +3,29 @@ package com.wake_e.adapt;
 import java.util.List;
 
 import com.wake_e.R;
-
+import com.wake_e.model.Mail;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+
 public class MailAdapter extends BaseAdapter {
-	List<String> mails;
+	List<Mail> mails;
 	LayoutInflater inflater;
     int index;
     ViewHolder holder;
 
-	public MailAdapter(Context context,List<String> tasks) {
+	public MailAdapter(Context context, List<Mail> mails) {
+		super();
 	    inflater = LayoutInflater.from(context);
-	    this.mails = tasks;
+	    this.mails = mails;
 	}
-	public void setTasks(List<String> tasks){
-		this.mails = tasks;
-	}
+
 	@Override
 	public int getCount() {
 		return mails.size();
@@ -41,24 +42,28 @@ public class MailAdapter extends BaseAdapter {
 	}
 
 	private class ViewHolder {
-	    TextView subjet;
+	    TextView subject;
+	    TextView from;
+	    TextView content;
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-
-
 	    if(convertView == null) {
 	        holder = new ViewHolder();
 	        convertView = inflater.inflate(R.layout.mail, null);
+	    }
 
-	        holder.subjet 	= (TextView)convertView.findViewById(R.id.mailFrom);
-	        holder.subjet.setText(mails.get(position));
+	        holder.from = (TextView)convertView.findViewById(R.id.mailFrom);
+	        holder.from.setText(mails.get(position).getSender());
+	        
+	        holder.subject 	= (TextView)convertView.findViewById(R.id.mailSubject);
+	        holder.subject.setText(mails.get(position).getSubject());
+
+	        holder.content 	= (TextView)convertView.findViewById(R.id.mailBody);
+	        holder.content.setText(Html.fromHtml(mails.get(position).getContent()));
 
 	        convertView.setTag(holder);
-	    } else {
 	        holder = (ViewHolder) convertView.getTag();
-	    }
 	    return convertView;
 	}
 

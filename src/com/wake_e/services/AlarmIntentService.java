@@ -3,7 +3,6 @@ package com.wake_e.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import org.apache.http.HttpEntity;
@@ -19,9 +18,7 @@ import org.json.JSONObject;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.wake_e.Controller;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Location;
 
@@ -59,6 +56,7 @@ public class AlarmIntentService extends IntentService {
     // end hour
     private long endHour;
 
+
     /**
      * @param depart
      * @param arrivee
@@ -68,6 +66,7 @@ public class AlarmIntentService extends IntentService {
      */
     public AlarmIntentService(Location depart, Location arrivee,
 	    long preparationDuration, String ringtone, String transport, long endHour) {
+
 	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
 	this.enabled = true;
@@ -136,6 +135,7 @@ public class AlarmIntentService extends IntentService {
     /**
      * @return the transport
      */
+
     public String getModeTransport() {
 	return modeTransport;
     }
@@ -145,6 +145,7 @@ public class AlarmIntentService extends IntentService {
      */
     public long getEndHour() {
 	return endHour;
+
     }
 
     /**

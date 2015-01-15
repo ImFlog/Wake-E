@@ -8,6 +8,7 @@ import com.wake_e.model.sqlite.WakeEDBHelper;
 public class CredentialsManager {
 
 
+	private WakeEDBHelper db;
 	private List<Credentials> credentials = new ArrayList<Credentials>();
 
 	private CredentialsManager() {
@@ -15,33 +16,37 @@ public class CredentialsManager {
 
 	public CredentialsManager(WakeEDBHelper db) {
 		this();
-		this.loadCredentials(db);
+		this.db = db;
+		this.loadCredentials();
 	}
 
-	private void loadCredentials(WakeEDBHelper db) {
+	private void loadCredentials() {
+		this.credentials.clear();
 		this.credentials.addAll(db.getCredentials());
 	}
 
 	public List<Credentials> getCredentials() {
+		this.loadCredentials();
 		return this.credentials;
 	}
 
 	public Credentials getCredentials(String type) {
+		this.loadCredentials();
 		for (Credentials c: this.credentials) {
-			if (c.getType() == type) {
+			if (c.getType().equals(type)) {
 				return c;
 			}
 		}
 		return null;
 	}
 	
-	public void updateCredentials(WakeEDBHelper db, Credentials c) {
+	public void updateCredentials(Credentials c) {
 		db.updateCredentials(c);
-		this.loadCredentials(db);
+		this.loadCredentials();
 	}
 	
-	public void deleteCredentials(WakeEDBHelper db, String type) {
+	public void deleteCredentials(String type) {
 		db.deleteCredential(type);
-		this.loadCredentials(db);
+		this.loadCredentials();
 	}
 }

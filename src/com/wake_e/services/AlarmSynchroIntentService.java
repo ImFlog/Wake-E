@@ -1,5 +1,6 @@
 package com.wake_e.services;
 
+
 import com.wake_e.model.Location;
 
 /**
@@ -27,6 +28,7 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
     public AlarmSynchroIntentService(Location depart, Location arrivee,
 	    long preparationDuration, String ringtone, String transport, long endHour) {
 	super(arrivee, arrivee, preparationDuration, ringtone, transport, endHour);
+
     }
 
 

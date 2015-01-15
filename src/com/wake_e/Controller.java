@@ -37,7 +37,7 @@ public class Controller {
     private WakeEDBHelper db;
 
     //the app context
-    private Context context;
+    private static Context context;
 
     //all our managers
     private SlidesManager slidesManager;
@@ -53,12 +53,14 @@ public class Controller {
      */
     private Controller(Context context) {
 	super();
-	this.agendaDeliverer = new AgendaDeliverer(context);
-	this.mailDeliverer = new MailDeliverer();
-	this.meteoDeliverer = new MeteoDeliverer();
-
 	this.context = context;
 	this.db = new WakeEDBHelper(context);
+	
+	this.agendaDeliverer = new AgendaDeliverer(context);
+	this.mailDeliverer = new MailDeliverer(db);
+	this.meteoDeliverer = new MeteoDeliverer();
+
+
 	this.slidesManager = new SlidesManager(context, db);
 	this.credentialsManager = new CredentialsManager(db);
 	this.alarmsManager = new AlarmsManager();
@@ -111,7 +113,7 @@ public class Controller {
      * @param c the credentials
      */
     public void updateCredentials(Credentials c){
-	this.credentialsManager.updateCredentials(this.db, c);
+	this.credentialsManager.updateCredentials(c);
     }
 
     /**
@@ -131,7 +133,7 @@ public class Controller {
     }
 
     public void deleteCredentials(String type) {
-	this.credentialsManager.deleteCredentials(this.db, type);
+	this.credentialsManager.deleteCredentials(type);
     }
 
     // ########### ALARMS ###########
@@ -222,6 +224,11 @@ public class Controller {
      * @return the MeteoDeliverer
      */
     public MeteoDeliverer getMeteoDeliverer(){
-	return null;
+	return this.meteoDeliverer;
+    }
+
+    public static Context getContext() {
+	// TODO Auto-generated method stub
+	return Controller.context;
     }
 }

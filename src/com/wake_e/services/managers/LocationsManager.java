@@ -35,6 +35,7 @@ public class LocationsManager {
      */
     public LocationsManager(Context context, WakeEDBHelper db) {
 	super();
+	this.locations = new TreeSet<Location>();
 	this.geocoder = new Geocoder(context);
 	this.locations = new TreeSet<Location>();
 	this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

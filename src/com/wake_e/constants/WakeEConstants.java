@@ -1,7 +1,5 @@
 package com.wake_e.constants;
 
-
-
 /**
  * Wake-E's constants
  * @author Wake-E team
@@ -54,15 +52,18 @@ public abstract class WakeEConstants
 	 */
 	public static final String TRANSPORT_VOITURE = "car";
 
+
 	/**
 	 * transport commun
 	 */
 	public static final String TRANSPORT_COMMUN = "transit";
 
+
 	/**
 	 * transport velo
 	 */
 	public static final String TRANSPORT_VELO = "biking";
+
 
     }
 
