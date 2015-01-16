@@ -196,7 +196,14 @@ public class Controller {
     public void enabledAlarmSynchro(boolean enabled, Context context){
     	this.alarmsManager.enableAlarmSynchro(enabled, context);
     }
-
+    
+    /**
+     * @brief get the estimated wake up hour
+     * @return the estimated wake up hour
+     */
+    public String getWakeUpHour(){
+	return this.alarmsManager.getWakeUpHour();
+    }
 
     // ########### LOCATIONS ###########
 
