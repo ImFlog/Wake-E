@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity {
 		
 		Controller controller = Controller.getInstance(this.getApplicationContext());
 		future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
+
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
 		List<Fragment> fragments = controller.getVisibleFragments();
 
