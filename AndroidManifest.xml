@@ -23,6 +23,8 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -42,20 +44,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.wake_e.fragment.PageHomePageFragment"
+            android:name=".fragment.PageHomePageFragment"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wake_e.fragment.PageReveilFragment"
+            android:name=".fragment.PageReveilFragment"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wake_e.fragment.PageMeteoFragment"
+            android:name=".fragment.PageMeteoFragment"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wake_e.fragment.PageAgendaFragment"
+            android:name=".fragment.PageAgendaFragment"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wake_e.fragment.station.PageMailFragment"
+            android:name=".fragment.station.PageMailFragment"
             android:screenOrientation="portrait" />
+
         <activity android:name="com.wake_e.MapActivity" />
         <activity
             android:name="com.wake_e.ConfigActivity"
@@ -73,4 +76,5 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCUflXYftumiYS_YLIC2FxdsDpRzOpRj5I" />
     </application>
+>>>>>>> origin
 </manifest>

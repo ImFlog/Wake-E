@@ -20,8 +20,13 @@ public class AlarmsManager {
     // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
 
-    // list of set alarms
-    private Set<AlarmIntentService> alarms;
+    // The current alarms
+    private AlarmIntentService alarm;
+
+    private static final int SECOND = 1000;
+    private static final int MINUTE = 60 * SECOND;
+    private static final int HOUR = 60 * MINUTE;
+    private static final int DAY = 24 * HOUR;
 
     /**
      * 
@@ -35,31 +40,16 @@ public class AlarmsManager {
      */
     // TODO spécifier les paramètres en fonction de ce que nous donnera la vue
     public void createAlarm(Context context, Location depart, Location arrivee,
-	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException {
-	//On teste si une Route est trouvee avec le depart et l'arrivee
-	//Si ce n'est pas le cas, on throw une exception
-	
+	    long preparationDuration, String ringtone, String transport,
+	    long endHour) throws NoRouteFoundException {
+	// On teste si une Route est trouvee avec le depart et l'arrivee
+	// Si ce n'est pas le cas, on throw une exception
+
 	Intent intent = new Intent(context, AlarmIntentService.class);
 	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee,
 		preparationDuration, ringtone, transport, endHour);
 	alarm.startService(intent);
-	this.alarms.add(alarm);
-	this.disabledAllTheOthers(alarm.getId());
-    }
-
-    /**
-     * @brief remove an alarm
-     * @param alarmId
-     *            the id of the alarm to remove
-     */
-    public void removeAlarm(UUID alarmId) {
-	for (AlarmIntentService a : alarms) {
-	    if (a.getId() == alarmId) {
-		a.stopSelf();
-		this.alarms.remove(a);
-		return;
-	    }
-	}
+	this.alarm = alarm;
     }
 
     /**
@@ -68,13 +58,8 @@ public class AlarmsManager {
      *            the alarm id
      * @return the alarm
      */
-    public AlarmIntentService getAlarm(UUID alarmId) {
-	for (AlarmIntentService a : alarms) {
-	    if (a.getId().equals(alarmId)) {
-		return a;
-	    }
-	}
-	return null;
+    public AlarmIntentService getAlarm() {
+	return this.alarm;
     }
 
     /**
@@ -84,13 +69,12 @@ public class AlarmsManager {
      *            TRUE=enabled FALSE=disabled
      * @param context
      */
-    public void enableAlarm(UUID alarmId, boolean enabled, Context context) {
-	AlarmIntentService a = this.getAlarm(alarmId);
+    public void enableAlarm(boolean enabled, Context context) {
+	AlarmIntentService a = this.getAlarm();
 	if (a != null) {
 	    if (enabled) {
 		if (!a.isEnabled()) {
 		    a.enable(context);
-		    this.disabledAllTheOthers(alarmId);
 		}
 	    } else {
 		if (a.isEnabled()) {
@@ -98,30 +82,6 @@ public class AlarmsManager {
 		}
 	    }
 	}
-    }
-
-    /**
-     * @brief get the enabled alarm
-     * @return the enabled alarm
-     */
-    public AlarmIntentService getEnabledAlarm() {
-	if (this.alarmSynchro.isEnabled()) {
-	    return this.alarmSynchro;
-	}
-	for (AlarmIntentService a : this.alarms) {
-	    if (a.isEnabled()) {
-		return a;
-	    }
-	}
-	return null;
-    }
-
-    /**
-     * @brief get all alarms
-     * @return all alarms
-     */
-    public Set<AlarmIntentService> getAlarms() {
-	return this.alarms;
     }
 
     /**
@@ -140,27 +100,28 @@ public class AlarmsManager {
      */
     public void enableAlarmSynchro(boolean enabled, Context context) {
 	this.alarmSynchro.enable(context);
-	this.disabledAllTheOthers(this.alarmSynchro.getId());
     }
 
-    /**
-     * @brief disable all the others alarms
-     * @param alarmId
-     *            the alarm ID
-     */
-    private void disabledAllTheOthers(UUID alarmId) {
-	if (this.getAlarm(alarmId) == null) {
-	    return;
+    public String getWakeUpHour() {
+	Long ms = this.alarm.computeWakeUp();
+	StringBuffer text = new StringBuffer("");
+	if (ms > DAY) {
+	    text.append(ms / DAY).append(" days ");
+	    ms %= DAY;
 	}
-
-	for (AlarmIntentService a : this.alarms) {
-	    if (!a.getId().equals(alarmId)) {
-		a.disable();
-	    }
+	if (ms > HOUR) {
+	    text.append(ms / HOUR).append(" hours ");
+	    ms %= HOUR;
 	}
-	if (!this.alarmSynchro.getId().equals(alarmId)) {
-	    this.alarmSynchro.disable();
+	if (ms > MINUTE) {
+	    text.append(ms / MINUTE).append(" minutes ");
+	    ms %= MINUTE;
 	}
+	if (ms > SECOND) {
+	    text.append(ms / SECOND).append(" seconds ");
+	    ms %= SECOND;
+	}
+	return text.toString();
     }
 
 }

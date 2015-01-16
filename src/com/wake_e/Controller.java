@@ -170,13 +170,6 @@ public class Controller {
 		preparationDuration, ringtone, transport, endHour);
     }
 
-    /**
-     * @brief delete an alarm
-     * @param alarmId
-     */
-    public void deleteAlarm(UUID alarmId){
-	this.alarmsManager.removeAlarm(alarmId);
-    }
 
     /**
      * @brief enable or disable an alarm
@@ -184,24 +177,16 @@ public class Controller {
      * @param enabled TRUE=enabled FALSE=disabled
      * @param context 
      */
-    public void enableAlarm(UUID alarmId, boolean enabled, Context context){
-	this.alarmsManager.enableAlarm(alarmId, enabled, context);
+    public void enableAlarm(boolean enabled, Context context){
+	this.alarmsManager.enableAlarm(enabled, context);
     }
-
-    /**
-     * @brief get the enabled alarm
-     * @return the enabled alarm
-     */
-    public AlarmIntentService getEnabledAlarm(){
-	return this.alarmsManager.getEnabledAlarm();
-    }
-
+    
     /**
      * @brief get all alarms
      * @return all alarms
      */
-    public Set<AlarmIntentService> getAlarms(){
-	return this.alarmsManager.getAlarms();
+    public AlarmIntentService getAlarm(){
+	return this.alarmsManager.getAlarm();
     }
 
     /**
@@ -209,7 +194,7 @@ public class Controller {
      * @return the alarm synchro
      */
     public AlarmSynchroIntentService getAlarmSynchro(){
-	return this.alarmsManager.getAlarmSynchro();
+    	return this.alarmsManager.getAlarmSynchro();
     }
 
     /**
@@ -218,9 +203,16 @@ public class Controller {
      * @param context 
      */
     public void enabledAlarmSynchro(boolean enabled, Context context){
-	this.alarmsManager.enableAlarmSynchro(enabled, context);
+    	this.alarmsManager.enableAlarmSynchro(enabled, context);
     }
-
+    
+    /**
+     * @brief get the estimated wake up hour
+     * @return the estimated wake up hour
+     */
+    public String getWakeUpHour(){
+	return this.alarmsManager.getWakeUpHour();
+    }
 
     // ########### LOCATIONS ###########
     /**
@@ -270,13 +262,11 @@ public class Controller {
      * @return the MeteoDeliverer
      */
     public MeteoDeliverer getMeteoDeliverer(){
-	return this.meteoDeliverer;
+    	return this.meteoDeliverer;
     }
 
 
-
-
-
-
-
+	public Set<Location> getLocations() {
+		return this.locationsManager.getLocations();
+	}
 }

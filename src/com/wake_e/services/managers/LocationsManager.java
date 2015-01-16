@@ -144,4 +144,8 @@ public class LocationsManager {
 	return false;
     }
 
+	public Set<Location> getLocations() {
+		return this.locations;
+	}
+
 }

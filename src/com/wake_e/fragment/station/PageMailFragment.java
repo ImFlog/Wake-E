@@ -3,6 +3,8 @@ package com.wake_e.fragment.station;
 import java.util.List;
 
 import com.wake_e.Controller;
+import com.wake_e.CredentialActivity;
+import com.wake_e.MainActivity;
 import com.wake_e.R;
 import com.wake_e.adapt.MailAdapter;
 import com.wake_e.model.Mail;
@@ -31,6 +33,7 @@ public class PageMailFragment extends Fragment {
 		if (view != null && emails.size() > 0) {
 			TextView title = (TextView) view.findViewById(R.id.title_station);
 			title.setText(view.getContext().getString(R.string.mail));
+			title.setTypeface(MainActivity.future);
 
 			ListView gridview = (ListView) view.findViewById(R.id.content);
 			gridview.setAdapter(new MailAdapter(view.getContext(), emails));
