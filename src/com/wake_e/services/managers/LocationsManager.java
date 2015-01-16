@@ -53,11 +53,11 @@ public class LocationsManager {
 
     /**
      * @brief remove a location
-     * @param locationId the id of the location to remove
+     * @param name the name of the location to remove
      */
-    public void removeLocation(UUID locationId) {
+    public void removeLocation(String name) {
 	for(Location l : locations){
-	    if(l.getId() == locationId){
+	    if(l.getName().equals(name)){
 		locations.remove(l);
 		return;
 	    }
@@ -66,13 +66,13 @@ public class LocationsManager {
 
     /**
      * @brief retrieve a location
-     * @param locationId the id of the location
+     * @param name the name of the location
      * @return the location or null
      */
 
-    public Location getLocation(UUID locationId) {
+    public Location getLocation(String name) {
 	for(Location l : locations){
-	    if(l.getId() == locationId){
+	    if(l.getName().equals(name)){
 		return l;
 	    }
 	}
@@ -85,7 +85,7 @@ public class LocationsManager {
      * @return a new address or null
      * @throws IOException
      */
-    public Location createLocation(String address, WakeEDBHelper db) throws IOException {
+    public Location createLocation(String name, String address, WakeEDBHelper db) throws IOException {
 
 	//Get addresses
 	List<Address> addresses = this.geocoder.getFromLocationName(address, 1);
@@ -103,7 +103,7 @@ public class LocationsManager {
 	    
 		    //If this Location already exists
 		    if((l=this.getLocation(p)) == null){
-			l = new Location(p, address, city, cp, address_line);
+			l = new Location(name, p, address, city, cp, address_line);
 			this.addLocation(l);
 		    } else {
 			db.createLocation(l);
@@ -126,9 +126,22 @@ public class LocationsManager {
 	}
 	return null;
     }
-
+    
+    /**
+     * @brief load all locations
+     * @param db
+     */
     private void loadLocations(WakeEDBHelper db) {
 	this.locations.addAll(db.getLocations());
+    }
+    
+    public boolean exists(String name){
+	for(Location l : this.locations){
+	    if(l.getName().equals(name)){
+		return true;
+	    }
+	}
+	return false;
     }
 
 }

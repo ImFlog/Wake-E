@@ -10,8 +10,8 @@ import com.wake_e.utils.Point;
  *
  */
 public class Location {
-    // location's id
-    private UUID id;
+    // location's name
+    private String name;
 
     // location's coordinates
     private Point gps;
@@ -40,8 +40,8 @@ public class Location {
      * @param address
      * @param pc
      */
-    public Location(Point gps, String address, String city, String cp, String address_line) {
-	this.id = UUID.randomUUID();
+    public Location(String name, Point gps, String address, String city, String cp, String address_line) {
+	this.name = name;
 	this.gps = gps;
 	this.address = address;
 	this.city = city;
@@ -51,12 +51,12 @@ public class Location {
 
     
     /**
-     * @brief get the location's id
-     * @return the location's id
+     * @brief get the location's name
+     * @return the location's name
      */
 
-    public UUID getId() {
-	return this.id;
+    public String getName() {
+	return this.name;
     }
     
     /**

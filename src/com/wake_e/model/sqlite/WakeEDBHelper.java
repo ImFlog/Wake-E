@@ -58,7 +58,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ "credentials_accessToken VARCHAR(255) NOT NULL)";
 
 	private static final String CREATE_TABLE_LOCATIONS= "CREATE TABLE "
-			+ TABLE_LOCATIONS + "(location_uid VARCHAR(16) PRIMARY KEY,"
+			+ TABLE_LOCATIONS + "(location_name VARCHAR(255) PRIMARY KEY,"
 			+ " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL,"
 			+ " location_city VARCHAR(255) NOT NULL, location_cp VARCHAR(255) NOT NULL,"
 			+ " location_address_line VARCHAR(255) NOT NULL)";
@@ -297,16 +297,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		Point p;
 
-		String city, cp, address_line, address;
+		String name, city, cp, address_line, address;
 
 		// looping through all rows and adding to list
 		while (c.moveToNext()) {
+		    	name = c.getString(c.getColumnIndex("location_name"));
 			p = Point.pointFromString(c.getString(c.getColumnIndex("location_point")));
 			address =  c.getString(c.getColumnIndex("location_address"));
 			city =  c.getString(c.getColumnIndex("location_city"));
 			cp = c.getString(c.getColumnIndex("location_cp"));
 			address_line = c.getString(c.getColumnIndex("location_address_line"));
-			l.add(new Location(p, address, city, cp, address_line));
+			l.add(new Location(name, p, address, city, cp, address_line));
 		}
 		return l;
 	}
@@ -316,7 +317,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put("location_uid", l.getId().toString());
+		values.put("location_name", l.getName());
 		values.put("location_point", l.getGps().toSQLite());
 		values.put("location_address", l.getAddress());
 		values.put("location_city", l.getCity());

@@ -95,7 +95,7 @@ public class Controller {
      * @return slideManager object
      */
     public SlidesManager getSlideManager() {
-    	return this.slidesManager;
+	return this.slidesManager;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Controller {
 	return this.slidesManager.getVisibleFragments(Controller.context);
     }
 
-    
+
     /**
      * @brief update slides
      * @param slides
@@ -223,9 +223,24 @@ public class Controller {
 
 
     // ########### LOCATIONS ###########
+    /**
+     * @brief creer une Location
+     * @param name le nom de la Location
+     * @param address l'adresse de la Location
+     * @return une Location
+     * @throws IOException
+     */
+    public Location createLocation(String name, String address) throws IOException{
+	return this.locationsManager.createLocation(name, address, this.db);
+    }
 
-    public Location createLocation(String address) throws IOException{
-	return this.locationsManager.createLocation(address, this.db);
+    /**
+     * @brief vérifier si une location porte un nom donné
+     * @param name un nom donné 
+     * @return TRUE ou FALSE
+     */
+    public boolean locationExists(String name){
+	return this.locationsManager.exists(name);
     }
 
     // ########### MAILS ###########
@@ -239,7 +254,7 @@ public class Controller {
     public MailDeliverer getMailDeliverer() {
 	return this.mailDeliverer;
     }
-    
+
     // ########### AGENDA ###########
     /**
      * @brief get the AgendaDeliverer
@@ -249,7 +264,7 @@ public class Controller {
 	return this.agendaDeliverer;
     }
 
- // ########### METEO ###########
+    // ########### METEO ###########
     /**
      * @brief get the MeteoDeliverer
      * @return the MeteoDeliverer
@@ -261,7 +276,7 @@ public class Controller {
 
 
 
-  
+
 
 
 }
