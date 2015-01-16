@@ -25,6 +25,8 @@ import android.widget.TextView;
 public class SettingsActivity extends Activity {
 
 	private ImageView [] slides;
+	private TextView cancel;
+	private TextView save;
 	private int size;
 	public static SettingsActivity that;
 	
@@ -50,8 +52,11 @@ public class SettingsActivity extends Activity {
 		slides[1].setOnTouchListener(touchListenerBouton2);
 		slides[2].setOnTouchListener(touchListenerBouton2);
 		slides[3].setOnTouchListener(touchListenerBouton2);
-		
 
+		save = (TextView) this.findViewById(R.id.save);
+		cancel = (TextView) this.findViewById(R.id.cancel);
+		save.setOnClickListener(onSaveClick);
+		cancel.setOnClickListener(onCancelClick);
 
 		ListView comptes	= (ListView)findViewById(R.id.l_comptes);
 		TextView addAccount = (TextView)findViewById(R.id.addAccount);
@@ -90,7 +95,7 @@ public class SettingsActivity extends Activity {
 			} else if (v.getId() == R.id.agenda) {
 				name = "Agenda";
 				className = PageAgendaFragment.class.getName();
-			} else if (v.getId() == R.id.home) {
+			} else if (v.getId() == R.id.traffic) {
 				// TODO ?
 			}
 			if (name != null) {
@@ -167,6 +172,23 @@ public class SettingsActivity extends Activity {
 			Intent i = new Intent(getApplicationContext(), CredentialActivity.class);
 			i.putExtra("type", "gmail");
 			startActivity(i);
+		}
+	};
+	
+	private OnClickListener onSaveClick = new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			//SAVE
+			
+		}
+	};
+	
+	
+	private OnClickListener onCancelClick = new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			//CANCEL
+			
 		}
 	};
 
