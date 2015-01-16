@@ -41,13 +41,14 @@ public class PageMailFragment extends Fragment {
 		return view;
 	}
 	
-	@Override
+/*	@Override
 	public void onStart () {
 		super.onStart();
 		// retrieve new mails
 		updateDb();
 		List<Mail> emails = Controller.getInstance(view.getContext()).getMails();
 	}
+	*/
 	
 	private void updateDb() {
 		// retrieve emails
