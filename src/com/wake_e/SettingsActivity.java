@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -153,6 +154,10 @@ public class SettingsActivity extends Activity {
 			// TODO Auto-generated method stub
 			final Dialog dialog = new Dialog(SettingsActivity.this);
 			dialog.setContentView(R.layout.location);
+			
+			EditText locationName = (EditText)findViewById(R.id.locationName);
+			EditText locationAddress = (EditText)findViewById(R.id.locationAddress);
+			
 			dialog.show();
 			
 		}

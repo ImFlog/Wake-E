@@ -41,4 +41,5 @@
     <string name="cancel">Annuler</string>
     <string name="locationName">Nom</string>
     <string name="locationAddress">Address</string>
+    <string name="create">Créer</string>
 </resources>
