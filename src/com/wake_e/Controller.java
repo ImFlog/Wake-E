@@ -91,6 +91,14 @@ public class Controller {
 
     // ########### SLIDES ###########
     /**
+     * @brief retrive the manager
+     * @return slideManager object
+     */
+    public SlidesManager getSlideManager() {
+    	return this.slidesManager;
+    }
+
+    /**
      * @brief retrieve visible fragments
      * @return the visible fragments
      */
@@ -98,13 +106,14 @@ public class Controller {
 	return this.slidesManager.getVisibleFragments(Controller.context);
     }
 
+    
     /**
      * @brief update slides
      * @param slides
      *            the slides
      */
-    public void updateSlides() {
-	this.slidesManager.updateSlides(this.db);
+    public void updateSlides(List<Slide> slides) {
+	this.slidesManager.updateSlides(slides);
     }
 
     /**

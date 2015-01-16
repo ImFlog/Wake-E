@@ -109,20 +109,21 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_CREDENTIALS);
 		db.execSQL(CREATE_TABLE_LOCATIONS);
 		db.execSQL(CREATE_TABLE_MAIL);
-		this.populateSlides(db);
+		this.populateSlides();
 	}
 
 	//###### SLIDES #####
-	private void populateSlides(SQLiteDatabase db) {
+	private void populateSlides() {
 		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
-		this.createSlide(db, s);
+		this.createSlide(s);
 		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 2, true);
-		this.createSlide(db, s);
+		this.createSlide(s);
 		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 3, true);
-		this.createSlide(db, s);
+		this.createSlide(s);
 	}
 
-	private void createSlide(SQLiteDatabase db, Slide s) {
+	private void createSlide(Slide s) {
+		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("slide_class", s.getSlideClass());
 		values.put("slide_order", s.getOrder());
@@ -132,21 +133,21 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		values.clear();
 	}
 
+	private void clearSlides() {
+		String DELETE_STRING = "DELETE FROM " + TABLE_SLIDES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		db.execSQL(DELETE_STRING);
+	}
+
 	public void updateSlides(List<Slide> slides) {
 
 		//We get the database in writeable mode
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		for(Slide s : slides){
-			values.put("slide_class", s.getSlideClass());
-			values.put("slide_order", s.getOrder());
-			values.put("slide_name", s.getSlideName());
-			values.put("slide_visible", s.visible());
-
-			// update row
-			db.update(TABLE_SLIDES, values, "slide_class=" + s.getSlideClass(), null);
-			values.clear();
+		clearSlides();
+		
+		for (Slide s: slides) {
+			createSlide(s);
 		}
 	}
 

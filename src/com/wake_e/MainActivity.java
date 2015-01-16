@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.wake_e.adapt.MyPagerAdapter;
+import com.wake_e.model.Credentials;
 
 public class MainActivity extends FragmentActivity {
 
@@ -36,8 +38,14 @@ public class MainActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
+		
+		Controller controller = Controller.getInstance(this.getApplicationContext());
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
-		List<Fragment> fragments = Controller.getInstance(this.getApplicationContext()).getVisibleFragments();
+		List<Fragment> fragments = controller.getVisibleFragments();
+
+		//Doesn't work for now ...
+		// It was supposed to auto update the credentials
+//		checkCredentials(controller);
 
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
@@ -76,10 +84,13 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 
-
-	public void onClick(View v) {
-	    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-	    startActivity(i);
+	public void checkCredentials(Controller controller) {
+		Credentials cr = controller.getCredentials("gmail");
+		if (cr != null) {
+			Intent i = new Intent(getApplicationContext(), CredentialActivity.class);
+			i.putExtra("type", "gmail");
+			startActivity(i);
+		}
 	}
 
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {
@@ -111,8 +122,7 @@ public class MainActivity extends FragmentActivity {
 			        	try {
 							Thread.sleep(400);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							Log.e("MainActivity onTouch", e.getMessage());
 						}
 			          }
 			          v.setY(0);
@@ -123,8 +133,7 @@ public class MainActivity extends FragmentActivity {
 					        	try {
 									Thread.sleep(400);
 								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									Log.e("MainActivity onTouch", e.getMessage());
 								}
 					          }
 					          v.setY(positionSlider);
