@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
+import com.wake_e.MainActivity;
 import com.wake_e.R;
 import com.wake_e.model.Event;
 
@@ -86,6 +87,10 @@ public class AgendaAdapter extends BaseAdapter {
 			// Location.
 			holder.location = (TextView) convertView.findViewById(R.id.agendaLieu);
 			holder.location.setText(e.getLocation());
+			
+			holder.location.setTypeface(MainActivity.future);
+			holder.subject.setTypeface(MainActivity.future);
+			holder.hours.setTypeface(MainActivity.future);
 
 			convertView.setTag(holder);
 		} else {
