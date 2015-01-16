@@ -272,6 +272,10 @@ public class AlarmIntentService extends IntentService {
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;
 	int cpt = 0;
+	
+	//On ne commence la synchronisation qu'à partir de 4h avant la date de réveil
+	while(this.computeWakeUp() < (c.getTimeInMillis() + 14400000)){}
+	
 	while (!it_is_time) {
 	    try {
 		Thread.sleep(1000);
