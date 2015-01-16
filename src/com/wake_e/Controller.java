@@ -161,13 +161,6 @@ public class Controller {
 		preparationDuration, ringtone, transport, endHour);
     }
 
-    /**
-     * @brief delete an alarm
-     * @param alarmId
-     */
-    public void deleteAlarm(UUID alarmId){
-	this.alarmsManager.removeAlarm(alarmId);
-    }
 
     /**
      * @brief enable or disable an alarm
@@ -175,24 +168,16 @@ public class Controller {
      * @param enabled TRUE=enabled FALSE=disabled
      * @param context 
      */
-    public void enableAlarm(UUID alarmId, boolean enabled, Context context){
-	this.alarmsManager.enableAlarm(alarmId, enabled, context);
+    public void enableAlarm(boolean enabled, Context context){
+	this.alarmsManager.enableAlarm(enabled, context);
     }
-
-    /**
-     * @brief get the enabled alarm
-     * @return the enabled alarm
-     */
-    public AlarmIntentService getEnabledAlarm(){
-	return this.alarmsManager.getEnabledAlarm();
-    }
-
+    
     /**
      * @brief get all alarms
      * @return all alarms
      */
-    public Set<AlarmIntentService> getAlarms(){
-	return this.alarmsManager.getAlarms();
+    public AlarmIntentService getAlarm(){
+	return this.alarmsManager.getAlarm();
     }
 
     /**
