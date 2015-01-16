@@ -109,19 +109,29 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_CREDENTIALS);
 		db.execSQL(CREATE_TABLE_LOCATIONS);
 		db.execSQL(CREATE_TABLE_MAIL);
-		this.populateSlides();
+		this.populateSlides(db);
 	}
 
 	//###### SLIDES #####
-	private void populateSlides() {
+	private void populateSlides(SQLiteDatabase db) {
 		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
-		this.createSlide(s);
+		this.createSlide(db, s);
 		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 2, true);
-		this.createSlide(s);
+		this.createSlide(db, s);
 		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 3, true);
-		this.createSlide(s);
+		this.createSlide(db, s);
 	}
 
+	private void createSlide(SQLiteDatabase db, Slide s) {
+		ContentValues values = new ContentValues();
+		values.put("slide_class", s.getSlideClass());
+		values.put("slide_order", s.getOrder());
+		values.put("slide_name", s.getSlideName());
+		values.put("slide_visible", s.visible());
+		db.insert(TABLE_SLIDES, null, values);
+		values.clear();
+	}
+	
 	private void createSlide(Slide s) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
