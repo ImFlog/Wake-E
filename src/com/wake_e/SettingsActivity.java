@@ -37,6 +37,7 @@ public class SettingsActivity extends Activity {
 	private TextView save;
 	private int size;
 	public static SettingsActivity that;
+	private List<Slide> dbSlide;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +48,30 @@ public class SettingsActivity extends Activity {
 		//
 		Display ecran = getWindowManager().getDefaultDisplay(); 
 		int largeur= ecran.getWidth();
-		size = getWindowManager().getDefaultDisplay().getWidth() / 4;
+		
+		dbSlide = Controller.getInstance(this).getSlides();
 
-		slides = new ImageView[4];
+		slides = new ImageView[dbSlide.size()];
+		
+		size = getWindowManager().getDefaultDisplay().getWidth() / dbSlide.size();
 
-		slides[0] = (ImageView)findViewById(R.id.agenda);
-		slides[1] = (ImageView)findViewById(R.id.mail);
-		slides[2] = (ImageView)findViewById(R.id.meteo);
-		slides[3] = (ImageView)findViewById(R.id.traffic);
+		
+		int i = 0;
+		for (Slide s: dbSlide) {
+			if (s.getSlideName().equals("Agenda")) {
+				slides[i] = (ImageView)findViewById(R.id.agenda);
+			} else if (s.getSlideName().equals("Mail")) {
+				slides[i] = (ImageView)findViewById(R.id.mail);
+			} else if (s.getSlideName().equals("Météo")) {
+				slides[i] = (ImageView)findViewById(R.id.meteo);
+			} else {
+				slides[i] = (ImageView)findViewById(R.id.traffic);
+			}
+			slides[i].setVisibility(0);
+			slides[i].setOnTouchListener(touchListenerBouton2);
+			i++;
+		}
 
-		slides[0].setOnTouchListener(touchListenerBouton2);
-		slides[1].setOnTouchListener(touchListenerBouton2);
-		slides[2].setOnTouchListener(touchListenerBouton2);
-		slides[3].setOnTouchListener(touchListenerBouton2);
 
 		save = (TextView) this.findViewById(R.id.save);
 		cancel = (TextView) this.findViewById(R.id.cancel);
@@ -87,20 +99,8 @@ public class SettingsActivity extends Activity {
 
 	@Override
 	public void onWindowFocusChanged (boolean hasFocus) {
-		List<Slide> dbSlide = Controller.getInstance(this).getSlides();
-		for (Slide s: dbSlide) {
-			if (s.getSlideName().equals("Agenda")) {
-				slides[0].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			} else if (s.getSlideName().equals("Mail")) {
-				slides[1].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			} else if (s.getSlideName().equals("Météo")) {
-				slides[2].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			}
-		}
-		for (int i = 0; i < 4; i++){
+
+		for (int i = 0; i < dbSlide.size(); i++){
 			slides[i].setX(size * i);
 		}
 	}
@@ -124,7 +124,7 @@ public class SettingsActivity extends Activity {
 				v.bringToFront();
 				break;
 			case MotionEvent.ACTION_MOVE:
-
+				v.bringToFront();
 				//Plus
 				if (event.getX() + v.getX() > (selection+1) * size){
 					if (selection != slides.length){
@@ -145,11 +145,10 @@ public class SettingsActivity extends Activity {
 
 				v.setX(v.getX() - xx + event.getX());
 				if (v.getX() < 0){v.setY(0);}
-
 				break;
 			case MotionEvent.ACTION_UP:
 
-				for (int i = 0; i < 4; i++){
+				for (int i = 0; i < dbSlide.size(); i++){
 					slides[i].setX(size * i);
 				}
 				break;

@@ -22,6 +22,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="42dp"
             android:text="@string/synchro"
@@ -31,8 +32,10 @@
 
         <View
             android:id="@+id/view1"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/grey" />
 
         <ListView
@@ -58,6 +61,7 @@
             android:id="@+id/trajet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:text="@string/trajet"
@@ -67,8 +71,10 @@
 
         <View
             android:id="@+id/view3"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/grey" />
 
         <ListView
@@ -94,6 +100,7 @@
             android:id="@+id/sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:text="@string/sound"
@@ -103,8 +110,10 @@
 
         <View
             android:id="@+id/view5"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/grey" />
 
         <ListView
@@ -117,6 +126,7 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:text="@string/slides"
@@ -126,8 +136,10 @@
 
         <View
             android:id="@+id/view2"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/grey" />
 
         <LinearLayout
@@ -135,19 +147,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp" >
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="4"
-                android:columnWidth="100dp"
-                android:orientation="vertical"
-                android:rowCount="1"
-                android:stretchMode="columnWidth" >
 
                 <ImageView
                     android:id="@+id/agenda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:src="@drawable/agenda" />
 
                 <ImageView
@@ -155,23 +160,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/mail"
+                    android:visibility="invisible"
                     android:text="@string/mail" />
 
                 <ImageView
                     android:id="@+id/meteo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:src="@drawable/meteo" />
 
                 <ImageView
                     android:id="@+id/traffic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_row="0"
+                    android:visibility="invisible"
                     android:src="@drawable/home"
                     android:text="@string/traffic" />
-            </GridLayout>
         </LinearLayout>
 
         <LinearLayout
