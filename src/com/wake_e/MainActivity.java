@@ -3,6 +3,7 @@ package com.wake_e;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,7 @@ public class MainActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
-		
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
 		
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
