@@ -1,28 +1,33 @@
 package com.wake_e;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
+import com.wake_e.model.Location;
 import com.wake_e.model.Slide;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
 
@@ -49,6 +54,21 @@ public class SettingsActivity extends Activity {
 		slides[1] = (ImageView)findViewById(R.id.mail);
 		slides[2] = (ImageView)findViewById(R.id.meteo);
 		slides[3] = (ImageView)findViewById(R.id.traffic);
+
+		List<Slide> dbSlide = Controller.getInstance(this).getSlides();
+		for (Slide s: dbSlide) {
+			Log.i(s.getSlideName(), s.getOrder().toString());
+			if (s.getSlideName().equals("Agenda")) {
+				slides[0].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			} else if (s.getSlideName().equals("Mail")) {
+				slides[1].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			} else if (s.getSlideName().equals("Météo")) {
+				slides[2].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			}
+		}
 
 		slides[0].setOnTouchListener(touchListenerBouton2);
 		slides[1].setOnTouchListener(touchListenerBouton2);
@@ -148,21 +168,44 @@ public class SettingsActivity extends Activity {
 	};
 
 	private OnClickListener locationStart = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			final Dialog dialog = new Dialog(SettingsActivity.this);
 			dialog.setContentView(R.layout.location);
-			
-			EditText locationName = (EditText)findViewById(R.id.locationName);
-			EditText locationAddress = (EditText)findViewById(R.id.locationAddress);
-			
+
+			final EditText locationName = (EditText)dialog.findViewById(R.id.locationName);
+			final EditText locationAddress = (EditText)dialog.findViewById(R.id.locationAddress);
+			TextView createLoc = (TextView)dialog.findViewById(R.id.create);
+
+			createLoc.setOnClickListener(new OnClickListener() {
+				Location l = null;
+				boolean hasError = false;
+
+				@Override
+				public void onClick(View v) {
+					try {
+						l = Controller.getInstance(v.getContext()).createLocation(
+								locationName.getText().toString(),
+								locationAddress.getText().toString());
+					} catch (IOException e) {
+						hasError = true;
+					}
+					if (hasError || l == null) {
+						Toast.makeText(
+								that,
+								"Erreur lors de la création de la localisation",
+								Toast.LENGTH_LONG).show();
+					}
+					dialog.cancel();
+				}
+			});
+
 			dialog.show();
-			
+
 		}
 	};
-	
+
 	private OnClickListener onSaveClick = new OnClickListener(){
 		@Override
 		public void onClick(View v) {

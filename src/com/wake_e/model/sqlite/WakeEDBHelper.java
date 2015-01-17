@@ -114,11 +114,11 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
 	//###### SLIDES #####
 	private void populateSlides(SQLiteDatabase db) {
-		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
+		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 0, true);
 		this.createSlide(db, s);
-		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 2, true);
+		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 1, true);
 		this.createSlide(db, s);
-		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 3, true);
+		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 2, true);
 		this.createSlide(db, s);
 	}
 

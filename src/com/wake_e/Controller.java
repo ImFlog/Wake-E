@@ -266,7 +266,7 @@ public class Controller {
     }
 
 
-	public Set<Location> getLocations() {
+	public List<Location> getLocations() {
 		return this.locationsManager.getLocations();
 	}
 }

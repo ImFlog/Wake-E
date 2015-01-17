@@ -43,7 +43,7 @@ public class MeteoDeliverer{
     	this.view = view;
     	meteos = new ArrayList<Meteo>();
 	    JSONWeatherTask task = new JSONWeatherTask();
-	    Set<Location> l = Controller.getInstance(Controller.getContext()).getLocations();
+	    List<Location> l = Controller.getInstance(Controller.getContext()).getLocations();
 	    Iterator<Location> iterator = l.iterator();
 	    while(iterator.hasNext()) {
 	        Location setElement = iterator.next();
