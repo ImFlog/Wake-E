@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wake_e.adapt.LocationAdapter;
+import com.wake_e.adapt.MailAdapter;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
@@ -79,22 +81,22 @@ public class SettingsActivity extends Activity {
 		cancel.setOnClickListener(onCancelClick);
 
 		// ######## ACCOUNTS #########
-		ListView comptes	= (ListView)findViewById(R.id.l_comptes);
 		TextView addAccount = (TextView)findViewById(R.id.addAccount);
 		if (Controller.getInstance(this).getCredentials() != null) {
 			addAccount.setCompoundDrawables(null, null, null, null);
 			addAccount.setText("Gmail");
-		} else {
-			// Add account listener
-			addAccount.setOnClickListener(credentialStart);
 		}
+		addAccount.setOnClickListener(credentialStart);
 
 		// ####### LOCATIONS ########
 		ListView locations	= (ListView)findViewById(R.id.l_locations);
+		locations.setAdapter(new LocationAdapter(this, Controller.getInstance(this).getLocations()));
+
 		TextView addLocation = (TextView)findViewById(R.id.Addlocalisation);
 		addLocation.setOnClickListener(locationStart);
 
-		ListView sounds		= (ListView)findViewById(R.id.l_sounds);
+		// ####### SOUNDS ########
+		ListView sounds = (ListView)findViewById(R.id.l_sounds);
 	}
 
 	@Override

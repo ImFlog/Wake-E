@@ -6,8 +6,6 @@ package com.wake_e.model.sqlite;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import android.content.ContentValues;
@@ -295,8 +293,8 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 
 	//###### LOCATIONS #####
-	public Set<Location> getLocations() {
-		Set<Location> l = new TreeSet<Location>();
+	public List<Location> getLocations() {
+		List<Location> l = new ArrayList<Location>();
 
 		String selectQuery = "SELECT * FROM " + TABLE_LOCATIONS;
 
@@ -320,7 +318,6 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void createLocation(Location l) {
-		String selectQuery = " " + TABLE_LOCATIONS;
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -331,9 +328,8 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		values.put("location_cp", l.getCP());
 		values.put("location_address_line", l.getAddressLine());
 
-
 		db.insert(TABLE_LOCATIONS, null, values);
-		db.close();
+		values.clear();
 	}
 
 	@Override

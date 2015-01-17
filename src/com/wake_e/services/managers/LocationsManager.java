@@ -3,10 +3,6 @@ package com.wake_e.services.managers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
-
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -102,14 +98,13 @@ public class LocationsManager {
 			String address_line = addresses.get(0).getAddressLine(0);
 
 			//If this Location already exists
-			if((l=this.getLocation(p)) == null){
+			if((l=this.getLocation(p)) == null) {
 				l = new Location(name, p, address, city, cp, address_line);
-				this.addLocation(l);
-			} else {
 				db.createLocation(l);
+				this.addLocation(l);
 				loadLocations(db);
+				return l;
 			}
-			return l;
 		}
 		return null;
 	}
