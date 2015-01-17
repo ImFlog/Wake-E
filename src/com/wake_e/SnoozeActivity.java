@@ -70,6 +70,7 @@ public class SnoozeActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			//TODO on arrete la sonnerie et tout le bordel ICI, a toi de jouer Yoann ;)
+			Toast.makeText(that, "L'alarme a été arrété", Toast.LENGTH_LONG).show();
 		}
 	};
 	
@@ -78,7 +79,7 @@ public class SnoozeActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			//TODO on snooze, a toi de jouer Yoann ;)
-			Toast.makeText(that, "L'alarme ", Toast.LENGTH_LONG).show();
+			Toast.makeText(that, "L'alarme a été snoozer", Toast.LENGTH_LONG).show();
 		}
 	};
 	
