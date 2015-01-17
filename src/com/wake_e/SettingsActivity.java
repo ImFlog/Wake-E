@@ -1,14 +1,22 @@
 package com.wake_e;
 
+import java.io.File;
+
 import android.app.Activity;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -16,7 +24,9 @@ public class SettingsActivity extends Activity {
 
 	private ImageView [] slides;
 	private int size;
+	private Button buttonBell;
 	public static SettingsActivity that;
+	final static int RQS_OPEN_AUDIO_MP3 = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +34,6 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.settings);
 		
-		//
 		Display ecran = getWindowManager().getDefaultDisplay(); 
 		int largeur= ecran.getWidth();
 		size = getWindowManager().getDefaultDisplay().getWidth() / 4;
@@ -49,7 +58,12 @@ public class SettingsActivity extends Activity {
 		
 		ListView sounds		= (ListView)findViewById(R.id.l_sounds);
 		
+		
+		
+        buttonBell = (Button)findViewById(R.id.open_bell);
+        buttonBell.setOnClickListener(buttonOpenOnClickListener);
 	}
+	
 	@Override
 	public void onWindowFocusChanged (boolean hasFocus) {
 	    for (int i = 0; i < 4; i++){
@@ -108,9 +122,8 @@ public class SettingsActivity extends Activity {
 	    	return true;
 		}
 	};
+	
 	private OnClickListener switchToSettings = new OnClickListener() {
-
-
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -119,4 +132,28 @@ public class SettingsActivity extends Activity {
 		
 	};
 
+	private OnClickListener buttonOpenOnClickListener = new OnClickListener(){
+		@Override
+		public void onClick(View arg0) {
+			Intent intent = new Intent();
+			intent.setType("audio/mp3");
+			intent.setAction(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(Intent.createChooser(intent, "Cherche sonnerie"), RQS_OPEN_AUDIO_MP3);
+		}
+	};
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			if (requestCode == RQS_OPEN_AUDIO_MP3) {
+				Uri audioFileUri = data.getData();				
+				String[] proj = { MediaStore.Images.Media.DATA };
+			    CursorLoader loader = new CursorLoader(this.getApplicationContext(), audioFileUri, proj, null, null, null);
+			    Cursor cursor = loader.loadInBackground();
+			    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			    cursor.moveToFirst();
+			    File audioFile = new File(cursor.getString(column_index));
+				Log.i("calendar", audioFile.getPath());
+			} 
+		} 
+	}
 }

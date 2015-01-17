@@ -37,5 +37,6 @@
     <string name="heureArrivee">Heure d arrivée</string>
     <string name="lieuArrivee">Destination</string>
     <string name="depart">Départ</string>
+    <string name="open_bell">Chercher une sonnerie</string>
 
 </resources>
