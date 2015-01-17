@@ -40,6 +40,7 @@
     <string name="save">Sauvegarder</string>
     <string name="cancel">Annuler</string>
     <string name="locationName">Nom</string>
-    <string name="locationAddress">Address</string>
+    <string name="locationAddress">Adresse</string>
     <string name="create">Créer</string>
+    <string name="title_activity_snooze">SnoozeActivity</string>
 </resources>

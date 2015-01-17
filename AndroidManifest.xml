@@ -38,8 +38,9 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
+                        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,23 +59,30 @@
         <activity
             android:name=".fragment.station.PageMailFragment"
             android:screenOrientation="portrait" />
-
-        <activity android:name="com.wake_e.MapActivity" />
+        <activity android:name=".MapActivity" />
         <activity
-            android:name="com.wake_e.ConfigActivity"
+            android:name=".ConfigActivity"
             android:label="@string/title_activity_config" >
         </activity>
         <activity
-            android:name="com.wake_e.SettingsActivity"
+            android:name=".SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wake_e.CredentialActivity"
+            android:name=".CredentialActivity"
             android:screenOrientation="portrait" />
-        <service android:name="com.wake_e.services.AlarmIntentService" />
-        <service android:name="com.wake_e.services.AlarmSynchroIntentService" />
+
+        <service android:name=".services.AlarmIntentService" />
+        <service android:name=".services.AlarmSynchroIntentService" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCUflXYftumiYS_YLIC2FxdsDpRzOpRj5I" />
+
+        <activity
+            android:name=".SnoozeActivity"
+            android:label="@string/title_activity_snooze" >
+
+        </activity>
     </application>
->>>>>>> origin
+
 </manifest>
