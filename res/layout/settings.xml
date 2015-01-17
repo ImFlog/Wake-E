@@ -9,175 +9,206 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-	        <TextView
-	            android:id="@+id/textView1"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:gravity="center"
-	            android:text="@string/params"
-	            android:textColor="@color/background"
-	            android:textSize="50sp" />
-		    <TextView
-		        android:id="@+id/textView2"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="5dp"
-		        android:layout_marginTop="42dp"
-		        android:text="@string/synchro"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        android:textColor="@color/grey"
-		        android:textSize="14sp" />
-		
-		    <View
-		        android:id="@+id/view1"
-		        android:layout_width="290dp"
-		        android:layout_height="1dp"
-		        android:background="@color/grey" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/params"
+            android:textColor="@color/background"
+            android:textSize="50sp" />
 
-		    <ListView
-		        android:id="@+id/l_comptes"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" >
-		    </ListView>
-		    <TextView
-		        android:id="@+id/textView3"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="center_vertical"
-		        android:drawableLeft="@drawable/plus"
-		        android:gravity="center_vertical"
-		        android:paddingLeft="10dp"
-		        android:text="@string/add_compte"
-		        android:textAppearance="?android:attr/textAppearanceLarge"
-		        android:textColor="@color/white"
-		        android:textSize="16sp" />
-		    <TextView
-		        android:id="@+id/trajet"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="5dp"
-		        android:layout_marginTop="5dp"
-		        android:text="@string/trajet"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        android:textColor="@color/grey"
-		        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="42dp"
+            android:text="@string/synchro"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
 
-		    <View
-		        android:id="@+id/view3"
-		        android:layout_width="290dp"
-		        android:layout_height="1dp"
-		        android:background="@color/grey" />
-			<ListView
-		        android:id="@+id/l_locations"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content">
-		        
-		    </ListView>
-		    
-		    <TextView
-		        android:id="@+id/textView4"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="center_vertical"
-		        android:drawableLeft="@drawable/plus"
-		        android:gravity="center_vertical"
-		        android:paddingLeft="10dp"
-		        android:text="@string/add_localisation"
-		        android:textAppearance="?android:attr/textAppearanceLarge"
-		        android:textColor="@color/white"
-		        android:textSize="16sp" />
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/grey" />
 
-		    
-		    <TextView
-		        android:id="@+id/sound"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="5dp"
-		        android:layout_marginTop="5dp"
-		        android:text="@string/sound"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        android:textColor="@color/grey"
-		        android:textSize="14sp" />
+        <ListView
+            android:id="@+id/l_comptes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
-		    <View
-		        android:id="@+id/view5"
-		        android:layout_width="290dp"
-		        android:layout_height="1dp"
-		        android:background="@color/grey" />
-			<ListView
-		        android:id="@+id/l_sounds"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content">
-		        
-		    </ListView>
-		    
-		    
-		    
-		    <TextView
-		        android:id="@+id/textView9"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="5dp"
-		        android:layout_marginTop="5dp"
-		        android:text="@string/slides"
-		        android:textAppearance="?android:attr/textAppearanceMedium"
-		        android:textColor="@color/grey"
-		        android:textSize="14sp" />
-		   <View
-		        android:id="@+id/view2"
-		        android:layout_width="290dp"
-		        android:layout_height="1dp"
-		        android:background="@color/grey" />
-		   
-	        <LinearLayout
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp">
-	            
-				<GridLayout
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:columnCount="4"
-				    android:columnWidth="100dp"
-				    android:orientation="vertical"
-				    android:rowCount="1"
-				    android:stretchMode="columnWidth" >
-				
-				
-				        <ImageView
-				            android:id="@+id/agenda"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-					        android:layout_column="0"
-					        android:layout_row="0"
-					        android:src="@drawable/agenda"/>
-				    
-				        <ImageView
-				            android:id="@+id/mail"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-				            android:text="@string/mail"
-					        android:layout_column="1"
-					        android:layout_row="0"
-					        android:src="@drawable/mail"/>
+        <TextView
+            android:id="@+id/addAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@drawable/plus"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="@string/add_compte"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
-				        <ImageView
-				            android:id="@+id/traffic"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-				            android:text="@string/traffic"
-					        android:layout_column="2"
-					        android:layout_row="0"
-							android:src="@drawable/home"/>
-				        <ImageView
-				            android:id="@+id/meteo"
-				            android:layout_width="wrap_content"
-				            android:layout_height="wrap_content"
-					        android:layout_column="3"
-					        android:layout_row="0"
-				            android:src="@drawable/meteo"/>
-				</GridLayout>
-	        </LinearLayout>
+        <TextView
+            android:id="@+id/trajet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/trajet"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/grey" />
+
+        <ListView
+            android:id="@+id/l_locations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/Addlocalisation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@drawable/plus"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="@string/add_localisation"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/sound"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/grey" />
+
+        <ListView
+            android:id="@+id/l_sounds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/slides"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" >
+
+
+                <ImageView
+                    android:id="@+id/agenda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:src="@drawable/agenda" />
+
+                <ImageView
+                    android:id="@+id/mail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/mail"
+                    android:visibility="invisible"
+                    android:text="@string/mail" />
+
+                <ImageView
+                    android:id="@+id/meteo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:src="@drawable/meteo" />
+
+                <ImageView
+                    android:id="@+id/traffic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:src="@drawable/home"
+                    android:text="@string/traffic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|bottom" >
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="124dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/grey"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="5dp"
+                android:text="@string/cancel"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/save"
+                android:layout_width="124dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/grey"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingBottom="3dp"
+                android:paddingTop="5dp"
+                android:text="@string/save"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

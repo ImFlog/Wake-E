@@ -58,7 +58,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ "credentials_accessToken VARCHAR(255) NOT NULL)";
 
 	private static final String CREATE_TABLE_LOCATIONS= "CREATE TABLE "
-			+ TABLE_LOCATIONS + "(location_uid VARCHAR(16) PRIMARY KEY,"
+			+ TABLE_LOCATIONS + "(location_name VARCHAR(255) PRIMARY KEY,"
 			+ " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL,"
 			+ " location_city VARCHAR(255) NOT NULL, location_cp VARCHAR(255) NOT NULL,"
 			+ " location_address_line VARCHAR(255) NOT NULL)";
@@ -114,11 +114,11 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
 	//###### SLIDES #####
 	private void populateSlides(SQLiteDatabase db) {
-		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
+		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 0, true);
 		this.createSlide(db, s);
-		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 2, true);
+		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 1, true);
 		this.createSlide(db, s);
-		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 3, true);
+		s = new Slide("Météo", PageMeteoFragment.class.getName(), 2, true);
 		this.createSlide(db, s);
 	}
 
@@ -131,22 +131,31 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.insert(TABLE_SLIDES, null, values);
 		values.clear();
 	}
+	
+	private void createSlide(Slide s) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("slide_class", s.getSlideClass());
+		values.put("slide_order", s.getOrder());
+		values.put("slide_name", s.getSlideName());
+		values.put("slide_visible", s.visible());
+		db.insert(TABLE_SLIDES, null, values);
+		values.clear();
+	}
 
-	public void updateSlides(List<Slide> slides) {
+	private void clearSlides() {
+		String DELETE_STRING = "DELETE FROM " + TABLE_SLIDES;
 
-		//We get the database in writeable mode
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		ContentValues values = new ContentValues();
-		for(Slide s : slides){
-			values.put("slide_class", s.getSlideClass());
-			values.put("slide_order", s.getOrder());
-			values.put("slide_name", s.getSlideName());
-			values.put("slide_visible", s.visible());
+		db.execSQL(DELETE_STRING);
+	}
 
-			// update row
-			db.update(TABLE_SLIDES, values, "slide_class=" + s.getSlideClass(), null);
-			values.clear();
+	public void updateSlides(List<Slide> slides) {
+		clearSlides();
+
+		for (Slide s: slides) {
+			createSlide(s);
 		}
 	}
 
@@ -175,7 +184,6 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		//on trie les slides par ordre
-
 		Collections.sort(slides, new SlidesComparator());
 		return slides;
 	}
@@ -296,16 +304,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		Point p;
 
-		String city, cp, address_line, address;
+		String name, city, cp, address_line, address;
 
 		// looping through all rows and adding to list
 		while (c.moveToNext()) {
+		    	name = c.getString(c.getColumnIndex("location_name"));
 			p = Point.pointFromString(c.getString(c.getColumnIndex("location_point")));
 			address =  c.getString(c.getColumnIndex("location_address"));
 			city =  c.getString(c.getColumnIndex("location_city"));
 			cp = c.getString(c.getColumnIndex("location_cp"));
 			address_line = c.getString(c.getColumnIndex("location_address_line"));
-			l.add(new Location(p, address, city, cp, address_line));
+			l.add(new Location(name, p, address, city, cp, address_line));
 		}
 		return l;
 	}
@@ -315,7 +324,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put("location_uid", l.getId().toString());
+		values.put("location_name", l.getName());
 		values.put("location_point", l.getGps().toSQLite());
 		values.put("location_address", l.getAddress());
 		values.put("location_city", l.getCity());

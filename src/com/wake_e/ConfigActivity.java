@@ -7,6 +7,7 @@ import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,9 @@ public class ConfigActivity extends Activity {
 	ImageView mtrain;
 	
 
+	private TextView cancel;
+	private TextView save;
+
 	//DATA
 	int preparation;
 	Time heureArrivee;
@@ -52,6 +56,10 @@ public class ConfigActivity extends Activity {
 		mvoiture = (ImageView) this.findViewById(R.id.imageView4);
 		mtrain = (ImageView) this.findViewById(R.id.imageView2);
 		
+		save = (TextView) this.findViewById(R.id.save);
+		cancel = (TextView) this.findViewById(R.id.cancel);
+		save.setOnClickListener(onSaveClick);
+		cancel.setOnClickListener(onCancelClick);
 		
 		mdepart.setOnClickListener(new View.OnClickListener() {
 		    @Override
@@ -203,4 +211,22 @@ public class ConfigActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	private OnClickListener onSaveClick = new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			//SAVE
+			
+		}
+	};
+	
+	
+	private OnClickListener onCancelClick = new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			//CANCEL
+			
+		}
+	};
 }
