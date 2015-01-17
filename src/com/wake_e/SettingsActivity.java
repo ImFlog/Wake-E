@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableRow;
@@ -55,21 +56,6 @@ public class SettingsActivity extends Activity {
 		slides[2] = (ImageView)findViewById(R.id.meteo);
 		slides[3] = (ImageView)findViewById(R.id.traffic);
 
-		List<Slide> dbSlide = Controller.getInstance(this).getSlides();
-		for (Slide s: dbSlide) {
-			Log.i(s.getSlideName(), s.getOrder().toString());
-			if (s.getSlideName().equals("Agenda")) {
-				slides[0].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			} else if (s.getSlideName().equals("Mail")) {
-				slides[1].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			} else if (s.getSlideName().equals("Météo")) {
-				slides[2].setLayoutParams(
-						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
-			}
-		}
-
 		slides[0].setOnTouchListener(touchListenerBouton2);
 		slides[1].setOnTouchListener(touchListenerBouton2);
 		slides[2].setOnTouchListener(touchListenerBouton2);
@@ -101,10 +87,24 @@ public class SettingsActivity extends Activity {
 
 	@Override
 	public void onWindowFocusChanged (boolean hasFocus) {
+		List<Slide> dbSlide = Controller.getInstance(this).getSlides();
+		for (Slide s: dbSlide) {
+			if (s.getSlideName().equals("Agenda")) {
+				slides[0].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			} else if (s.getSlideName().equals("Mail")) {
+				slides[1].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			} else if (s.getSlideName().equals("Météo")) {
+				slides[2].setLayoutParams(
+						new GridLayout.LayoutParams(GridLayout.spec(0), GridLayout.spec(s.getOrder())));
+			}
+		}
 		for (int i = 0; i < 4; i++){
 			slides[i].setX(size * i);
 		}
 	}
+
 	private OnTouchListener touchListenerBouton2 = new View.OnTouchListener() {
 		/**
 		 * Old Value
