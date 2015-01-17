@@ -118,7 +118,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		this.createSlide(db, s);
 		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 1, true);
 		this.createSlide(db, s);
-		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 2, true);
+		s = new Slide("Météo", PageMeteoFragment.class.getName(), 2, true);
 		this.createSlide(db, s);
 	}
 
@@ -152,10 +152,8 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void updateSlides(List<Slide> slides) {
-
-		//We get the database in writeable mode
 		clearSlides();
-		
+
 		for (Slide s: slides) {
 			createSlide(s);
 		}
@@ -186,7 +184,6 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		//on trie les slides par ordre
-
 		Collections.sort(slides, new SlidesComparator());
 		return slides;
 	}

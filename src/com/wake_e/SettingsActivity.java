@@ -211,27 +211,31 @@ public class SettingsActivity extends Activity {
 		public void onClick(View v) {
 			//SAVE
 			List<Slide> slideList = new ArrayList<Slide>();
-			String name = null;
-			String className = null;
 			int order;
+			String className;
+			String name;
 			boolean visible = true;
 
-			int position = 1;
+			int position = 0;
 
 			for(ImageView view: slides) {
+				name = null;
+				className = null;
 				order = position;
 				visible = true;
-				if (view.getId() == R.id.meteo) {
+				switch(view.getId()) {
+				case(R.id.meteo) :
 					name = "Météo";
-					className = PageMeteoFragment.class.getName();
-				} else if (view.getId() == R.id.mail) {
+				className = PageMeteoFragment.class.getName();
+				break;
+				case(R.id.mail) :
 					name = "Mail";
-					className = PageMailFragment.class.getName();
-				} else if (view.getId() == R.id.agenda) {
+				className = PageMailFragment.class.getName();
+				break;
+				case(R.id.agenda):
 					name = "Agenda";
-					className = PageAgendaFragment.class.getName();
-				} else if (view.getId() == R.id.traffic) {
-					// TODO ?
+				className = PageAgendaFragment.class.getName();
+				break;
 				}
 				if (name != null) {
 					slideList.add(new Slide(name, className, order, visible));
