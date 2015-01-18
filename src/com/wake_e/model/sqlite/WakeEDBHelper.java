@@ -6,8 +6,6 @@ package com.wake_e.model.sqlite;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import android.content.ContentValues;
@@ -61,6 +59,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ TABLE_LOCATIONS + "(location_name VARCHAR(255) PRIMARY KEY,"
 			+ " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL,"
 			+ " location_city VARCHAR(255) NOT NULL, location_cp VARCHAR(255) NOT NULL,"
+			+ " location_country VARCHAR(255) NOT NULL,"
 			+ " location_address_line VARCHAR(255) NOT NULL)";
 
 	private static final String CREATE_TABLE_MAIL = "CREATE TABLE "
@@ -295,8 +294,8 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 
 	//###### LOCATIONS #####
-	public Set<Location> getLocations() {
-		Set<Location> l = new TreeSet<Location>();
+	public List<Location> getLocations() {
+		List<Location> l = new ArrayList<Location>();
 
 		String selectQuery = "SELECT * FROM " + TABLE_LOCATIONS;
 
@@ -304,7 +303,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		Point p;
 
-		String name, city, cp, address_line, address;
+		String name, city, cp, country, address_line, address;
 
 		// looping through all rows and adding to list
 		while (c.moveToNext()) {
@@ -314,13 +313,13 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			city =  c.getString(c.getColumnIndex("location_city"));
 			cp = c.getString(c.getColumnIndex("location_cp"));
 			address_line = c.getString(c.getColumnIndex("location_address_line"));
-			l.add(new Location(name, p, address, city, cp, address_line));
+			country = c.getString(c.getColumnIndex("location_country"));
+			l.add(new Location(name, p, address, city, cp, country, address_line));
 		}
 		return l;
 	}
 
 	public void createLocation(Location l) {
-		String selectQuery = " " + TABLE_LOCATIONS;
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -329,11 +328,11 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		values.put("location_address", l.getAddress());
 		values.put("location_city", l.getCity());
 		values.put("location_cp", l.getCP());
+		values.put("location_country", l.getCountry());
 		values.put("location_address_line", l.getAddressLine());
 
-
 		db.insert(TABLE_LOCATIONS, null, values);
-		db.close();
+		values.clear();
 	}
 
 	@Override

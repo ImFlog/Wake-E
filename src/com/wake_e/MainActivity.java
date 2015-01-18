@@ -120,15 +120,6 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 
-	public void checkCredentials(Controller controller) {
-		Credentials cr = controller.getCredentials("gmail");
-		if (cr != null) {
-			Intent i = new Intent(getApplicationContext(), CredentialActivity.class);
-			i.putExtra("type", "gmail");
-			startActivity(i);
-		}
-	}
-
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {
 		/**
 		 * Old Value
@@ -188,6 +179,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	private OnClickListener switchToConfig = new OnClickListener() {
@@ -196,6 +188,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	

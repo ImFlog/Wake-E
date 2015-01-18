@@ -16,7 +16,7 @@ public abstract class WakeEConstants
 	/**
 	 * Scope for gmail api auth.
 	 */
-	public static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+	public static final String GMAIL_SCOPE = "oauth2:https://www.googleapis.com/auth/gmail.readonly";
 
 	/**
 	 * API calls authorization code.

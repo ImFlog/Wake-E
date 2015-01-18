@@ -23,57 +23,56 @@ import com.wake_e.tools.WeatherHttpClient;
  */
 
 public class MeteoDeliverer{
-    //The meteos to deliver
-    private List<Meteo> meteos;
-    private PageMeteoFragment view;
-    
-    /**
-     * 
-     */
-    public MeteoDeliverer() {
-	super();
-    }
-    
-    /**
-     * @brief deliver today's meteo
-     * @return today's meteo
-     */
-    public void deliver(PageMeteoFragment view) {
-	// TODO implement me
-    	this.view = view;
-    	meteos = new ArrayList<Meteo>();
-	    JSONWeatherTask task = new JSONWeatherTask();
-	    List<Location> l = Controller.getInstance(Controller.getContext()).getLocations();
-	    Iterator<Location> iterator = l.iterator();
-	    while(iterator.hasNext()) {
-	        Location setElement = iterator.next();
-	        task.execute(new String[]{setElement.getCity()});
-	    }
-    }
-    
-	private class JSONWeatherTask extends AsyncTask<String, Void, Meteo> {
-		
-		@Override
-		protected Meteo doInBackground(String... params) {
-			Meteo weather = new Meteo();
-			String data = ( (new WeatherHttpClient()).getWeatherData(params[0]));
+	//The meteos to deliver
+	private List<Meteo> meteos;
+	private PageMeteoFragment view;
 
-			try {
-				if (data != null)
-					weather = JSONWeatherParser.getWeather(data);
-				else
-					weather = null;
-			} catch (JSONException e) {
-				e.printStackTrace();
+	/**
+	 * 
+	 */
+	public MeteoDeliverer() {
+		super();
+	}
+
+	/**
+	 * @brief deliver today's meteo
+	 * @return today's meteo
+	 */
+	public void deliver(PageMeteoFragment view) {
+		// TODO implement me
+		this.view = view;
+		meteos = new ArrayList<Meteo>();
+		JSONWeatherTask task = new JSONWeatherTask();
+		List<Location> l = Controller.getInstance(Controller.getContext()).getLocations();
+		task.execute(l);
+	}
+
+	private class JSONWeatherTask extends AsyncTask<List<Location>, Void, List<Meteo>> {
+
+		@Override
+		protected List<Meteo> doInBackground(List<Location>... params) {
+			List<Meteo> weatherList = new ArrayList<Meteo>();
+			for (Location loc: params[0]) {
+				Meteo weather = new Meteo();
+				String data = new WeatherHttpClient().getWeatherData(loc.getCity() + ' ' + loc.getCountry());
+
+				try {
+					if (data != null) {
+						weather = JSONWeatherParser.getWeather(data);
+						weatherList.add(weather);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
-			return weather;
+			return weatherList;
 		}
 
-	@Override
-		protected void onPostExecute(Meteo weather) {
-			super.onPostExecute(weather);
-			if (weather != null)
-				meteos.add(weather);
+		@Override
+		protected void onPostExecute(List<Meteo> weatherList) {
+			super.onPostExecute(weatherList);
+			meteos.clear();
+			meteos.addAll(weatherList);
 			view.updateView(meteos);
 		}
 	}
