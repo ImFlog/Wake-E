@@ -27,8 +27,14 @@ public abstract class WakeEConstants
 	 * Api calls account code.
 	 */
 	public static final int ACCOUNT_CODE = 1601;
+    
+	/**
+	 * Play service error.
+	 */
+	public static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
     }
 
+    
 
     /**
      * @brief Parsing constants

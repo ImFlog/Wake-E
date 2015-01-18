@@ -6,6 +6,7 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.wake_e.Controller;
+import com.wake_e.SettingsActivity;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Credentials;
 
@@ -41,13 +42,16 @@ public class TokenRequester extends AsyncTask<Void, Void, Void> {
 		try {
 			String token = fetchToken();
 			if (token != null) {
+				Log.i("Token request", token);
 				Credentials c = new Credentials("gmail", mEmail, token);
 				Controller.getInstance((Context) mActivity).updateCredentials(c);
+			} else {
+				Log.i("Token request", "Oups no token");
 			}
 		} catch (IOException e) {
 			// The fetchToken() method handles Google-specific exceptions,
 			// so this indicates something went wrong at a higher level.
-			// TIP: Check for network connectivity before starting the AsyncTask.
+			Log.e("Token request", e.getMessage());
 		}
 		return null;
 	}
@@ -62,7 +66,8 @@ public class TokenRequester extends AsyncTask<Void, Void, Void> {
 		} catch (UserRecoverableAuthException userRecoverableException) {
 			// GooglePlayServices.apk is either old, disabled, or not present
 			// so we need to show the user some UI in the activity to recover.
-			Log.e("TOKEN", userRecoverableException.getMessage());
+			Log.e("recoverable", userRecoverableException.getMessage());
+			((SettingsActivity) mActivity).handleException(userRecoverableException);
 		} catch (GoogleAuthException fatalException) {
 			// Some other type of unrecoverable exception has occurred.
 			// Report and log the error as appropriate for your app.

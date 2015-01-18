@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.wake_e.adapt.LocationAdapter;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.fragment.station.PageAgendaFragment;
@@ -29,11 +31,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,14 +57,14 @@ public class SettingsActivity extends Activity {
 
 		Display ecran = getWindowManager().getDefaultDisplay(); 
 		int largeur= ecran.getWidth();
-		
+
 		dbSlide = Controller.getInstance(this).getSlides();
 
 		slides = new ImageView[dbSlide.size()];
-		
+
 		size = getWindowManager().getDefaultDisplay().getWidth() / dbSlide.size();
 
-		
+
 		int i = 0;
 		for (Slide s: dbSlide) {
 			if (s.getSlideName().equals("Agenda")) {
@@ -89,7 +88,7 @@ public class SettingsActivity extends Activity {
 		cancel.setOnClickListener(onCancelClick);
 
 		// ######## ACCOUNTS #########
-		
+
 		addAccount = (TextView)findViewById(R.id.addAccount);
 		if (Controller.getInstance(this).getCredentials() != null) {
 			addAccount.setCompoundDrawables(null, null, null, null);
@@ -171,11 +170,12 @@ public class SettingsActivity extends Activity {
 		}
 	};
 
+	// USER ACCOUNT
 	private void pickUserAccount() {
-	    String[] accountTypes = new String[]{"com.google"};
-	    Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-	            accountTypes, false, null, null, null, null);
-	    startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
+		String[] accountTypes = new String[]{"com.google"};
+		Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+				accountTypes, false, null, null, null, null);
+		startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
 	}
 
 	@Override
@@ -184,8 +184,11 @@ public class SettingsActivity extends Activity {
 
 		if (resultCode == RESULT_OK) {
 			if (requestCode == WakeEConstants.WakeEAPICalls.ACCOUNT_CODE) {
-				String user = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-				TokenRequester.initiateRequest(that, user);
+					String user = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+					TokenRequester.initiateRequest(that, user);
+			} else if (requestCode == WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR) {
+				// Receiving a result that follows a GoogleAuthException, try auth again
+				pickUserAccount();
 			}
 		}
 	}
@@ -203,6 +206,35 @@ public class SettingsActivity extends Activity {
 		}
 	};
 
+	public void handleException(final Exception e) {
+		// Because this call comes from the AsyncTask, we must ensure that the following
+		// code instead executes on the UI thread.
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (e instanceof GooglePlayServicesAvailabilityException) {
+					// The Google Play services APK is old, disabled, or not present.
+					// Show a dialog created by Google Play services that allows
+					// the user to update the APK
+					int statusCode = ((GooglePlayServicesAvailabilityException)e)
+							.getConnectionStatusCode();
+					Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode,
+							SettingsActivity.this,
+							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+					dialog.show();
+				} else if (e instanceof UserRecoverableAuthException) {
+					// Unable to authenticate, such as when the user has not yet granted
+					// the app access to the account, but the user can fix this.
+					// Forward the user to an activity in Google Play services.
+					Intent intent = ((UserRecoverableAuthException)e).getIntent();
+					startActivityForResult(intent,
+							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+				}
+			}
+		});
+	}
+
+	// LOCATION
 	private OnClickListener locationStart = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
