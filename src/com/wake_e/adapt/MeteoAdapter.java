@@ -1,7 +1,9 @@
 package com.wake_e.adapt;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import com.wake_e.MainActivity;
 import com.wake_e.R;
@@ -60,11 +62,14 @@ public class MeteoAdapter extends BaseAdapter {
 	        holder = new ViewHolder();
 	        convertView = inflater.inflate(R.layout.meteo, null);
 	        
-	        DecimalFormat df = new DecimalFormat ( ) ; 
+	        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.FRANCE);
+	        otherSymbols.setDecimalSeparator('.');
+	        DecimalFormat df = new DecimalFormat ();
+	        df.setDecimalFormatSymbols(otherSymbols);
 	        df.setMaximumFractionDigits ( 2 ) ;
 	        df.setMinimumFractionDigits ( 2 ) ; 
 	        df.setDecimalSeparatorAlwaysShown ( true ) ; 
-	        System.out.println ( Double.parseDouble(df.format ( -4.327)));
+//	        System.out.println ( Double.parseDouble(df.format(-4.327)));
 
 	        holder.city 	= (TextView)convertView.findViewById(R.id.city);
 	        holder.temp 	= (TextView)convertView.findViewById(R.id.temperature);

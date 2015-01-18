@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class LocationAdapter extends BaseAdapter{
-
+public class LocationAdapter extends BaseAdapter {
 	List<Location> locations;
 	LayoutInflater inflater;
 	int index;
@@ -43,21 +42,37 @@ public class LocationAdapter extends BaseAdapter{
 		TextView name;
 		TextView city;
 	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if(convertView == null) {
-			holder = new ViewHolder();
+		if(convertView==null){
+			// inflate the layout
 			convertView = inflater.inflate(R.layout.location_list, null);
+
+			// well set up the ViewHolder
+			holder = new ViewHolder();
+			holder.name = (TextView)convertView.findViewById(R.id.locationName);
+			holder.city = (TextView)convertView.findViewById(R.id.locationCity);
+
+			// store the holder with the view.
+			convertView.setTag(holder);
+
+		}else{
+			// we've just avoided calling findViewById() on resource everytime
+			// just use the viewHolder
+			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.name = (TextView)convertView.findViewById(R.id.locationName);
-		holder.name.setText(locations.get(position).getName());
+		// object item based on the position
+		Location currLoc= locations.get(position);
 
-		holder.city = (TextView)convertView.findViewById(R.id.locationCity);
-		holder.city.setText(locations.get(position).getCity());
+		// assign values if the object is not null
+		if(currLoc != null) {
+			// get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
+			holder.name.setText(currLoc.getName());
+			holder.city.setText(currLoc.getCity());
+		}
 
-		convertView.setTag(holder);
-		holder = (ViewHolder) convertView.getTag();
 		return convertView;
 	}
 }
