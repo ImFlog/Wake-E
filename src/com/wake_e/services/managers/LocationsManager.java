@@ -25,8 +25,6 @@ public class LocationsManager {
 	private Geocoder geocoder;
 	private LocationManager locationManager;
 
-
-
 	/**
 	 * 
 	 */
@@ -94,15 +92,15 @@ public class LocationsManager {
 
 			String city = addresses.get(0).getLocality();
 			String cp = addresses.get(0).getPostalCode();
+			String country = addresses.get(0).getCountryName();
 
 			String address_line = addresses.get(0).getAddressLine(0);
 
 			//If this Location already exists
 			if((l=this.getLocation(p)) == null) {
-				l = new Location(name, p, address, city, cp, address_line);
+				l = new Location(name, p, address, city, cp, country, address_line);
 				db.createLocation(l);
 				this.addLocation(l);
-				loadLocations(db);
 				return l;
 			}
 		}
@@ -143,5 +141,4 @@ public class LocationsManager {
 	public List<Location> getLocations() {
 		return this.locations;
 	}
-
 }

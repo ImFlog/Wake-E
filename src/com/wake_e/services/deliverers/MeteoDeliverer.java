@@ -54,7 +54,7 @@ public class MeteoDeliverer{
 			List<Meteo> weatherList = new ArrayList<Meteo>();
 			for (Location loc: params[0]) {
 				Meteo weather = new Meteo();
-				String data = ( (new WeatherHttpClient()).getWeatherData(loc.getCity()));
+				String data = new WeatherHttpClient().getWeatherData(loc.getCity() + ' ' + loc.getCountry());
 
 				try {
 					if (data != null) {
