@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wake_e.adapt.LocationAdapter;
-import com.wake_e.adapt.MailAdapter;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
@@ -40,6 +39,7 @@ public class SettingsActivity extends Activity {
 	private int size;
 	public static SettingsActivity that;
 	private List<Slide> dbSlide;
+	private TextView addAccount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +81,12 @@ public class SettingsActivity extends Activity {
 		cancel.setOnClickListener(onCancelClick);
 
 		// ######## ACCOUNTS #########
-		TextView addAccount = (TextView)findViewById(R.id.addAccount);
+		
+		addAccount = (TextView)findViewById(R.id.addAccount);
 		if (Controller.getInstance(this).getCredentials() != null) {
 			addAccount.setCompoundDrawables(null, null, null, null);
 			addAccount.setText("Gmail");
+			addAccount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.gmail, 0, 0, 0);
 		}
 		addAccount.setOnClickListener(credentialStart);
 
@@ -123,10 +125,12 @@ public class SettingsActivity extends Activity {
 			case MotionEvent.ACTION_DOWN:
 				xx = event.getX();
 				selection = (int) Math.floor((xx + v.getX()) / size);
+				for (int i = 0; i < dbSlide.size(); i++){
+					slides[i].setX(size * i);
+				}
 				v.bringToFront();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				v.bringToFront();
 				//Plus
 				if (event.getX() + v.getX() > (selection+1) * size){
 					if (selection != slides.length){
@@ -165,6 +169,11 @@ public class SettingsActivity extends Activity {
 			Intent i = new Intent(getApplicationContext(), CredentialActivity.class);
 			i.putExtra("type", "gmail");
 			startActivity(i);
+			if (Controller.getInstance(that).getCredentials() != null) {
+				addAccount.setCompoundDrawables(null, null, null, null);
+				addAccount.setText("Gmail");
+				addAccount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.gmail, 0, 0, 0);
+			}
 		}
 	};
 

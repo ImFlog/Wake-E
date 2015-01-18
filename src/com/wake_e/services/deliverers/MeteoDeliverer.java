@@ -71,6 +71,7 @@ public class MeteoDeliverer{
 		@Override
 		protected void onPostExecute(List<Meteo> weatherList) {
 			super.onPostExecute(weatherList);
+			meteos.clear();
 			meteos.addAll(weatherList);
 			view.updateView(meteos);
 		}
