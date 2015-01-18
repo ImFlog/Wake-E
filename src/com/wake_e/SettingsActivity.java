@@ -4,13 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
 import com.wake_e.adapt.LocationAdapter;
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
+import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.model.Slide;
+import com.wake_e.tools.TokenRequester;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -40,6 +46,7 @@ public class SettingsActivity extends Activity {
 	public static SettingsActivity that;
 	private List<Slide> dbSlide;
 	private TextView addAccount;
+	private Bundle bundle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,8 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.settings);
 
-		//
+		this.bundle = savedInstanceState;
+
 		Display ecran = getWindowManager().getDefaultDisplay(); 
 		int largeur= ecran.getWidth();
 		
@@ -163,22 +171,39 @@ public class SettingsActivity extends Activity {
 		}
 	};
 
+	private void pickUserAccount() {
+	    String[] accountTypes = new String[]{"com.google"};
+	    Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+	            accountTypes, false, null, null, null, null);
+	    startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == RESULT_OK) {
+			if (requestCode == WakeEConstants.WakeEAPICalls.ACCOUNT_CODE) {
+				String user = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+				TokenRequester.initiateRequest(that, user);
+			}
+		}
+	}
+
 	private OnClickListener credentialStart = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Intent i = new Intent(getApplicationContext(), CredentialActivity.class);
-			i.putExtra("type", "gmail");
-			startActivity(i);
-			if (Controller.getInstance(that).getCredentials() != null) {
-				addAccount.setCompoundDrawables(null, null, null, null);
-				addAccount.setText("Gmail");
-				addAccount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.gmail, 0, 0, 0);
+			Credentials cr = Controller.getInstance(
+					that.getApplicationContext()).getCredentials("gmail");
+			if (cr != null) {
+				TokenRequester.initiateRequest(that, cr.getUser());
+			} else {
+				pickUserAccount();
 			}
 		}
 	};
 
 	private OnClickListener locationStart = new OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
 			final Dialog dialog = new Dialog(SettingsActivity.this);
