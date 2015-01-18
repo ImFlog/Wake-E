@@ -179,6 +179,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	private OnClickListener switchToConfig = new OnClickListener() {
@@ -187,6 +188,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	

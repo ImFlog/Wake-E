@@ -208,6 +208,7 @@ public class SettingsActivity extends Activity {
 		public void onClick(View v) {
 			final Dialog dialog = new Dialog(SettingsActivity.this);
 			dialog.setContentView(R.layout.location);
+			dialog.setTitle("Localisation");
 
 			final EditText locationName = (EditText)dialog.findViewById(R.id.locationName);
 			final EditText locationAddress = (EditText)dialog.findViewById(R.id.locationAddress);

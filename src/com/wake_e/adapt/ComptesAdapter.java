@@ -54,7 +54,7 @@ public class ComptesAdapter extends BaseAdapter{
 		holder.name.setText(locations.get(position).getName());
 
 		holder.city = (TextView)convertView.findViewById(R.id.locationCity);
-		holder.city.setText(locations.get(position).getCity());
+		holder.city.setText(locations.get(position).getAddress());
 
 		convertView.setTag(holder);
 		holder = (ViewHolder) convertView.getTag();
