@@ -24,6 +24,11 @@
     <string name="slides">SLIDES</string>
     <string name="destination">Destination</string>
     <string name="home">Domicile</string>
+    <string name="temperature_def">0°C</string>
+    <string name="wind_def">0km/h</string>
+    <string name="humidity_def">0%</string>
+    <string name="city_def">Nice</string>
+    <string name="title_activity_conf_reveil">ConfReveilActivity</string>
     <string name="sound">SONNERIES</string>
     <string name="add_compte">Ajouter un compte</string>
     <string name="add_localisation">Ajouter une localisation</string>
@@ -32,5 +37,10 @@
     <string name="heureArrivee">Heure d arrivée</string>
     <string name="lieuArrivee">Destination</string>
     <string name="depart">Départ</string>
-
+    <string name="save">Sauvegarder</string>
+    <string name="cancel">Annuler</string>
+    <string name="locationName">Nom</string>
+    <string name="locationAddress">Adresse</string>
+    <string name="create">Créer</string>
+    <string name="title_activity_snooze">SnoozeActivity</string>
 </resources>

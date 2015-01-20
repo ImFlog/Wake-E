@@ -11,20 +11,40 @@ public class Meteo {
     private String type;
 
     //meteo's temperature
-    private int temperature;
+    private double temperature;
 
     //meteo's humidity
     private double humidite;
 
     //meteo's wind strength
     private double windStrength;
-
     
-    private Meteo() {
+    //meteo's icon
+    private String icon; 
+
+    //meteo's city
+    private String city ;
+    
+    public Meteo(){
+    	super();
+    }
+    
+    public Meteo(String city) {
 	super();
+	this.city = city;
     }
 
-    /**
+    public Meteo(String city, String icon, int humidity, float temp,
+			float wind) {
+		// TODO Auto-generated constructor stub
+    	this.city = city;
+    	this.icon = icon;
+    	this.humidite = humidity;
+    	this.temperature = temp;
+    	this.windStrength = wind;
+	}
+
+	/**
      * @brief get the meteo's icon
      * @return an icon regarding the meteo's caracteristics
      */
@@ -44,7 +64,7 @@ public class Meteo {
     /**
      * @return the temperature's type
      */
-    public int getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
     
@@ -61,5 +81,21 @@ public class Meteo {
     public double getWindStrength() {
         return windStrength;
     }
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
 
 }

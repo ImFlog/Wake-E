@@ -6,9 +6,14 @@ import java.util.Vector;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import com.wake_e.fragment.PageHomePageFragment;
+
 import com.wake_e.model.Slide;
 import com.wake_e.model.sqlite.WakeEDBHelper;
+import com.wake_e.fragment.PageReveilFragment;
+import com.wake_e.fragment.station.PageAgendaFragment;
+import com.wake_e.fragment.station.PageMailFragment;
+import com.wake_e.fragment.station.PageMeteoFragment;
+
 
 /**
  * @brief Used to manager the slides in the morning
@@ -20,19 +25,20 @@ public class SlidesManager {
 	// via les paramètres globaux.
 	private List<Slide> slides;
 	private Fragment homePage;
+	private WakeEDBHelper db;
 
 	/**
 	 * 
 	 */
-	private SlidesManager() {
+	private SlidesManager(WakeEDBHelper db) {
 		super();
+		this.db = db;
 		slides = new Vector<Slide>();
 	}
 
 	public SlidesManager(Context context, WakeEDBHelper db){
-		this();
-		homePage = Fragment.instantiate(context,PageHomePageFragment.class.getName());
-		this.loadSlides(db);
+		this(db);
+		this.loadSlides();
 	}
 
 	/**
@@ -65,7 +71,7 @@ public class SlidesManager {
 	 * @brief charger la base contenant les slides que l'utilisateur veut voir
 	 * @param context le contexte
 	 */
-	private void loadSlides(WakeEDBHelper db) {
+	private void loadSlides() {
 		this.slides = db.getAllSlides();
 	} 
 
@@ -86,11 +92,13 @@ public class SlidesManager {
 	}
 
 	/**
+	 * @param slides 
 	 * @brief update the slides table in the database
 	 * @param db the WakeEDBHelper
 	 */
-	public void updateSlides(WakeEDBHelper db) {
-		db.updateSlides(this.slides);
+	public void updateSlides(List<Slide> slides) {
+		db.updateSlides(slides);
+		loadSlides();
 	}
 
 }

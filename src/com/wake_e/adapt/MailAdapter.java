@@ -2,6 +2,7 @@ package com.wake_e.adapt;
 
 import java.util.List;
 
+import com.wake_e.MainActivity;
 import com.wake_e.R;
 import com.wake_e.model.Mail;
 
@@ -61,6 +62,10 @@ public class MailAdapter extends BaseAdapter {
 
 	        holder.content 	= (TextView)convertView.findViewById(R.id.mailBody);
 	        holder.content.setText(Html.fromHtml(mails.get(position).getContent()));
+
+	        holder.subject.setTypeface(MainActivity.future);
+	        holder.from.setTypeface(MainActivity.future);
+	        holder.content.setTypeface(MainActivity.future);
 
 	        convertView.setTag(holder);
 	        holder = (ViewHolder) convertView.getTag();
