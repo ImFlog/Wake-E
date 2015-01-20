@@ -57,10 +57,6 @@ public class MainActivity extends FragmentActivity {
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
 		List<Fragment> fragments = controller.getVisibleFragments();
 
-		//Doesn't work for now ...
-		// It was supposed to auto update the credentials
-//		checkCredentials(controller);
-
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
 		this.mPagerAdapter = new MyPagerAdapter(

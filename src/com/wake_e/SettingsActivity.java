@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 
@@ -90,7 +89,7 @@ public class SettingsActivity extends Activity {
 		// ######## ACCOUNTS #########
 
 		addAccount = (TextView)findViewById(R.id.addAccount);
-		if (Controller.getInstance(this).getCredentials() != null) {
+		if (!Controller.getInstance(this).getCredentials().isEmpty()) {
 			addAccount.setCompoundDrawables(null, null, null, null);
 			addAccount.setText("Gmail");
 			addAccount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.gmail, 0, 0, 0);
@@ -203,6 +202,9 @@ public class SettingsActivity extends Activity {
 			} else {
 				pickUserAccount();
 			}
+			addAccount.setCompoundDrawables(null, null, null, null);
+			addAccount.setText("Gmail");
+			addAccount.setCompoundDrawablesWithIntrinsicBounds(R.drawable.gmail, 0, 0, 0);
 		}
 	};
 
