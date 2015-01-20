@@ -182,7 +182,12 @@ public class Controller {
      */
     public void enableAlarm(boolean enabled, Context context){
 	this.alarmsManager.enableAlarm(enabled, context);
-	this.showNotification(context);
+	if(enabled){
+	    this.showNotification(context);   
+	} else {
+	    this.hideNotification(context);
+	}
+
     }
 
     /**
@@ -306,6 +311,12 @@ public class Controller {
 		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	// mId allows you to update the notification later on.
 	mNotificationManager.notify(WakeEConstants.WakeENotif.NOTIFICATION, mBuilder.build());
+    }
+
+    private void hideNotification(Context context){
+	NotificationManager mNotificationManager =
+		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	mNotificationManager.cancel(WakeEConstants.WakeENotif.NOTIFICATION);	
     }
 
 }
