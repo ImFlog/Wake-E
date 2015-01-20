@@ -86,6 +86,15 @@ public abstract class WakeEConstants
     private WakeEConstants(){
 	super();
     }
+    
+    
+    /**
+     * @brief notif constants
+     * @author Wake-E team
+     */
+    public abstract class WakeENotif{
+	public static final int NOTIFICATION = 10002; //Any unique number for this notification
+    }
 
 }
 
