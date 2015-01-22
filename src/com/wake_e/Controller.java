@@ -2,14 +2,17 @@ package com.wake_e;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
-
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.model.Mail;
@@ -67,7 +70,7 @@ public class Controller {
 		this.slidesManager = new SlidesManager(context, db);
 		this.credentialsManager = new CredentialsManager(db);
 		this.alarmsManager = new AlarmsManager();
-		this.locationsManager= new LocationsManager(context, db); 
+		this.locationsManager= new LocationsManager(context, db);
 		this.bellManager = new BellManager(context, db); 
 	}
 
@@ -182,6 +185,12 @@ public class Controller {
 	 */
 	public void enableAlarm(boolean enabled, Context context){
 		this.alarmsManager.enableAlarm(enabled, context);
+		if(enabled){
+			this.showNotification(context);   
+		} else {
+			this.hideNotification(context);
+		}
+
 	}
 
 	/**
@@ -268,17 +277,54 @@ public class Controller {
 		return this.meteoDeliverer;
 	}
 
+	// ########### BELL ###########
+	/**
+	 * @brief bellManager getter.
+	 * @return the bellManager
+	 */
+	public BellManager getBellManager() {
+		return this.bellManager;
+	}
+	
 
 	public List<Location> getLocations() {
 		return this.locationsManager.getLocations();
 	}
-	
-	// ########### BELL ###########
-	/**
-	 * @brief get the BellManager
-	 * @return BellManager
-	 */
-	public BellManager getBellManager(){
-		return this.bellManager;
+
+	private void showNotification(Context context) {
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(context)
+		.setSmallIcon(R.drawable.notification)
+		.setOngoing(true)
+		.setContentTitle("Wake-E")
+		.setContentText("Sleep tight!");
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(context, MainActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(MainActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+				stackBuilder.getPendingIntent(
+						0,
+						PendingIntent.FLAG_UPDATE_CURRENT
+						);
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(WakeEConstants.WakeENotif.NOTIFICATION, mBuilder.build());
+	}
+
+	private void hideNotification(Context context){
+		NotificationManager mNotificationManager =
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.cancel(WakeEConstants.WakeENotif.NOTIFICATION);	
 	}
 }
