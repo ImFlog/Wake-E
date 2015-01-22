@@ -25,18 +25,20 @@ public class SlidesManager {
 	// via les paramètres globaux.
 	private List<Slide> slides;
 	private Fragment homePage;
+	private WakeEDBHelper db;
 
 	/**
 	 * 
 	 */
-	private SlidesManager() {
+	private SlidesManager(WakeEDBHelper db) {
 		super();
+		this.db = db;
 		slides = new Vector<Slide>();
 	}
 
 	public SlidesManager(Context context, WakeEDBHelper db){
-		this();
-		this.loadSlides(db);
+		this(db);
+		this.loadSlides();
 	}
 
 	/**
@@ -69,7 +71,7 @@ public class SlidesManager {
 	 * @brief charger la base contenant les slides que l'utilisateur veut voir
 	 * @param context le contexte
 	 */
-	private void loadSlides(WakeEDBHelper db) {
+	private void loadSlides() {
 		this.slides = db.getAllSlides();
 	} 
 
@@ -90,11 +92,13 @@ public class SlidesManager {
 	}
 
 	/**
+	 * @param slides 
 	 * @brief update the slides table in the database
 	 * @param db the WakeEDBHelper
 	 */
-	public void updateSlides(WakeEDBHelper db) {
-		db.updateSlides(this.slides);
+	public void updateSlides(List<Slide> slides) {
+		db.updateSlides(slides);
+		loadSlides();
 	}
 
 }

@@ -3,12 +3,14 @@ package com.wake_e;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,10 +49,16 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
 		
+		Controller controller = Controller.getInstance(this.getApplicationContext());
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
-		
+
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
-		List<Fragment> fragments = Controller.getInstance(this.getApplicationContext()).getVisibleFragments();
+		List<Fragment> fragments = controller.getVisibleFragments();
+
+		//Doesn't work for now ...
+		// It was supposed to auto update the credentials
+//		checkCredentials(controller);
 
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
@@ -111,12 +119,6 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 
-
-	public void onClick(View v) {
-	    Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-	    startActivity(i);
-	}
-
 	private OnTouchListener touchListenerBouton1 = new View.OnTouchListener() {
 		/**
 		 * Old Value
@@ -146,8 +148,7 @@ public class MainActivity extends FragmentActivity {
 			        	try {
 							Thread.sleep(400);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							Log.e("MainActivity onTouch", e.getMessage());
 						}
 			          }
 			          v.setY(0);
@@ -158,8 +159,7 @@ public class MainActivity extends FragmentActivity {
 					        	try {
 									Thread.sleep(400);
 								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									Log.e("MainActivity onTouch", e.getMessage());
 								}
 					          }
 					          v.setY(positionSlider);
@@ -178,6 +178,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	private OnClickListener switchToConfig = new OnClickListener() {
@@ -186,6 +187,7 @@ public class MainActivity extends FragmentActivity {
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
 			startActivity(i);
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
 	

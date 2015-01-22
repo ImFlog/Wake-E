@@ -16,9 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
+import com.wake_e.Controller;
+import com.wake_e.MainActivity;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Location;
 
@@ -56,7 +62,7 @@ public class AlarmIntentService extends IntentService {
     // end hour
     private long endHour;
 
-
+    
     /**
      * @param depart
      * @param arrivee
@@ -272,6 +278,10 @@ public class AlarmIntentService extends IntentService {
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;
 	int cpt = 0;
+	
+	//On ne commence la synchronisation qu'à partir de 4h avant la date de réveil
+	while(this.computeWakeUp() < (c.getTimeInMillis() + 14400000)){}
+	
 	while (!it_is_time) {
 	    try {
 		Thread.sleep(1000);
@@ -294,5 +304,6 @@ public class AlarmIntentService extends IntentService {
 	}
 
     }
-
+    
+   
 }

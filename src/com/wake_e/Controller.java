@@ -2,14 +2,17 @@ package com.wake_e;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
-
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.model.Mail;
@@ -91,6 +94,14 @@ public class Controller {
 
     // ########### SLIDES ###########
     /**
+     * @brief retrive the manager
+     * @return slideManager object
+     */
+    public SlidesManager getSlideManager() {
+	return this.slidesManager;
+    }
+
+    /**
      * @brief retrieve visible fragments
      * @return the visible fragments
      */
@@ -98,13 +109,14 @@ public class Controller {
 	return this.slidesManager.getVisibleFragments(Controller.context);
     }
 
+
     /**
      * @brief update slides
      * @param slides
      *            the slides
      */
-    public void updateSlides() {
-	this.slidesManager.updateSlides(this.db);
+    public void updateSlides(List<Slide> slides) {
+	this.slidesManager.updateSlides(slides);
     }
 
     /**
@@ -170,8 +182,14 @@ public class Controller {
      */
     public void enableAlarm(boolean enabled, Context context){
 	this.alarmsManager.enableAlarm(enabled, context);
+	if(enabled){
+	    this.showNotification(context);   
+	} else {
+	    this.hideNotification(context);
+	}
+
     }
-    
+
     /**
      * @brief get all alarms
      * @return all alarms
@@ -185,7 +203,7 @@ public class Controller {
      * @return the alarm synchro
      */
     public AlarmSynchroIntentService getAlarmSynchro(){
-    	return this.alarmsManager.getAlarmSynchro();
+	return this.alarmsManager.getAlarmSynchro();
     }
 
     /**
@@ -194,9 +212,9 @@ public class Controller {
      * @param context 
      */
     public void enabledAlarmSynchro(boolean enabled, Context context){
-    	this.alarmsManager.enableAlarmSynchro(enabled, context);
+	this.alarmsManager.enableAlarmSynchro(enabled, context);
     }
-    
+
     /**
      * @brief get the estimated wake up hour
      * @return the estimated wake up hour
@@ -206,9 +224,24 @@ public class Controller {
     }
 
     // ########### LOCATIONS ###########
+    /**
+     * @brief creer une Location
+     * @param name le nom de la Location
+     * @param address l'adresse de la Location
+     * @return une Location
+     * @throws IOException
+     */
+    public Location createLocation(String name, String address) throws IOException{
+	return this.locationsManager.createLocation(name, address, this.db);
+    }
 
-    public Location createLocation(String address) throws IOException{
-    	return this.locationsManager.createLocation(address, this.db);
+    /**
+     * @brief vérifier si une location porte un nom donné
+     * @param name un nom donné 
+     * @return TRUE ou FALSE
+     */
+    public boolean locationExists(String name){
+	return this.locationsManager.exists(name);
     }
 
     // ########### MAILS ###########
@@ -222,7 +255,7 @@ public class Controller {
     public MailDeliverer getMailDeliverer() {
 	return this.mailDeliverer;
     }
-    
+
     // ########### AGENDA ###########
     /**
      * @brief get the AgendaDeliverer
@@ -232,17 +265,58 @@ public class Controller {
 	return this.agendaDeliverer;
     }
 
- // ########### METEO ###########
+    // ########### METEO ###########
     /**
      * @brief get the MeteoDeliverer
      * @return the MeteoDeliverer
      */
     public MeteoDeliverer getMeteoDeliverer(){
-    	return this.meteoDeliverer;
+	return this.meteoDeliverer;
     }
 
 
-	public Set<Location> getLocations() {
-		return this.locationsManager.getLocations();
-	}
+    public List<Location> getLocations() {
+	return this.locationsManager.getLocations();
+    }
+
+
+
+
+    private void showNotification(Context context) {
+	NotificationCompat.Builder mBuilder =
+		new NotificationCompat.Builder(context)
+	.setSmallIcon(R.drawable.notification)
+	.setOngoing(true)
+	.setContentTitle("Wake-E")
+	.setContentText("Sleep tight!");
+	// Creates an explicit intent for an Activity in your app
+	Intent resultIntent = new Intent(context, MainActivity.class);
+
+	// The stack builder object will contain an artificial back stack for the
+	// started Activity.
+	// This ensures that navigating backward from the Activity leads out of
+	// your application to the Home screen.
+	TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+	// Adds the back stack for the Intent (but not the Intent itself)
+	stackBuilder.addParentStack(MainActivity.class);
+	// Adds the Intent that starts the Activity to the top of the stack
+	stackBuilder.addNextIntent(resultIntent);
+	PendingIntent resultPendingIntent =
+		stackBuilder.getPendingIntent(
+			0,
+			PendingIntent.FLAG_UPDATE_CURRENT
+			);
+	mBuilder.setContentIntent(resultPendingIntent);
+	NotificationManager mNotificationManager =
+		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	// mId allows you to update the notification later on.
+	mNotificationManager.notify(WakeEConstants.WakeENotif.NOTIFICATION, mBuilder.build());
+    }
+
+    private void hideNotification(Context context){
+	NotificationManager mNotificationManager =
+		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	mNotificationManager.cancel(WakeEConstants.WakeENotif.NOTIFICATION);	
+    }
+
 }
