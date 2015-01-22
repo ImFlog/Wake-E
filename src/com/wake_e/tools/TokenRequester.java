@@ -23,7 +23,7 @@ public class TokenRequester extends AsyncTask<Void, Void, Void> {
 	public static void initiateRequest(Activity mActivity, String user) {
 		// Async token request
 		TokenRequester requester = new TokenRequester(
-				mActivity, user, WakeEConstants.WakeEAPICalls.GMAIL_SCOPE);
+				mActivity, user, WakeEConstants.APICalls.GMAIL_SCOPE);
 		requester.execute();
 	}
 

@@ -194,7 +194,7 @@ public class SettingsActivity extends Activity {
 		String[] accountTypes = new String[]{"com.google"};
 		Intent intent = AccountPicker.newChooseAccountIntent(null, null,
 				accountTypes, false, null, null, null, null);
-		startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
+		startActivityForResult(intent, WakeEConstants.APICalls.ACCOUNT_CODE);
 	}
 
 	@Override
@@ -202,13 +202,13 @@ public class SettingsActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK) {
-			if (requestCode == WakeEConstants.WakeEAPICalls.ACCOUNT_CODE) {
+			if (requestCode == WakeEConstants.APICalls.ACCOUNT_CODE) {
 					String user = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 					TokenRequester.initiateRequest(that, user);
-			} else if (requestCode == WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR) {
+			} else if (requestCode == WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR) {
 				// Receiving a result that follows a GoogleAuthException, try auth again
 				pickUserAccount();
-			} else if (requestCode == WakeEConstants.WakeEAPICalls.REQUEST_CODE_OPEN_AUDIO) {
+			} else if (requestCode == WakeEConstants.APICalls.REQUEST_CODE_OPEN_AUDIO) {
 				Uri audioFileUri = data.getData();				
 				String[] proj = { MediaStore.Images.Media.DATA };
 			    CursorLoader loader = new CursorLoader(this.getApplicationContext(), audioFileUri, proj, null, null, null);
@@ -248,7 +248,7 @@ public class SettingsActivity extends Activity {
 							.getConnectionStatusCode();
 					Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode,
 							SettingsActivity.this,
-							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+							WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
 					dialog.show();
 				} else if (e instanceof UserRecoverableAuthException) {
 					// Unable to authenticate, such as when the user has not yet granted
@@ -256,7 +256,7 @@ public class SettingsActivity extends Activity {
 					// Forward the user to an activity in Google Play services.
 					Intent intent = ((UserRecoverableAuthException)e).getIntent();
 					startActivityForResult(intent,
-							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+							WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
 				}
 			}
 		});
@@ -361,7 +361,7 @@ public class SettingsActivity extends Activity {
 			Intent intent = new Intent();
 			intent.setType("audio/mp3");
 			intent.setAction(Intent.ACTION_GET_CONTENT);
-			startActivityForResult(Intent.createChooser(intent, "Cherche sonnerie"), WakeEConstants.WakeEAPICalls.REQUEST_CODE_OPEN_AUDIO);
+			startActivityForResult(Intent.createChooser(intent, "Cherche sonnerie"), WakeEConstants.APICalls.REQUEST_CODE_OPEN_AUDIO);
 		}
 	};
 }

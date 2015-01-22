@@ -319,12 +319,12 @@ public class Controller {
 		NotificationManager mNotificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(WakeEConstants.WakeENotif.NOTIFICATION, mBuilder.build());
+		mNotificationManager.notify(WakeEConstants.Notif.NOTIFICATION, mBuilder.build());
 	}
 
 	private void hideNotification(Context context){
 		NotificationManager mNotificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.cancel(WakeEConstants.WakeENotif.NOTIFICATION);	
+		mNotificationManager.cancel(WakeEConstants.Notif.NOTIFICATION);	
 	}
 }
