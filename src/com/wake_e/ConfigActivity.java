@@ -87,7 +87,7 @@ public class ConfigActivity extends Activity {
 		mvelo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				transport = WakeEConstants.WakeETransports.TRANSPORT_VELO;
+				transport = WakeEConstants.Transports.TRANSPORT_VELO;
 				mvelo.setImageResource(R.drawable.velo);
 				mtrain.setImageResource(R.drawable.utrain);
 				mvoiture.setImageResource(R.drawable.uvoiture);
@@ -96,7 +96,7 @@ public class ConfigActivity extends Activity {
 		mvoiture.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				transport = WakeEConstants.WakeETransports.TRANSPORT_VOITURE;
+				transport = WakeEConstants.Transports.TRANSPORT_VOITURE;
 				mvelo.setImageResource(R.drawable.uvelo);
 				mtrain.setImageResource(R.drawable.utrain);
 				mvoiture.setImageResource(R.drawable.voiture);
@@ -105,7 +105,7 @@ public class ConfigActivity extends Activity {
 		mtrain.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				transport = WakeEConstants.WakeETransports.TRANSPORT_COMMUN;
+				transport = WakeEConstants.Transports.TRANSPORT_COMMUN;
 				mvelo.setImageResource(R.drawable.uvelo);
 				mtrain.setImageResource(R.drawable.train);
 				mvoiture.setImageResource(R.drawable.uvoiture);
@@ -247,7 +247,7 @@ public class ConfigActivity extends Activity {
 							depart,
 							arrivee,
 							preparation,
-							null,
+							Controller.getInstance(v.getContext()).getBellManager().getBell().getPath(),
 							transport,
 							heureArrivee);
 				} catch (NoRouteFoundException e) {

@@ -24,6 +24,7 @@ import com.wake_e.services.deliverers.AgendaDeliverer;
 import com.wake_e.services.deliverers.MailDeliverer;
 import com.wake_e.services.deliverers.MeteoDeliverer;
 import com.wake_e.services.managers.AlarmsManager;
+import com.wake_e.services.managers.BellManager;
 import com.wake_e.services.managers.CredentialsManager;
 import com.wake_e.services.managers.LocationsManager;
 import com.wake_e.services.managers.SlidesManager;
@@ -49,6 +50,7 @@ public class Controller {
 	private CredentialsManager credentialsManager;
 	private AlarmsManager alarmsManager;
 	private LocationsManager locationsManager;
+	private BellManager bellManager;
 
 	private static Controller controller;
 
@@ -68,7 +70,8 @@ public class Controller {
 		this.slidesManager = new SlidesManager(context, db);
 		this.credentialsManager = new CredentialsManager(db);
 		this.alarmsManager = new AlarmsManager();
-		this.locationsManager= new LocationsManager(context, db); 
+		this.locationsManager= new LocationsManager(context, db);
+		this.bellManager = new BellManager(context, db); 
 	}
 
 	/**
@@ -187,7 +190,6 @@ public class Controller {
 		} else {
 			this.hideNotification(context);
 		}
-
 	}
 
 	/**
@@ -289,6 +291,15 @@ public class Controller {
 		return this.meteoDeliverer;
 	}
 
+	// ########### BELL ###########
+	/**
+	 * @brief bellManager getter.
+	 * @return the bellManager
+	 */
+	public BellManager getBellManager() {
+		return this.bellManager;
+	}
+
 	private void showNotification(Context context) {
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(context)
@@ -317,12 +328,12 @@ public class Controller {
 		NotificationManager mNotificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(WakeEConstants.WakeENotif.NOTIFICATION, mBuilder.build());
+		mNotificationManager.notify(WakeEConstants.Notif.NOTIFICATION, mBuilder.build());
 	}
 
 	private void hideNotification(Context context){
 		NotificationManager mNotificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.cancel(WakeEConstants.WakeENotif.NOTIFICATION);	
+		mNotificationManager.cancel(WakeEConstants.Notif.NOTIFICATION);	
 	}
 }
