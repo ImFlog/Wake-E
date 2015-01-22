@@ -118,8 +118,8 @@ public class Controller {
 	 * @param slides
 	 *            the slides
 	 */
-	public void updateSlides(List<Slide> slides) {
-		this.slidesManager.updateSlides(slides);
+	public void updateSlides() {
+		this.slidesManager.updateSlides();
 	}
 
 	/**
@@ -128,6 +128,15 @@ public class Controller {
 	 */
 	public List<Slide> getSlides() {
 		return this.slidesManager.getSlides();
+	}
+	
+	/**
+	 * @brief returns a particular slide.
+	 * @param slide_name.
+	 * @return a Slide object.
+	 */
+	public Slide getSlide(String slide_name) {
+		return this.slidesManager.getSlide(slide_name);
 	}
 
 	//########### CREDENTIALS ###########

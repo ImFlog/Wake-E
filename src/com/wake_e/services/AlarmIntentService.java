@@ -16,17 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
 import com.wake_e.Controller;
-import com.wake_e.MainActivity;
+import com.wake_e.SnoozeActivity;
 import com.wake_e.constants.WakeEConstants;
+import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
+import com.wake_e.tools.TokenRequester;
 
 /**
  * @author Wake-E team
@@ -62,7 +60,6 @@ public class AlarmIntentService extends IntentService {
     // end hour
     private long endHour;
 
-    
     /**
      * @param depart
      * @param arrivee
@@ -71,7 +68,8 @@ public class AlarmIntentService extends IntentService {
      * @brief Alarm's constructor
      */
     public AlarmIntentService(Location depart, Location arrivee,
-	    long preparationDuration, String ringtone, String transport, long endHour) {
+	    long preparationDuration, String ringtone, String transport,
+	    long endHour) {
 
 	super("AlarmIntentService");
 	this.id = UUID.randomUUID();
@@ -160,8 +158,9 @@ public class AlarmIntentService extends IntentService {
      */
     public Long computeWakeUp() {
 	Calendar c = Calendar.getInstance();
-	Long wake_up = c.getTimeInMillis() + this.travelDuration + this.preparationDuration;
-	if(wake_up > this.endHour){
+	Long wake_up = c.getTimeInMillis() + this.travelDuration
+		+ this.preparationDuration;
+	if (wake_up > this.endHour) {
 	    wake_up = c.getTimeInMillis();
 	}
 	return wake_up;
@@ -179,8 +178,16 @@ public class AlarmIntentService extends IntentService {
      * @brief ring the alarm
      */
     public void ring() {
-	// TODO make the ringtone ring (Activity in order not to block the app)
-	// Lancement de l'activity réveil (snooze, etc)
+	// Est-ce que l'on a déjà des credentials ?
+	Credentials c = Controller.getInstance(Controller.getContext())
+		.getCredentials(WakeEConstants.Credentials.GMAIL);
+	// Si oui on refresh le token
+	if(c != null){
+	    TokenRequester.initiateRequest(null, c.getUser());
+	}
+	// Une fois que le token est refreshed on lance la snooze activity
+	Intent i = new Intent(Controller.getContext(), SnoozeActivity.class);
+	this.startActivity(i);
     }
 
     /**
@@ -215,17 +222,26 @@ public class AlarmIntentService extends IntentService {
     public void synchronize() {
 	StringBuilder stringBuilder = new StringBuilder();
 	try {
-	    //Construire l'URL a questionner
+	    // Construire l'URL a questionner
 	    String url = "http://route.cit.api.here.com/routing/7.2/calculateroute.json?"
-		    + "app_id=" + WakeEConstants.WakeENokiaMaps.app_id
-		    + "&app_code=" + WakeEConstants.WakeENokiaMaps.app_code
-		    + "&waypoint0=geo!" + this.depart.getGps().getLatitude() + "," + this.depart.getGps().getLongitude()
-		    + "&waypoint1=geo!" + this.arrivee.getGps().getLatitude() + "," + this.arrivee.getGps().getLongitude()
-		    + "&mode=fastest;" + this.modeTransport
+		    + "app_id="
+		    + WakeEConstants.Here.app_id
+		    + "&app_code="
+		    + WakeEConstants.Here.app_code
+		    + "&waypoint0=geo!"
+		    + this.depart.getGps().getLatitude()
+		    + ","
+		    + this.depart.getGps().getLongitude()
+		    + "&waypoint1=geo!"
+		    + this.arrivee.getGps().getLatitude()
+		    + ","
+		    + this.arrivee.getGps().getLongitude()
+		    + "&mode=fastest;"
+		    + this.modeTransport
 		    + ";"
 		    + "traffic:enabled";
 
-	    //Envoi de la requete
+	    // Envoi de la requete
 	    HttpPost httppost = new HttpPost(url);
 
 	    HttpClient client = new DefaultHttpClient();
@@ -235,7 +251,7 @@ public class AlarmIntentService extends IntentService {
 
 	    response = client.execute(httppost);
 
-	    //Reception de la reponse
+	    // Reception de la reponse
 	    HttpEntity entity = response.getEntity();
 	    InputStream stream = entity.getContent();
 	    int b;
@@ -247,7 +263,7 @@ public class AlarmIntentService extends IntentService {
 	}
 
 	JSONObject jsonObject = new JSONObject();
-	//Parsing du JSON
+	// Parsing du JSON
 	try {
 
 	    jsonObject = new JSONObject(stringBuilder.toString());
@@ -264,8 +280,8 @@ public class AlarmIntentService extends IntentService {
 
 	    JSONObject time = summary.getJSONObject("traffictime");
 
-	    //	    Log.i("Distance", time.toString());
-	    //Mise a jour du temps de trajet
+	    // Log.i("Distance", time.toString());
+	    // Mise a jour du temps de trajet
 	    this.travelDuration = Long.valueOf(time.toString()).longValue();
 
 	} catch (JSONException e) {
@@ -278,10 +294,12 @@ public class AlarmIntentService extends IntentService {
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;
 	int cpt = 0;
-	
-	//On ne commence la synchronisation qu'à partir de 4h avant la date de réveil
-	while(this.computeWakeUp() < (c.getTimeInMillis() + 14400000)){}
-	
+
+	// On ne commence la synchronisation qu'à partir de 4h avant la date de
+	// réveil
+	while (this.computeWakeUp() < (c.getTimeInMillis() + 14400000)) {
+	}
+
 	while (!it_is_time) {
 	    try {
 		Thread.sleep(1000);
@@ -297,13 +315,12 @@ public class AlarmIntentService extends IntentService {
 	    // Si l'heure du portable égale ou inférieur à l'heure de réveil
 	    // on lance une activity pour sonner
 	    if (this.computeWakeUp() >= c.getTimeInMillis()) {
-		//check mails, agenda & meteo
+		// check mails, agenda & meteo
 		it_is_time = true;
 		this.ring();
 	    }
 	}
 
     }
-    
-   
+
 }

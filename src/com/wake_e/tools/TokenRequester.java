@@ -44,7 +44,12 @@ public class TokenRequester extends AsyncTask<Void, Void, Void> {
 			if (token != null) {
 				Log.i("Token request", token);
 				Credentials c = new Credentials("gmail", mEmail, token);
-				Controller.getInstance((Context) mActivity).updateCredentials(c);
+				if(this.mActivity != null){
+				    Controller.getInstance((Context) mActivity).updateCredentials(c);
+				} else {
+				    Controller.getInstance(Controller.getContext()).updateCredentials(c);
+				}
+				
 			} else {
 				Log.i("Token request", "Oups no token");
 			}
