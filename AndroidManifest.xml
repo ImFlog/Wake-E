@@ -32,15 +32,21 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreenActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-                        <intent-filter>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" />        
         <activity
             android:name=".fragment.PageHomePageFragment"
             android:screenOrientation="portrait" />
@@ -78,5 +84,4 @@
 
         </activity>
     </application>
-
 </manifest>
