@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wake_e.adapt.MyPagerAdapter;
-import com.wake_e.model.Credentials;
 import com.wake_e.tools.DigitClockCustom;
 
 public class MainActivity extends FragmentActivity {
