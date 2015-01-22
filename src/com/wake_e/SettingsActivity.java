@@ -1,5 +1,10 @@
 package com.wake_e;
 
+import java.io.File;
+
+import android.app.Activity;
+import android.content.CursorLoader;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +21,20 @@ import com.wake_e.fragment.station.PageMeteoFragment;
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.model.Slide;
+import com.wake_e.services.managers.BellManager;
 import com.wake_e.tools.TokenRequester;
 
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.Dialog;
+
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+
+import android.provider.MediaStore;
+
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -30,7 +42,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+
+import android.widget.Button;
+
 import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,19 +58,19 @@ public class SettingsActivity extends Activity {
 	private TextView cancel;
 	private TextView save;
 	private int size;
+	private Button buttonBell;
 	public static SettingsActivity that;
 	private List<Slide> dbSlide;
 	private TextView addAccount;
 	private Bundle bundle;
-
+	private File audioFile;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		that = this;
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.settings);
-
 		this.bundle = savedInstanceState;
-
 		Display ecran = getWindowManager().getDefaultDisplay(); 
 		int largeur= ecran.getWidth();
 
@@ -106,6 +122,9 @@ public class SettingsActivity extends Activity {
 
 		// ####### SOUNDS ########
 		ListView sounds = (ListView)findViewById(R.id.l_sounds);
+		buttonBell = (Button)findViewById(R.id.open_bell);
+        buttonBell.setOnClickListener(buttonOpenOnClickListener);
+        buttonBell.setText(Controller.getInstance(getApplicationContext()).getBellManager().getBell().getName());
 	}
 
 	@Override
@@ -175,7 +194,7 @@ public class SettingsActivity extends Activity {
 		String[] accountTypes = new String[]{"com.google"};
 		Intent intent = AccountPicker.newChooseAccountIntent(null, null,
 				accountTypes, false, null, null, null, null);
-		startActivityForResult(intent, WakeEConstants.WakeEAPICalls.ACCOUNT_CODE);
+		startActivityForResult(intent, WakeEConstants.APICalls.ACCOUNT_CODE);
 	}
 
 	@Override
@@ -183,13 +202,22 @@ public class SettingsActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == RESULT_OK) {
-			if (requestCode == WakeEConstants.WakeEAPICalls.ACCOUNT_CODE) {
+			if (requestCode == WakeEConstants.APICalls.ACCOUNT_CODE) {
 					String user = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 					TokenRequester.initiateRequest(that, user);
-			} else if (requestCode == WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR) {
+			} else if (requestCode == WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR) {
 				// Receiving a result that follows a GoogleAuthException, try auth again
 				pickUserAccount();
-			}
+			} else if (requestCode == WakeEConstants.APICalls.REQUEST_CODE_OPEN_AUDIO) {
+				Uri audioFileUri = data.getData();				
+				String[] proj = { MediaStore.Images.Media.DATA };
+			    CursorLoader loader = new CursorLoader(this.getApplicationContext(), audioFileUri, proj, null, null, null);
+			    Cursor cursor = loader.loadInBackground();
+			    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			    cursor.moveToFirst();
+			    audioFile = new File(cursor.getString(column_index));
+				buttonBell.setText(audioFile.getName());
+			} 
 		}
 	}
 
@@ -220,7 +248,7 @@ public class SettingsActivity extends Activity {
 							.getConnectionStatusCode();
 					Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode,
 							SettingsActivity.this,
-							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+							WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
 					dialog.show();
 				} else if (e instanceof UserRecoverableAuthException) {
 					// Unable to authenticate, such as when the user has not yet granted
@@ -228,7 +256,7 @@ public class SettingsActivity extends Activity {
 					// Forward the user to an activity in Google Play services.
 					Intent intent = ((UserRecoverableAuthException)e).getIntent();
 					startActivityForResult(intent,
-							WakeEConstants.WakeEAPICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
+							WakeEConstants.APICalls.REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
 				}
 			}
 		});
@@ -310,13 +338,16 @@ public class SettingsActivity extends Activity {
 					position++;
 				}
 			}
-			Controller.getInstance(that).updateSlides(slideList);
+			Controller controller = Controller.getInstance(that);
+			controller.updateSlides(slideList);
+			controller.getBellManager().setBell(audioFile);
+	        Log.i("calendar", Controller.getInstance(getApplicationContext()).getBellManager().getBell().toString());
 			finish();
 		}
 	};
 
-
 	private OnClickListener onCancelClick = new OnClickListener(){
+
 		@Override
 		public void onClick(View v) {
 			//CANCEL
@@ -324,4 +355,13 @@ public class SettingsActivity extends Activity {
 		}
 	};
 
+	private OnClickListener buttonOpenOnClickListener = new OnClickListener(){
+		@Override
+		public void onClick(View arg0) {
+			Intent intent = new Intent();
+			intent.setType("audio/mp3");
+			intent.setAction(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(Intent.createChooser(intent, "Cherche sonnerie"), WakeEConstants.APICalls.REQUEST_CODE_OPEN_AUDIO);
+		}
+	};
 }

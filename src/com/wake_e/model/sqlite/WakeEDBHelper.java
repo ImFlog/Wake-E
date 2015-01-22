@@ -43,6 +43,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	private static final String TABLE_CREDENTIALS = "credentials";
 	private static final String TABLE_LOCATIONS = "locations";
 	private static final String TABLE_MAIL = "mails";
+	private static final String TABLE_BELL = "bell";
 
 	// Table Create Statements
 	private static final String CREATE_TABLE_SLIDES = "CREATE TABLE "
@@ -67,6 +68,9 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ " subject VARCHAR(255),"
 			+ " sender VARCHAR(255),"
 			+ " body TEXT)";
+	
+	private static final String CREATE_TABLE_BELL = "CREATE TABLE "
+			+ TABLE_BELL + " (filename VARCHAR(255) PRIMARY KEY)";
 
 	/**
 	 * @param context
@@ -108,6 +112,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_CREDENTIALS);
 		db.execSQL(CREATE_TABLE_LOCATIONS);
 		db.execSQL(CREATE_TABLE_MAIL);
+		db.execSQL(CREATE_TABLE_BELL);
 		this.populateSlides(db);
 	}
 
@@ -342,7 +347,41 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CREDENTIALS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAIL);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BELL);
 		// create new tables
 		onCreate(db);
+	}
+	
+	//###### BELL #####
+	/**
+	 * Get the alarm bell.
+	 * @return String
+	 */
+	public String getBell() {
+		String bell = null;
+
+		String selectQuery = "SELECT * FROM " + TABLE_BELL;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if (c.moveToNext()) {
+			bell = c.getString(c.getColumnIndex("filename"));
+		}
+		return bell;
+	}
+	
+	/**
+	 * Define the alarm bell.
+	 * @param filename
+	 */
+	public void setBell(String filename) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		//First we erase everything
+		db.execSQL("DELETE FROM "+ TABLE_BELL);
+		// and add the bell
+		ContentValues values = new ContentValues();
+		values.put("filename", filename);
+		db.insert(TABLE_BELL, null, values);
 	}
 }
