@@ -16,7 +16,7 @@ public abstract class WakeEConstants
 	/**
 	 * Scope for gmail api auth.
 	 */
-	public static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+	public static final String GMAIL_SCOPE = "oauth2:https://www.googleapis.com/auth/gmail.readonly";
 
 	/**
 	 * API calls authorization code.
@@ -27,8 +27,19 @@ public abstract class WakeEConstants
 	 * Api calls account code.
 	 */
 	public static final int ACCOUNT_CODE = 1601;
+    
+	/**
+	 * Play service error.
+	 */
+	public static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+	
+	/**
+	 * Get alarm bell.
+	 */
+	public static final int REQUEST_CODE_OPEN_AUDIO = 1002;
     }
 
+    
 
     /**
      * @brief Parsing constants

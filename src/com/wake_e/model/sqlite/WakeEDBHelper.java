@@ -6,8 +6,6 @@ package com.wake_e.model.sqlite;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import android.content.ContentValues;
@@ -45,6 +43,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	private static final String TABLE_CREDENTIALS = "credentials";
 	private static final String TABLE_LOCATIONS = "locations";
 	private static final String TABLE_MAIL = "mails";
+	private static final String TABLE_BELL = "bell";
 
 	// Table Create Statements
 	private static final String CREATE_TABLE_SLIDES = "CREATE TABLE "
@@ -58,9 +57,10 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ "credentials_accessToken VARCHAR(255) NOT NULL)";
 
 	private static final String CREATE_TABLE_LOCATIONS= "CREATE TABLE "
-			+ TABLE_LOCATIONS + "(location_uid VARCHAR(16) PRIMARY KEY,"
+			+ TABLE_LOCATIONS + "(location_name VARCHAR(255) PRIMARY KEY,"
 			+ " location_point VARCHAR(255) NOT NULL, location_address VARCHAR(255) NOT NULL,"
 			+ " location_city VARCHAR(255) NOT NULL, location_cp VARCHAR(255) NOT NULL,"
+			+ " location_country VARCHAR(255) NOT NULL,"
 			+ " location_address_line VARCHAR(255) NOT NULL)";
 
 	private static final String CREATE_TABLE_MAIL = "CREATE TABLE "
@@ -68,6 +68,9 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			+ " subject VARCHAR(255),"
 			+ " sender VARCHAR(255),"
 			+ " body TEXT)";
+	
+	private static final String CREATE_TABLE_BELL = "CREATE TABLE "
+			+ TABLE_BELL + " (filename VARCHAR(255) PRIMARY KEY)";
 
 	/**
 	 * @param context
@@ -109,16 +112,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_CREDENTIALS);
 		db.execSQL(CREATE_TABLE_LOCATIONS);
 		db.execSQL(CREATE_TABLE_MAIL);
+		db.execSQL(CREATE_TABLE_BELL);
 		this.populateSlides(db);
 	}
 
 	//###### SLIDES #####
 	private void populateSlides(SQLiteDatabase db) {
-		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 1, true);
+		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 0, true);
 		this.createSlide(db, s);
-		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 2, true);
+		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 1, true);
 		this.createSlide(db, s);
-		s = new Slide("Meteo", PageMeteoFragment.class.getName(), 3, true);
+		s = new Slide("Météo", PageMeteoFragment.class.getName(), 2, true);
 		this.createSlide(db, s);
 	}
 
@@ -131,22 +135,31 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.insert(TABLE_SLIDES, null, values);
 		values.clear();
 	}
+	
+	private void createSlide(Slide s) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("slide_class", s.getSlideClass());
+		values.put("slide_order", s.getOrder());
+		values.put("slide_name", s.getSlideName());
+		values.put("slide_visible", s.visible());
+		db.insert(TABLE_SLIDES, null, values);
+		values.clear();
+	}
 
-	public void updateSlides(List<Slide> slides) {
+	private void clearSlides() {
+		String DELETE_STRING = "DELETE FROM " + TABLE_SLIDES;
 
-		//We get the database in writeable mode
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		ContentValues values = new ContentValues();
-		for(Slide s : slides){
-			values.put("slide_class", s.getSlideClass());
-			values.put("slide_order", s.getOrder());
-			values.put("slide_name", s.getSlideName());
-			values.put("slide_visible", s.visible());
+		db.execSQL(DELETE_STRING);
+	}
 
-			// update row
-			db.update(TABLE_SLIDES, values, "slide_class=" + s.getSlideClass(), null);
-			values.clear();
+	public void updateSlides(List<Slide> slides) {
+		clearSlides();
+
+		for (Slide s: slides) {
+			createSlide(s);
 		}
 	}
 
@@ -175,7 +188,6 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		//on trie les slides par ordre
-
 		Collections.sort(slides, new SlidesComparator());
 		return slides;
 	}
@@ -287,8 +299,8 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 
 	//###### LOCATIONS #####
-	public Set<Location> getLocations() {
-		Set<Location> l = new TreeSet<Location>();
+	public List<Location> getLocations() {
+		List<Location> l = new ArrayList<Location>();
 
 		String selectQuery = "SELECT * FROM " + TABLE_LOCATIONS;
 
@@ -296,35 +308,36 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		Point p;
 
-		String city, cp, address_line, address;
+		String name, city, cp, country, address_line, address;
 
 		// looping through all rows and adding to list
 		while (c.moveToNext()) {
+		    	name = c.getString(c.getColumnIndex("location_name"));
 			p = Point.pointFromString(c.getString(c.getColumnIndex("location_point")));
 			address =  c.getString(c.getColumnIndex("location_address"));
 			city =  c.getString(c.getColumnIndex("location_city"));
 			cp = c.getString(c.getColumnIndex("location_cp"));
 			address_line = c.getString(c.getColumnIndex("location_address_line"));
-			l.add(new Location(p, address, city, cp, address_line));
+			country = c.getString(c.getColumnIndex("location_country"));
+			l.add(new Location(name, p, address, city, cp, country, address_line));
 		}
 		return l;
 	}
 
 	public void createLocation(Location l) {
-		String selectQuery = " " + TABLE_LOCATIONS;
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put("location_uid", l.getId().toString());
+		values.put("location_name", l.getName());
 		values.put("location_point", l.getGps().toSQLite());
 		values.put("location_address", l.getAddress());
 		values.put("location_city", l.getCity());
 		values.put("location_cp", l.getCP());
+		values.put("location_country", l.getCountry());
 		values.put("location_address_line", l.getAddressLine());
 
-
 		db.insert(TABLE_LOCATIONS, null, values);
-		db.close();
+		values.clear();
 	}
 
 	@Override
@@ -334,7 +347,41 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CREDENTIALS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAIL);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_BELL);
 		// create new tables
 		onCreate(db);
+	}
+	
+	//###### BELL #####
+	/**
+	 * Get the alarm bell.
+	 * @return String
+	 */
+	public String getBell() {
+		String bell = null;
+
+		String selectQuery = "SELECT * FROM " + TABLE_BELL;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if (c.moveToNext()) {
+			bell = c.getString(c.getColumnIndex("filename"));
+		}
+		return bell;
+	}
+	
+	/**
+	 * Define the alarm bell.
+	 * @param filename
+	 */
+	public void setBell(String filename) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		//First we erase everything
+		db.execSQL("DELETE FROM "+ TABLE_BELL);
+		// and add the bell
+		ContentValues values = new ContentValues();
+		values.put("filename", filename);
+		db.insert(TABLE_BELL, null, values);
 	}
 }
