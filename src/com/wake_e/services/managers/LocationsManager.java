@@ -141,4 +141,16 @@ public class LocationsManager {
 	public List<Location> getLocations() {
 		return this.locations;
 	}
+	
+	/**
+	 * LocationNames getter
+	 * @return a list of location name
+	 */
+	public List<String> getLocationNames() {
+		List<String> names = new ArrayList<String>(); 
+		for (Location l: this.locations) {
+			names.add(l.getName());
+		}
+		return names;
+	}
 }

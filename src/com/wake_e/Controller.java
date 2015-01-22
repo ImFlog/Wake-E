@@ -226,6 +226,14 @@ public class Controller {
 		return this.locationsManager.createLocation(name, address, this.db);
 	}
 
+	public List<Location> getLocations() {
+		return this.locationsManager.getLocations();
+	}
+
+	public Location getLocation(String name) {
+		return this.locationsManager.getLocation(name);
+	}
+	
 	/**
 	 * @brief vérifier si une location porte un nom donné
 	 * @param name un nom donné 
@@ -233,6 +241,13 @@ public class Controller {
 	 */
 	public boolean locationExists(String name){
 		return this.locationsManager.exists(name);
+	}
+
+	/**
+	 * @return all locations name
+	 */
+	public List<String> getLocationNames() {
+		return this.locationsManager.getLocationNames();
 	}
 
 	// ########### MAILS ###########
@@ -263,10 +278,5 @@ public class Controller {
 	 */
 	public MeteoDeliverer getMeteoDeliverer(){
 		return this.meteoDeliverer;
-	}
-
-
-	public List<Location> getLocations() {
-		return this.locationsManager.getLocations();
 	}
 }
