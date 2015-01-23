@@ -105,4 +105,11 @@ public class SlidesManager {
 	return null;
     }
 
+    @Override
+    public String toString(){
+	return "Nombre de slides : " + this.slides.size() + '\n'
+		+ "Slide 1 : " + this.slides.get(0) + '\n'
+		+ "Slide 2 : " + this.slides.get(1) + '\n'
+		+ "Slide 3 : " + this.slides.get(2);
+    }
 }

@@ -1,6 +1,7 @@
 package com.wake_e;
 
 import java.util.List;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -55,12 +56,10 @@ public class MainActivity extends FragmentActivity {
 	//Doesn't work for now ...
 	// It was supposed to auto update the credentials
 	//		checkCredentials(controller);
-
 	setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
 
 	this.recreateSlides();
-
 	heureProg = (TextView) this.findViewById(R.id.id_heure_estimee);
 	textHeure = (TextView) this.findViewById(R.id.textView2);
 	dcc = (DigitClockCustom) this.findViewById(R.id.digitalClock1);
@@ -69,17 +68,11 @@ public class MainActivity extends FragmentActivity {
 	heureProg.setTypeface(future);
 	textHeure.setTypeface(future);
 
-
-
-
 	ll = (LinearLayout) findViewById(R.id.id_station);
 	ll.setOnTouchListener(touchListenerBouton1);
 	relative = (RelativeLayout) findViewById(R.id.id_fullStation);
-
 	this.setVisible(false);
 	ll.setY(0);
-	pager.setLayoutParams(new LinearLayout.LayoutParams(
-		LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	ImageView settings = (ImageView) findViewById(R.id.parametre);
 	settings.setOnClickListener(switchToSettings);
 
@@ -98,6 +91,7 @@ public class MainActivity extends FragmentActivity {
 	    heureProg.setText("__:__");
 	}
 	active.setOnClickListener(activeDesactiveReveil);
+
     }
 
     @Override
@@ -210,6 +204,21 @@ public class MainActivity extends FragmentActivity {
 	}
     };
 
+    private void clearSlides(){
+	Controller controller = Controller.getInstance(this.getApplicationContext());
+
+	// Creation de la liste de Fragments que fera defiler le PagerAdapter
+	List<Fragment> fragments = new Vector<Fragment>();
+
+	Log.i("CLEAR_SLIDES",controller.getSlideManager().toString());
+	// Creation de l'adapter qui s'occupera de l'affichage de la liste de
+	// Fragments
+
+	this.mPagerAdapter = new MyPagerAdapter(
+		super.getSupportFragmentManager(), fragments);
+	pager = (ViewPager) super.findViewById(R.id.pager);
+	pager.setAdapter(this.mPagerAdapter);
+    }
 
     private void recreateSlides(){
 
@@ -221,11 +230,18 @@ public class MainActivity extends FragmentActivity {
 
 	// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 	// Fragments
+	Log.i("RECREATE_SLIDES",controller.getSlideManager().toString());
 	
 	this.mPagerAdapter = new MyPagerAdapter(
 		super.getSupportFragmentManager(), fragments);
 	pager = (ViewPager) super.findViewById(R.id.pager);
 	pager.setAdapter(this.mPagerAdapter);
+
+
+
+	pager.setLayoutParams(new LinearLayout.LayoutParams(
+		LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
     }
 
     @Override
@@ -236,6 +252,7 @@ public class MainActivity extends FragmentActivity {
 	    if(resultCode == Activity.RESULT_OK){
 		String value = data.getStringExtra("choice");
 		if(value.equals("save")){
+		    this.clearSlides();
 		    this.recreateSlides();
 		}
 
