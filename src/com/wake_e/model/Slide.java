@@ -65,6 +65,6 @@ public class Slide {
 	return "slide_name : " + this.slide_name + " ; "
 		+ "slide_class : " + this.slide_class + " ; "
 		+ "order : " + this.order + " ; "
-		+ "visible" + this.visible;
+		+ "visible : " + this.visible;
     }
 }

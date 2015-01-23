@@ -254,6 +254,7 @@ public class MainActivity extends FragmentActivity {
 		if(value.equals("save")){
 		    this.clearSlides();
 		    this.recreateSlides();
+		    this.recreate();
 		}
 
 	    }
