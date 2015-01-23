@@ -1,5 +1,7 @@
 package com.wake_e;
 
+import com.wake_e.constants.WakeEConstants;
+import com.wake_e.model.Credentials;
 import com.wake_e.tools.TokenRequester;
 
 import android.content.Intent;
@@ -9,8 +11,8 @@ import android.support.v4.app.FragmentActivity;
 
 public class SplashScreenActivity extends FragmentActivity {
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
-    
+    private static int SPLASH_TIME_OUT = 2000;
+
     private static SplashScreenActivity that;
 
     @Override
@@ -29,9 +31,16 @@ public class SplashScreenActivity extends FragmentActivity {
 	    public void run() {
 		// This method will be executed once the timer is over
 		// Start your app main activity
-		TokenRequester.initiateRequest(SplashScreenActivity.that,
-			Controller.getInstance(getApplicationContext()).getCredentials("gmail").getUser());
-		Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+		Credentials c = Controller.getInstance(getApplicationContext()).getCredentials(
+			WakeEConstants.Credentials.GMAIL);
+
+		if(c != null){
+		    TokenRequester
+		    .initiateRequest(
+			    SplashScreenActivity.that,c.getUser());
+		}
+		Intent i = new Intent(SplashScreenActivity.this,
+			MainActivity.class);
 		startActivity(i);
 
 		// close this activity

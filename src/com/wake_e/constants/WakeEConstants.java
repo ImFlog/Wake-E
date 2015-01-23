@@ -12,7 +12,7 @@ public abstract class WakeEConstants
      * @brief APIs's calls constants
      * @author Wake-E team
      */
-    public abstract class WakeEAPICalls{
+    public abstract class APICalls{
 	/**
 	 * Scope for gmail api auth.
 	 */
@@ -40,7 +40,7 @@ public abstract class WakeEConstants
      * @brief Parsing constants
      * @author Wake-E team
      */
-    public abstract class WakeEParsing{
+    public abstract class Parsing{
 	/**
 	 * Point split character
 	 */
@@ -52,7 +52,7 @@ public abstract class WakeEConstants
      * @brief Transports types constants
      * @author Wake-E team
      */
-    public abstract class WakeETransports{
+    public abstract class Transports{
 	/**
 	 * transport voiture
 	 */
@@ -77,7 +77,7 @@ public abstract class WakeEConstants
      * @brief Nokia Maps contsants
      * @author Wake-E team
      */
-    public abstract class WakeENokiaMaps{
+    public abstract class Here{
 	public static final String app_id = "Kpmuj02vUeakK6N5z3mK" ;
 	public static final String app_code = "iKL-xOAc6YOvwMNalfrKeA";
     }
@@ -92,9 +92,23 @@ public abstract class WakeEConstants
      * @brief notif constants
      * @author Wake-E team
      */
-    public abstract class WakeENotif{
+    public abstract class Notif{
 	public static final int NOTIFICATION = 10002; //Any unique number for this notification
     }
-
+    
+    
+    public abstract class Credentials{
+	public static final String GMAIL = "gmail";
+    }
+    
+    public abstract class Signal{
+	public static final int SETTINGS = 1;
+    }
+    
+    public abstract class SlidesNames {
+	public static final String SLIDE_METEO = "Météo";
+	public static final String SLIDE_MAIL = "Mail";
+	public static final String SLIDE_AGENDA = "Agenda";
+    }
 }
 

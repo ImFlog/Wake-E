@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
@@ -113,11 +114,11 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
 	//###### SLIDES #####
 	private void populateSlides(SQLiteDatabase db) {
-		Slide s = new Slide("Mail", PageMailFragment.class.getName(), 0, true);
+		Slide s = new Slide(WakeEConstants.SlidesNames.SLIDE_MAIL, PageMailFragment.class.getName(), 0, true);
 		this.createSlide(db, s);
-		s = new Slide("Agenda", PageAgendaFragment.class.getName(), 1, true);
+		s = new Slide(WakeEConstants.SlidesNames.SLIDE_AGENDA, PageAgendaFragment.class.getName(), 1, true);
 		this.createSlide(db, s);
-		s = new Slide("Météo", PageMeteoFragment.class.getName(), 2, true);
+		s = new Slide(WakeEConstants.SlidesNames.SLIDE_METEO, PageMeteoFragment.class.getName(), 2, true);
 		this.createSlide(db, s);
 	}
 

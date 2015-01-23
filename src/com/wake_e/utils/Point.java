@@ -106,11 +106,11 @@ public class Point {
 	 * @return a point or null
 	 */
 	public static Point strToPoint(String str){
-	    int count = str.length() - str.replace(WakeEConstants.WakeEParsing.POINT_SPLIT_CHARACTER, "").length();
+	    int count = str.length() - str.replace(WakeEConstants.Parsing.POINT_SPLIT_CHARACTER, "").length();
 	    if(count != 1){
 		return null;
 	    }
-	    String[] parts = str.split(WakeEConstants.WakeEParsing.POINT_SPLIT_CHARACTER);
+	    String[] parts = str.split(WakeEConstants.Parsing.POINT_SPLIT_CHARACTER);
 	    
 	    double lattitude;
 	    double longitude;
