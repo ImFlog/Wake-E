@@ -4,9 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.Time;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -242,14 +240,15 @@ public class ConfigActivity extends Activity {
 			if (depart != null && arrivee != null && heureArrivee != 0 && preparation != 0 &&
 					transport != null) {
 				try {
-					Controller.getInstance(v.getContext()).createAlarm(
-							v.getContext(),
+					Intent i = Controller.getInstance(Controller.getContext()).createAlarm(
+							Controller.getContext(),
 							depart,
 							arrivee,
 							preparation,
 							Controller.getInstance(v.getContext()).getBellManager().getBell().getPath(),
 							transport,
 							heureArrivee);
+					startService(i);
 				} catch (NoRouteFoundException e) {
 					Toast.makeText(
 							getApplicationContext(),

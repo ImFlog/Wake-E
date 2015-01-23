@@ -1,6 +1,7 @@
 package com.wake_e.model;
 
-import java.util.UUID;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.wake_e.utils.Point;
 
@@ -9,7 +10,7 @@ import com.wake_e.utils.Point;
  * @author Wake-E team
  *
  */
-public class Location {
+public class Location implements Parcelable {
 	// location's name
 	private String name;
 
@@ -51,6 +52,16 @@ public class Location {
 		this.cp = cp;
 		this.country = country;
 		this.address_line = address_line;
+	}
+
+	public Location(Parcel in) {
+	    this.name = in.readString();;
+	    this.address = in.readString();
+	    this.city = in.readString();
+	    this.cp = in.readString();
+	    this.country = in.readString();
+	    this.address_line = in.readString();
+	    this.gps = in.readParcelable(Point.class.getClassLoader());
 	}
 
 	public String getCountry() {
@@ -110,5 +121,33 @@ public class Location {
 		return this.address_line;
 	}
 
+	@Override
+	public int describeContents() {
+	    // TODO Auto-generated method stub
+	    return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeString(this.name);
+	    dest.writeString(this.address);
+	    dest.writeString(this.city);
+	    dest.writeString(this.cp);
+	    dest.writeString(this.country);
+	    dest.writeString(this.address_line);
+	    dest.writeParcelable(this.gps, flags);
+	    	    
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	    public Location createFromParcel(Parcel in) {
+	        return new Location(in);
+	    }
+
+	    public Location[] newArray(int size) {
+	        return new Location[size];
+	    }
+	};
 
 }

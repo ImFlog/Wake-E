@@ -101,19 +101,44 @@ public abstract class WakeEConstants
 		public static final int NOTIFICATION = 10002; //Any unique number for this notification
 	}
 
-
+	/**
+	 * @brief credentials
+	 * @author Wake-E team
+	 */
 	public abstract class Credentials{
 		public static final String GMAIL = "gmail";
 	}
 
+	/**
+	 * @brief signals between activities
+	 * @author Wake-E team
+	 */
 	public abstract class Signal{
 		public static final int SETTINGS = 1;
 	}
-
+	
+	/**
+	 * @brief slides names
+	 * @author Wake-E team
+	 */
 	public abstract class SlidesNames {
 		public static final String SLIDE_METEO = "Météo";
 		public static final String SLIDE_MAIL = "Mail";
 		public static final String SLIDE_AGENDA = "Agenda";
+	}
+	
+	/**
+	 * @brief intent extrat for Alarm service
+	 * @author Wake-E team
+	 */
+	public abstract class AlarmServiceExtras {
+		public static final String DEPART = "depart";
+		public static final String ARRIVEE = "arrivee";
+		public static final String PREPARATION = "preparation";
+		public static final String RINGTONE = "ringtone";
+		public static final String TRANSPORT = "transport";
+		public static final String END_HOUR = "endhour";
+		public static final String MANAGER = "manager";
 	}
 }
 

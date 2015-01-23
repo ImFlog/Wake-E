@@ -1,7 +1,9 @@
 package com.wake_e.services;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.wake_e.model.Location;
+
 
 /**
  * @brief Cette alarme redéfinit simplement la méthode "synchronize" puisqu'elle va
@@ -25,10 +27,15 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
      * @param ringtone 
      * @brief AlarmSynchro constructor
      */
-    public AlarmSynchroIntentService(Location depart, Location arrivee,
-	    long preparationDuration, String ringtone, String transport, long endHour) {
-	super(arrivee, arrivee, preparationDuration, ringtone, transport, endHour);
+    public AlarmSynchroIntentService() {
+	super();
 
+    }
+
+
+    public AlarmSynchroIntentService(Parcel in) {
+	super(in);
+	this.eventName = in.readString();
     }
 
 
@@ -45,5 +52,26 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
         // TODO Update travelDuration regarding the agenda
 	
     }
+    @Override
+    public int describeContents() {
+	return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+	super.writeToParcel(dest, flags);
+	dest.writeString(this.eventName);
+
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	public AlarmSynchroIntentService createFromParcel(Parcel in) {
+	    return new AlarmSynchroIntentService(in);
+	}
+
+	public AlarmSynchroIntentService[] newArray(int size) {
+	    return new AlarmSynchroIntentService[size];
+	}
+    };
 }

@@ -1,12 +1,15 @@
 package com.wake_e.utils;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.wake_e.constants.WakeEConstants;
 
 /**
  * @brief A point is coordinate
  * @author Wake-E team
  */
-public class Point {
+public class Point implements Parcelable{
 
     //point's latitude
     private double latitude;
@@ -23,6 +26,12 @@ public class Point {
 	super();
 	this.latitude = latitude;
 	this.longitude = longitude;
+    }
+
+
+    public Point(Parcel in) {
+	this.latitude = in.readDouble();
+	this.longitude = in.readDouble();
     }
 
 
@@ -126,4 +135,27 @@ public class Point {
 	}
     }
 
+    @Override
+    public int describeContents() {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+	dest.writeDouble(this.latitude);
+	dest.writeDouble(this.longitude);
+    }
+
+	@SuppressWarnings("rawtypes")
+	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	    public Point createFromParcel(Parcel in) {
+	        return new Point(in);
+	    }
+
+	    public Point[] newArray(int size) {
+	        return new Point[size];
+	    }
+	};
 }

@@ -169,10 +169,11 @@ public class Controller {
 	 * @param arrivee the end location
 	 * @param preparationDuration the preparation duration
 	 * @param ringtone the ringtone
+	 * @return 
 	 */
-	public void createAlarm(Context context, Location depart, Location arrivee,
+	public Intent createAlarm(Context context, Location depart, Location arrivee,
 			long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
-		this.alarmsManager.createAlarm(context, depart, arrivee,
+		return this.alarmsManager.createAlarm(context, depart, arrivee,
 				preparationDuration, ringtone, transport, endHour);
 	}
 
