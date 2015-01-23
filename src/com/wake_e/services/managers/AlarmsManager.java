@@ -149,6 +149,9 @@ public class AlarmsManager implements Parcelable{
     }
 
     public void setAlarm(AlarmIntentService alarm) {
+	if(this.alarm != null){
+	    this.alarm.disable();
+	}
 	this.alarm = alarm;
     }
 

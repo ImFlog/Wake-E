@@ -192,8 +192,8 @@ public class AlarmIntentService extends IntentService implements Parcelable{
      * @brief disable the alarm
      */
     public void disable() {
-	this.stopSelf();
 	this.enabled = false;
+	this.stopSelf();
     }
 
     /**
