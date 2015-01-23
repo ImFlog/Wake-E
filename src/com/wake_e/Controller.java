@@ -178,10 +178,11 @@ public class Controller {
 	 * @param arrivee the end location
 	 * @param preparationDuration the preparation duration
 	 * @param ringtone the ringtone
+	 * @return 
 	 */
-	public void createAlarm(Context context, Location depart, Location arrivee,
+	public Intent createAlarm(Context context, Location depart, Location arrivee,
 			long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
-		this.alarmsManager.createAlarm(context, depart, arrivee,
+		return this.alarmsManager.createAlarm(context, depart, arrivee,
 				preparationDuration, ringtone, transport, endHour);
 	}
 
@@ -199,7 +200,6 @@ public class Controller {
 		} else {
 			this.hideNotification(context);
 		}
-
 	}
 
 	/**
@@ -247,6 +247,14 @@ public class Controller {
 		return this.locationsManager.createLocation(name, address, this.db);
 	}
 
+	public List<Location> getLocations() {
+		return this.locationsManager.getLocations();
+	}
+
+	public Location getLocation(String name) {
+		return this.locationsManager.getLocation(name);
+	}
+
 	/**
 	 * @brief vérifier si une location porte un nom donné
 	 * @param name un nom donné 
@@ -254,6 +262,13 @@ public class Controller {
 	 */
 	public boolean locationExists(String name){
 		return this.locationsManager.exists(name);
+	}
+
+	/**
+	 * @return all locations name
+	 */
+	public List<String> getLocationNames() {
+		return this.locationsManager.getLocationNames();
 	}
 
 	// ########### MAILS ###########
@@ -293,11 +308,6 @@ public class Controller {
 	 */
 	public BellManager getBellManager() {
 		return this.bellManager;
-	}
-	
-
-	public List<Location> getLocations() {
-		return this.locationsManager.getLocations();
 	}
 
 	private void showNotification(Context context) {

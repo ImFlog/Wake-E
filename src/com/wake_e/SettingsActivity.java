@@ -34,6 +34,7 @@ import com.wake_e.model.Location;
 import com.wake_e.model.Slide;
 import com.wake_e.tools.TokenRequester;
 
+
 public class SettingsActivity extends Activity {
 
     private ImageView [] slides;
@@ -86,6 +87,7 @@ public class SettingsActivity extends Activity {
 	cancel.setOnClickListener(onCancelClick);
 
 	// ######## ACCOUNTS #########
+
 
 	addAccount = (TextView)findViewById(R.id.addAccount);
 	if (Controller.getInstance(this).getCredentials() != null) {

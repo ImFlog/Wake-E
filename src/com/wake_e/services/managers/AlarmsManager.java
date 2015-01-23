@@ -1,11 +1,11 @@
 package com.wake_e.services.managers;
 
-import java.util.Set;
-import java.util.UUID;
-
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
 import com.wake_e.services.AlarmIntentService;
@@ -16,7 +16,7 @@ import com.wake_e.services.AlarmSynchroIntentService;
  * @author Wake-E team
  */
 
-public class AlarmsManager {
+public class AlarmsManager implements Parcelable{
     // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
 
@@ -35,21 +35,32 @@ public class AlarmsManager {
 	super();
     }
 
+    public AlarmsManager(Parcel in) {
+	this.alarm = in.readParcelable(AlarmIntentService.class.getClassLoader());
+	this.alarmSynchro = in.readParcelable(AlarmSynchroIntentService.class.getClassLoader());
+    }
+
     /**
+     * @return 
      * @brief create an alarm and add it to the list
      */
-    // TODO spécifier les paramètres en fonction de ce que nous donnera la vue
-    public void createAlarm(Context context, Location depart, Location arrivee,
+    public Intent createAlarm(Context context, Location depart, Location arrivee,
 	    long preparationDuration, String ringtone, String transport,
 	    long endHour) throws NoRouteFoundException {
-	// On teste si une Route est trouvee avec le depart et l'arrivee
+
+	// TODO On teste si une Route est trouvee avec le depart et l'arrivee
 	// Si ce n'est pas le cas, on throw une exception
 
 	Intent intent = new Intent(context, AlarmIntentService.class);
-	AlarmIntentService alarm = new AlarmIntentService(depart, arrivee,
-		preparationDuration, ringtone, transport, endHour);
-	alarm.startService(intent);
-	this.alarm = alarm;
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.DEPART, depart);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.ARRIVEE, arrivee);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.PREPARATION, preparationDuration);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.RINGTONE, ringtone);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.TRANSPORT, transport);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.END_HOUR, endHour);
+	intent.putExtra(WakeEConstants.AlarmServiceExtras.MANAGER, this);
+
+	return intent;
     }
 
     /**
@@ -124,4 +135,34 @@ public class AlarmsManager {
 	return text.toString();
     }
 
+    @Override
+    public int describeContents() {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+	// TODO Auto-generated method stub
+	dest.writeParcelable(this.alarm, flags);
+	dest.writeParcelable(this.alarmSynchro, flags);
+    }
+
+    public void setAlarm(AlarmIntentService alarm) {
+	if(this.alarm != null){
+	    this.alarm.disable();
+	}
+	this.alarm = alarm;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	public AlarmsManager createFromParcel(Parcel in) {
+	    return new AlarmsManager(in);
+	}
+
+	public AlarmsManager[] newArray(int size) {
+	    return new AlarmsManager[size];
+	}
+    };
 }

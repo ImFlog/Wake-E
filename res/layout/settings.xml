@@ -39,12 +39,6 @@
             android:layout_marginRight="10dp"
             android:background="@color/grey" />
 
-        <ListView
-            android:id="@+id/l_comptes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
-
         <TextView
             android:id="@+id/addAccount"
             android:layout_width="match_parent"

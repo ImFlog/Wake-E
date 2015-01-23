@@ -27,14 +27,14 @@ public abstract class WakeEConstants
 	 * Api calls account code.
 	 */
 	public static final int ACCOUNT_CODE = 1601;
-    
+
 	/**
 	 * Play service error.
 	 */
 	public static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
     }
 
-    
+
 
     /**
      * @brief Parsing constants
@@ -58,7 +58,6 @@ public abstract class WakeEConstants
 	 */
 	public static final String TRANSPORT_VOITURE = "car";
 
-
 	/**
 	 * transport commun
 	 */
@@ -72,7 +71,19 @@ public abstract class WakeEConstants
 
 
     }
-
+    /**
+     * @brief intent extrat for Alarm service
+     * @author Wake-E team
+     */
+    public abstract class AlarmServiceExtras {
+	public static final String DEPART = "depart";
+	public static final String ARRIVEE = "arrivee";
+	public static final String PREPARATION = "preparation";
+	public static final String RINGTONE = "ringtone";
+	public static final String TRANSPORT = "transport";
+	public static final String END_HOUR = "endhour";
+	public static final String MANAGER = "manager";
+    }
     /**
      * @brief Nokia Maps contsants
      * @author Wake-E team
@@ -86,8 +97,8 @@ public abstract class WakeEConstants
     private WakeEConstants(){
 	super();
     }
-    
-    
+
+
     /**
      * @brief notif constants
      * @author Wake-E team
@@ -95,16 +106,16 @@ public abstract class WakeEConstants
     public abstract class Notif{
 	public static final int NOTIFICATION = 10002; //Any unique number for this notification
     }
-    
-    
+
+
     public abstract class Credentials{
 	public static final String GMAIL = "gmail";
     }
-    
+
     public abstract class Signal{
 	public static final int SETTINGS = 1;
     }
-    
+
     public abstract class SlidesNames {
 	public static final String SLIDE_METEO = "Météo";
 	public static final String SLIDE_MAIL = "Mail";
