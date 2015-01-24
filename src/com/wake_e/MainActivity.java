@@ -1,7 +1,7 @@
 package com.wake_e;
 
 import java.util.List;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wake_e.adapt.MyPagerAdapter;
+import com.wake_e.constants.WakeEConstants;
+import com.wake_e.constants.WakeEConstants.Signal;
 import com.wake_e.tools.DigitClockCustom;
 
 public class MainActivity extends FragmentActivity {
@@ -39,7 +41,7 @@ public class MainActivity extends FragmentActivity {
 	private TextView heureProg;
 	private TextView textHeure;
 	private DigitClockCustom dcc;
-    public static Typeface future;
+	public static Typeface future;
 
 
 	@Override
@@ -48,45 +50,44 @@ public class MainActivity extends FragmentActivity {
 
 		super.onCreate(savedInstanceState);
 		super.setContentView(R.layout.home_page);
-		
-		Controller controller = Controller.getInstance(this.getApplicationContext());
+
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
+
+		Controller controller = Controller.getInstance(this.getApplicationContext());
 
 		// Creation de la liste de Fragments que fera defiler le PagerAdapter
 		List<Fragment> fragments = controller.getVisibleFragments();
 
 		// Creation de l'adapter qui s'occupera de l'affichage de la liste de
 		// Fragments
+
 		this.mPagerAdapter = new MyPagerAdapter(
 				super.getSupportFragmentManager(), fragments);
+		pager = (ViewPager) super.findViewById(R.id.pager);
+		pager.setAdapter(this.mPagerAdapter);
 
+		pager.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		heureProg = (TextView) this.findViewById(R.id.id_heure_estimee);
 		textHeure = (TextView) this.findViewById(R.id.textView2);
 		dcc = (DigitClockCustom) this.findViewById(R.id.digitalClock1);
 		dcc.setTypeface(future);
-		
+
 		heureProg.setTypeface(future);
 		textHeure.setTypeface(future);
-		
-		
-		pager = (ViewPager) super.findViewById(R.id.pager);
-		pager.setAdapter(this.mPagerAdapter);
 
 		ll = (LinearLayout) findViewById(R.id.id_station);
 		ll.setOnTouchListener(touchListenerBouton1);
 		relative = (RelativeLayout) findViewById(R.id.id_fullStation);
-
 		this.setVisible(false);
 		ll.setY(0);
-		pager.setLayoutParams(new LinearLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		ImageView settings = (ImageView) findViewById(R.id.parametre);
 		settings.setOnClickListener(switchToSettings);
 
 		ImageView config = (ImageView) findViewById(R.id.reveil);
 		config.setOnClickListener(switchToConfig);
-		
+
 		active = (ImageView) findViewById(R.id.id_active);
 		if (Controller.getInstance(that).getAlarm() != null &&
 				Controller.getInstance(that).getAlarm().isEnabled()){
@@ -99,6 +100,7 @@ public class MainActivity extends FragmentActivity {
 			heureProg.setText("__:__");
 		}
 		active.setOnClickListener(activeDesactiveReveil);
+
 	}
 
 	@Override
@@ -123,48 +125,48 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public boolean onTouch(final View v, MotionEvent event) {
-	    	switch(event.getAction())
-	    	{
-	    		case MotionEvent.ACTION_DOWN:
-	    	    	yy = event.getY();
-	    			break;
-	    		case MotionEvent.ACTION_MOVE:
-	    			v.setY(v.getY() - yy + event.getY());
-	    			if (v.getY() > positionSlider) v.setY(positionSlider);
-	    			if (v.getY() < 0){v.setY(0);}
-	    			break;
-	    		case MotionEvent.ACTION_UP:
-	    			v.setY(v.getY() - yy + event.getY());
-	    			
-	    			if (v.getY() > positionSlider){ v.setY(positionSlider);}
-	    			else if (v.getY() < 0){v.setY(0);}
-	    			else if (v.getY() < positionSlider/2){
-			          while(v.getY() <= 0){
-			        	v.setY(v.getY() - 3);
-			        	try {
+			switch(event.getAction())
+			{
+			case MotionEvent.ACTION_DOWN:
+				yy = event.getY();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				v.setY(v.getY() - yy + event.getY());
+				if (v.getY() > positionSlider) v.setY(positionSlider);
+				if (v.getY() < 0){v.setY(0);}
+				break;
+			case MotionEvent.ACTION_UP:
+				v.setY(v.getY() - yy + event.getY());
+
+				if (v.getY() > positionSlider){ v.setY(positionSlider);}
+				else if (v.getY() < 0){v.setY(0);}
+				else if (v.getY() < positionSlider/2){
+					while(v.getY() <= 0){
+						v.setY(v.getY() - 3);
+						try {
 							Thread.sleep(400);
 						} catch (InterruptedException e) {
 							Log.e("MainActivity onTouch", e.getMessage());
 						}
-			          }
-			          v.setY(0);
-	    			}
-	    			else{
-				          while(v.getY() >= positionSlider){
-					        	v.setY(v.getY() - 3);
-					        	try {
-									Thread.sleep(400);
-								} catch (InterruptedException e) {
-									Log.e("MainActivity onTouch", e.getMessage());
-								}
-					          }
-					          v.setY(positionSlider);
-					          
-	    			}
-	    			break;
-	    	}
-	    	relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY()));
-		    return true;
+					}
+					v.setY(0);
+				}
+				else{
+					while(v.getY() >= positionSlider){
+						v.setY(v.getY() - 3);
+						try {
+							Thread.sleep(400);
+						} catch (InterruptedException e) {
+							Log.e("MainActivity onTouch", e.getMessage());
+						}
+					}
+					v.setY(positionSlider);
+
+				}
+				break;
+			}
+			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) v.getY()));
+			return true;
 		}
 	};
 
@@ -173,7 +175,8 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-			startActivity(i);
+
+			startActivityForResult(i, Signal.SETTINGS);
 			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
@@ -186,9 +189,9 @@ public class MainActivity extends FragmentActivity {
 			relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 		}
 	};
-	
+
 	private OnClickListener activeDesactiveReveil = new OnClickListener(){
-		
+
 		@Override
 		public void onClick(View v) {
 			if (Controller.getInstance(that).getAlarm() != null){
@@ -209,4 +212,28 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 	};
+
+	private void updateSlides(){
+		pager = (ViewPager) findViewById(R.id.pager);
+		((MyPagerAdapter) this.mPagerAdapter).destroyAllFragment(pager);
+		((MyPagerAdapter) this.mPagerAdapter).addItem(Controller.getInstance(that).getVisibleFragments());
+		this.mPagerAdapter.notifyDataSetChanged();
+		this.mPagerAdapter.finishUpdate(pager);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == WakeEConstants.Signal.SETTINGS){
+			if(resultCode == Activity.RESULT_OK){
+				String value = data.getStringExtra("choice");
+				if(value.equals("save")){
+					this.updateSlides();
+					this.recreate();
+				}
+
+			}
+		}
+	}
 }

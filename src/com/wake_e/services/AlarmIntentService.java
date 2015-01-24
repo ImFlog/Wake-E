@@ -23,9 +23,14 @@ import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.os.StrictMode;
 
+import com.wake_e.Controller;
+import com.wake_e.SnoozeActivity;
 import com.wake_e.constants.WakeEConstants;
+import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
 import com.wake_e.services.managers.AlarmsManager;
+import com.wake_e.tools.TokenRequester;
+
 
 /**
  * @author Wake-E team
@@ -64,10 +69,12 @@ public class AlarmIntentService extends IntentService implements Parcelable{
     /**
      * @brief Alarm's constructor
      */
+
     public AlarmIntentService() {
 	super("AlarmIntentService");
 	this.id = new ParcelUuid(UUID.randomUUID());
     }
+
 
     public AlarmIntentService(Parcel in) {
 	super("AlarmIntentService");
@@ -174,8 +181,16 @@ public class AlarmIntentService extends IntentService implements Parcelable{
      * @brief ring the alarm
      */
     public void ring() {
-	// TODO make the ringtone ring (Activity in order not to block the app)
-	// Lancement de l'activity réveil (snooze, etc)
+	// Est-ce que l'on a déjà des credentials ?
+	Credentials c = Controller.getInstance(Controller.getContext())
+		.getCredentials(WakeEConstants.Credentials.GMAIL);
+	// Si oui on refresh le token
+	if(c != null){
+	    TokenRequester.initiateRequest(null, c.getUser());
+	}
+	// Une fois que le token est refreshed on lance la snooze activity
+	Intent i = new Intent(Controller.getContext(), SnoozeActivity.class);
+	this.startActivity(i);
     }
 
     /**
@@ -216,9 +231,10 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	    // Construire l'URL a questionner
 	    String url = "http://route.cit.api.here.com/routing/7.2/calculateroute.json?"
 		    + "app_id="
-		    + WakeEConstants.WakeENokiaMaps.app_id
+
+		    + WakeEConstants.Here.app_id
 		    + "&app_code="
-		    + WakeEConstants.WakeENokiaMaps.app_code
+		    + WakeEConstants.Here.app_code
 		    + "&waypoint0=geo!"
 		    + this.depart.getGps().getLatitude()
 		    + ","
@@ -332,7 +348,7 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
 
     }
-
+    
     @Override
     public int describeContents() {
 	return 0;
@@ -362,5 +378,6 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	    return new AlarmIntentService[size];
 	}
     };
+
 
 }

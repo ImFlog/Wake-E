@@ -11,6 +11,10 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -129,12 +133,15 @@ public class MailDeliverer {
 				MimeMessage email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
 				InternetAddress[] addr = (InternetAddress[]) email.getFrom();
 
-				String content = getText(email).replaceAll("<img .*/?>", "");
+				// Parsing the html to retrieve the body with Jsoup
+				Document doc = Jsoup.parse(getText(email));
+				Elements elements = doc.select("body").first().children();
+
 				messageDetails = new Mail(
 						message.getId(),
 						email.getSubject(),
 						addr[0].getPersonal(),
-						content
+						elements.html().replaceAll("<img .*/?>", "")
 						);
 			} catch (MessagingException ex) {
 				Log.e("Deliverer", ex.getMessage());
