@@ -32,6 +32,11 @@ public abstract class WakeEConstants
 	 * Play service error.
 	 */
 	public static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+	
+	/**		
+	 *Get alarm bell.		
+	 */		
+	public static final int REQUEST_CODE_OPEN_AUDIO = 1002;
     }
 
 
