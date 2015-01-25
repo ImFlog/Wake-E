@@ -182,8 +182,10 @@ public class Controller {
 	 */
 	public Intent createAlarm(Context context, Location depart, Location arrivee,
 			long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
-		return this.alarmsManager.createAlarm(context, depart, arrivee,
+		Intent i = this.alarmsManager.createAlarm(context, depart, arrivee,
 				preparationDuration, ringtone, transport, endHour);
+		this.enableAlarm(true, context);
+		return i;
 	}
 
 

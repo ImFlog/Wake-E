@@ -242,7 +242,6 @@ public class MainActivity extends FragmentActivity {
 //			    that.recreate();
 //			}
 //		    }, 1);
-		    super.onResume();
 		    this.recreate();
 		}
 
