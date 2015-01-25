@@ -313,9 +313,8 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	this.ringtone = intent
 		.getStringExtra(WakeEConstants.AlarmServiceExtras.RINGTONE);
 
-	((AlarmsManager) intent
-		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.MANAGER))
-		.setAlarm(this);
+
+	Controller.getInstance(Controller.getContext()).setAlarm(this);
 
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;

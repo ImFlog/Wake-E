@@ -87,7 +87,6 @@ public abstract class WakeEConstants
 	public static final String RINGTONE = "ringtone";
 	public static final String TRANSPORT = "transport";
 	public static final String END_HOUR = "endhour";
-	public static final String MANAGER = "manager";
     }
     /**
      * @brief Nokia Maps contsants

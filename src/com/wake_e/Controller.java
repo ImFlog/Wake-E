@@ -348,4 +348,9 @@ public class Controller {
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(WakeEConstants.Notif.NOTIFICATION);	
 	}
+
+	public void setAlarm(AlarmIntentService alarm) {
+	    this.alarmsManager.setAlarm(alarm);
+	}
+
 }

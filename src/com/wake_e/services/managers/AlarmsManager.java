@@ -16,7 +16,7 @@ import com.wake_e.services.AlarmSynchroIntentService;
  * @author Wake-E team
  */
 
-public class AlarmsManager implements Parcelable{
+public class AlarmsManager{
     // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
 
@@ -35,10 +35,6 @@ public class AlarmsManager implements Parcelable{
 	super();
     }
 
-    public AlarmsManager(Parcel in) {
-	this.alarm = in.readParcelable(AlarmIntentService.class.getClassLoader());
-	this.alarmSynchro = in.readParcelable(AlarmSynchroIntentService.class.getClassLoader());
-    }
 
     /**
      * @return 
@@ -58,7 +54,6 @@ public class AlarmsManager implements Parcelable{
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.RINGTONE, ringtone);
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.TRANSPORT, transport);
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.END_HOUR, endHour);
-	intent.putExtra(WakeEConstants.AlarmServiceExtras.MANAGER, this);
 
 	return intent;
     }
@@ -135,18 +130,6 @@ public class AlarmsManager implements Parcelable{
 	return text.toString();
     }
 
-    @Override
-    public int describeContents() {
-	// TODO Auto-generated method stub
-	return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-	// TODO Auto-generated method stub
-	dest.writeParcelable(this.alarm, flags);
-	dest.writeParcelable(this.alarmSynchro, flags);
-    }
 
     public void setAlarm(AlarmIntentService alarm) {
 	if(this.alarm != null){
@@ -155,14 +138,4 @@ public class AlarmsManager implements Parcelable{
 	this.alarm = alarm;
     }
 
-    @SuppressWarnings("rawtypes")
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-	public AlarmsManager createFromParcel(Parcel in) {
-	    return new AlarmsManager(in);
-	}
-
-	public AlarmsManager[] newArray(int size) {
-	    return new AlarmsManager[size];
-	}
-    };
 }
