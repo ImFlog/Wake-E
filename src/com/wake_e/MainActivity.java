@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.wake_e.adapt.MyPagerAdapter;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.constants.WakeEConstants.Signal;
+import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.tools.DigitClockCustom;
 
 public class MainActivity extends FragmentActivity {
@@ -58,7 +59,15 @@ public class MainActivity extends FragmentActivity {
 	future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
 
 	Controller controller = Controller.getInstance(this.getApplicationContext());
-	
+	try {
+	    Intent i = controller.loadAlarm();
+	    if(i != null){
+		startService(i);
+	    }
+	} catch (NoRouteFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 	// Creation de la liste de Fragments que fera defiler le PagerAdapter
 	List<Fragment> fragments = controller.getVisibleFragments();
 
@@ -199,13 +208,19 @@ public class MainActivity extends FragmentActivity {
 	public void onClick(View v) {
 	    if (Controller.getInstance(that).getAlarm() != null){
 		if (Controller.getInstance(that).getAlarm().isEnabled()){
-		    Controller.getInstance(that).enableAlarm(false, that);
+		    try {
+			Controller.getInstance(that).enableAlarm(false, that);
+		    } catch (NoRouteFoundException e) {
+		    }
 		    active.setImageResource(R.drawable.w_inactive);
 		    heureProg.setText("__:__");
 		    Toast.makeText(that, "L'alarme a été désactivé", Toast.LENGTH_LONG).show();
 		}
 		else{
-		    Controller.getInstance(that).enableAlarm(true, that);
+		    try {
+			Controller.getInstance(that).enableAlarm(true, that);
+		    } catch (NoRouteFoundException e) {
+		    }
 		    active.setImageResource(R.drawable.w_active);
 		    heureProg.setText(Controller.getInstance(that).getWakeUpHour());
 		    Toast.makeText(that, "L'alarme a été activé", Toast.LENGTH_LONG).show();
@@ -233,15 +248,15 @@ public class MainActivity extends FragmentActivity {
 		String value = data.getStringExtra("choice");
 		if(value.equals("save")){
 		    this.updateSlides();
-//		    Handler handler = new Handler();
-//		    handler.postDelayed(new Runnable()
-//		    {
-//			@Override
-//			public void run()
-//			{
-//			    that.recreate();
-//			}
-//		    }, 1);
+		    //		    Handler handler = new Handler();
+		    //		    handler.postDelayed(new Runnable()
+		    //		    {
+		    //			@Override
+		    //			public void run()
+		    //			{
+		    //			    that.recreate();
+		    //			}
+		    //		    }, 1);
 		    this.recreate();
 		}
 

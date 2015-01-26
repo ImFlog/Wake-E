@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
+import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
 
@@ -18,21 +19,23 @@ public class AlarmsManager{
     // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
 
-    // The current alarms
-   // private AlarmIntentService alarm;
-
     private static final int SECOND = 1000;
     private static final int MINUTE = 60 * SECOND;
     private static final int HOUR = 60 * MINUTE;
     private static final int DAY = 24 * HOUR;
 
-    /**
-     * 
-     */
-    public AlarmsManager() {
+    private WakeEDBHelper db;
+
+    
+    public AlarmsManager(WakeEDBHelper db) {
 	super();
+	this.db = db;
+	
     }
 
+    public Intent loadAlarm() throws NoRouteFoundException{
+	return this.db.loadAlarm();
+    }
 
     /**
      * @return 
@@ -78,6 +81,7 @@ public class AlarmsManager{
 	if (a != null) {
 	    if (enabled) {
 		if (!a.isEnabled()) {
+		    this.db.insertAlarm(this.getAlarm());
 		    a.enable(context);
 		}
 	    } else {
@@ -129,11 +133,5 @@ public class AlarmsManager{
     }
 
 
-//    public void setAlarm(AlarmIntentService alarm) {
-//	if(this.alarm != null){
-//	    this.alarm.disable();
-//	}
-//	this.alarm = alarm;
-//    }
 
 }

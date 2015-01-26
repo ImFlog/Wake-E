@@ -54,10 +54,7 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
 	
     }
     
-    @Override
-    protected void onHandleIntent(Intent intent) {
-	
-    }
+
     @Override
     public int describeContents() {
 	return 0;
