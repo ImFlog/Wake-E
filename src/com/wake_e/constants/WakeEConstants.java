@@ -118,6 +118,7 @@ public abstract class WakeEConstants
 
     public abstract class Signal{
 	public static final int SETTINGS = 1;
+	public static final int CONFIG = 2;
     }
 
     public abstract class SlidesNames {

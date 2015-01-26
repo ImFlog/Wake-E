@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onClick(View v) {
 	    Intent i = new Intent(getApplicationContext(), ConfigActivity.class);
-	    startActivity(i);
+	    startActivityForResult(i, Signal.CONFIG);
 	    relative.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int) that.positionSlider));
 	}
     };
@@ -226,7 +226,7 @@ public class MainActivity extends FragmentActivity {
 		    Toast.makeText(that, "L'alarme a été activée", Toast.LENGTH_LONG).show();
 		}
 	    } else {
-	    	Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();
+		Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();
 	    }
 	}
     };
@@ -248,18 +248,21 @@ public class MainActivity extends FragmentActivity {
 		String value = data.getStringExtra("choice");
 		if(value.equals("save")){
 		    this.updateSlides();
-		    //		    Handler handler = new Handler();
-		    //		    handler.postDelayed(new Runnable()
-		    //		    {
-		    //			@Override
-		    //			public void run()
-		    //			{
-		    //			    that.recreate();
-		    //			}
-		    //		    }, 1);
 		    this.recreate();
 		}
 
+	    }
+	} else {
+	    if(requestCode == WakeEConstants.Signal.CONFIG){
+		if(resultCode == Activity.RESULT_OK){
+		    String value = data.getStringExtra("choice");
+		    if(value.equals("save")){
+			active.setImageResource(R.drawable.w_active);
+			heureProg.setText(Controller.getInstance(that).getWakeUpHour());
+			Toast.makeText(that, "L'alarme a été activée", Toast.LENGTH_LONG).show();
+		    }
+
+		}
 	    }
 	}
     }

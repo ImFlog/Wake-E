@@ -250,6 +250,9 @@ public class ConfigActivity extends Activity {
 			    transport,
 			    heureArrivee);
 		    startService(i);
+		    Intent intent = new Intent();
+		    intent.putExtra("choice", "save");
+		    setResult(RESULT_OK, intent);
 		    finish();
 		} catch (NoRouteFoundException e) {
 		    Toast.makeText(
