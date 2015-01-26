@@ -3,5 +3,5 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/w_bg"
+    android:background="@drawable/w_bg_flou"
     tools:context="com.wakee.MainActivity" />
