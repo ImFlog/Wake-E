@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.android.gms.internal.ca;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
@@ -114,15 +115,18 @@ public class AlarmsManager{
 
     public String getWakeUpHour() {
 	Long ms = AlarmIntentService.getInstance().computeWakeUp();
+	Calendar c = Calendar.getInstance();
+	c.setTimeInMillis(ms);
 	StringBuffer text = new StringBuffer("");
 	if (ms > HOUR) {
-	    text.append(ms / HOUR).append(" hours ");
+	    text.append(c.get(Calendar.HOUR_OF_DAY)).append(":");
 	    ms %= HOUR;
 	}
 	if (ms > MINUTE) {
-	    text.append(ms / MINUTE).append(" minutes ");
+	    text.append(c.get(Calendar.MINUTE));
 	    ms %= MINUTE;
 	}
+
 	return text.toString();
     }
 

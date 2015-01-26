@@ -1,7 +1,6 @@
 package com.wake_e;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -183,25 +182,21 @@ public class ConfigActivity extends Activity {
 		@Override
 		public void onClick(View view) {
 			Calendar calendar = Calendar.getInstance();
-			int now = (calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 3600;
+			Long now = (long)(calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 3600;
 			heureArrivee = (long)(tp.getCurrentHour() * 60 + tp.getCurrentMinute()) *  3600;
-			calendar.setTimeZone(TimeZone.getTimeZone("France"));
+			calendar.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
 	    	// Create date from a hour / minute in the current day
-		    calendar.set(
-	    			Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH,
-	    			tp.getCurrentHour(), tp.getCurrentMinute());
-		    
-		    Log.i("Calendar", calendar.getTime().toString());
-		    
+		    calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
+		    calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
+
 		    // If the hour is in the past, we add a day to the created date.
 		    if (now > heureArrivee) {
 		    	calendar.add(Calendar.DATE, 1);
 		    }
 
-		    Log.i("Calendar2", calendar.getTime().toString());
 		    Log.i("Calendar time time", Long.toString(calendar.getTime().getTime(), 10));
-		    
-		    heureArrivee = calendar.getTime().getTime();
+
+		    heureArrivee = calendar.getTimeInMillis();
 
 		    dialog.dismiss();
 		    ((TextView)v).setText(

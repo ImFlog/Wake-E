@@ -114,6 +114,7 @@ public class AlarmIntentService extends Service implements Parcelable{
 	this.depart = depart;
 	this.arrivee = arrivee;
 	this.modeTransport = transport;
+	this.endHour = endHour;
 	this.synchronize();
     }
 
