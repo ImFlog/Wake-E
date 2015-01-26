@@ -104,6 +104,19 @@ public class AlarmIntentService extends Service implements Parcelable{
 	this.modeTransport = in.readString();
     }
 
+    public AlarmIntentService(Location depart, Location arrivee,
+	    long preparation, String ringtone, String transport, long endHour, boolean enabled) {
+	this();
+	this.ringtone = ringtone;
+	this.enabled = enabled;
+	this.preparationDuration = preparation;
+	this.depart = depart;
+	this.arrivee = arrivee;
+	this.modeTransport = transport;
+	this.synchronize();
+    }
+
+
     /**
      * @brief get the alarm id
      * @return the alarm id
@@ -492,5 +505,11 @@ public class AlarmIntentService extends Service implements Parcelable{
 	    // the service in the middle of handling another job
 	    stopSelf(msg.arg1);
 	}
+    }
+
+    public static void initialize(Location depart, Location arrivee,
+	    long preparation, String ringtone, String transport, long endHour, boolean enabled) {
+	AlarmIntentService.instance = 
+		new AlarmIntentService(depart, arrivee, preparation, ringtone, transport, endHour, enabled);
     }
 }

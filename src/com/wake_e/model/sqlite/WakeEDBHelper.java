@@ -344,7 +344,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	}
 	return l;
     }
-    
+
     public void createLocation(Location l) {
 	SQLiteDatabase db = this.getWritableDatabase();
 
@@ -408,7 +408,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 
 
     //################ ALARMES ####################################
-    public Intent loadAlarm() throws NoRouteFoundException {
+    public void loadAlarm() {
 	String selectQuery = "SELECT * FROM " + TABLE_ALARM;
 	Intent i = null;
 	SQLiteDatabase db = this.getReadableDatabase();
@@ -416,18 +416,17 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	// looping through all rows and adding to list
 	if (c.moveToFirst()) {
 	    do {
-		    Controller controller = Controller.getInstance(Controller.getContext());
-		    i = controller.createAlarm(Controller.getContext(),
-			    controller.getLocation(c.getString(c.getColumnIndex("depart"))),
-			    controller.getLocation(c.getString(c.getColumnIndex("arrivee"))),
-			    c.getLong(c.getColumnIndex("preparation_duration")),
-			    c.getString(c.getColumnIndex("ringtone")),
-			    c.getString(c.getColumnIndex("transport")),
-			    c.getLong(c.getColumnIndex("endHour")));
+
+		Controller controller = Controller.getInstance(Controller.getContext());
+		AlarmIntentService.initialize( controller.getLocation(c.getString(c.getColumnIndex("depart"))),
+			controller.getLocation(c.getString(c.getColumnIndex("arrivee"))),
+			c.getLong(c.getColumnIndex("preparation_duration")),
+			c.getString(c.getColumnIndex("ringtone")),
+			c.getString(c.getColumnIndex("transport")),
+			c.getLong(c.getColumnIndex("endHour")),
+			(c.getInt(c.getColumnIndex("enabled")) == 1) ? true : false );
 	    } while (c.moveToNext());
 	}
-	//on trie les slides par ordre
-	return i;
     }
 
     public void insertAlarm(AlarmIntentService alarm){

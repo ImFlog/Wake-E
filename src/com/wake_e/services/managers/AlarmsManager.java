@@ -33,8 +33,8 @@ public class AlarmsManager{
 	
     }
 
-    public Intent loadAlarm() throws NoRouteFoundException{
-	return this.db.loadAlarm();
+    public void loadAlarm(){
+	this.db.loadAlarm();
     }
 
     /**

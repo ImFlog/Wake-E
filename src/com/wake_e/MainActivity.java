@@ -59,15 +59,12 @@ public class MainActivity extends FragmentActivity {
 	future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
 
 	Controller controller = Controller.getInstance(this.getApplicationContext());
-	try {
-	    Intent i = controller.loadAlarm();
-	    if(i != null){
-		startService(i);
-	    }
-	} catch (NoRouteFoundException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+	controller.loadAlarm();
+	//	    if(i != null){
+	//		startService(i);
+	//		controller.enableAlarm(false, Controller.getContext());
+	//		stopService(i);
+	//	    }
 	// Creation de la liste de Fragments que fera defiler le PagerAdapter
 	List<Fragment> fragments = controller.getVisibleFragments();
 
@@ -214,16 +211,19 @@ public class MainActivity extends FragmentActivity {
 		    }
 		    active.setImageResource(R.drawable.w_inactive);
 		    heureProg.setText("__:__");
-		    Toast.makeText(that, "L'alarme a été désactivé", Toast.LENGTH_LONG).show();
+		    Toast.makeText(that, "L'alarme a été désactivée", Toast.LENGTH_LONG).show();
 		}
 		else{
 		    try {
-			Controller.getInstance(that).enableAlarm(true, that);
+			Intent i = Controller.getInstance(that).enableAlarm(true, that);
+			if(i != null){
+			    startService(i);
+			}
 		    } catch (NoRouteFoundException e) {
 		    }
 		    active.setImageResource(R.drawable.w_active);
 		    heureProg.setText(Controller.getInstance(that).getWakeUpHour());
-		    Toast.makeText(that, "L'alarme a été activé", Toast.LENGTH_LONG).show();
+		    Toast.makeText(that, "L'alarme a été activée", Toast.LENGTH_LONG).show();
 		}
 	    } else {
 		Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();

@@ -201,15 +201,17 @@ public class Controller {
      * @param context 
      * @throws NoRouteFoundException 
      */
-    public void enableAlarm(boolean enabled, Context context) throws NoRouteFoundException{
+    public Intent enableAlarm(boolean enabled, Context context) throws NoRouteFoundException{
 	this.alarmsManager.enableAlarm(enabled, context);
 	if(enabled && this.alarmsManager.getAlarm() != null){
-	    this.createAlarm(context,this.alarmsManager.getAlarm());
+	    return this.createAlarm(context,this.alarmsManager.getAlarm());
+	} else {
+	    return null;
 	}
     }
 
-    private void createAlarm(Context context, AlarmIntentService alarm) throws NoRouteFoundException {
-	this.createAlarm(context, alarm.getDepart(), alarm.getArrivee(),
+    private Intent createAlarm(Context context, AlarmIntentService alarm) throws NoRouteFoundException {
+	return this.createAlarm(context, alarm.getDepart(), alarm.getArrivee(),
 		alarm.getPreparationDuration(), alarm.getRingtone(), alarm.getModeTransport(), alarm.getEndHour());
     }
 
@@ -321,8 +323,8 @@ public class Controller {
 	return this.bellManager;
     }
 
-    public Intent loadAlarm() throws NoRouteFoundException {
-	return this.alarmsManager.loadAlarm();
+    public void loadAlarm() {
+	this.alarmsManager.loadAlarm();
     }
 
 
