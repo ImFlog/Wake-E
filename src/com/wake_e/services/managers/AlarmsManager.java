@@ -1,5 +1,7 @@
 package com.wake_e.services.managers;
 
+import java.util.Calendar;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -112,24 +114,9 @@ public class AlarmsManager{
 
     public String getWakeUpHour() {
 	Long ms = AlarmIntentService.getInstance().computeWakeUp();
-	StringBuffer text = new StringBuffer("");
-	if (ms > DAY) {
-	    text.append(ms / DAY).append(" days ");
-	    ms %= DAY;
-	}
-	if (ms > HOUR) {
-	    text.append(ms / HOUR).append(" hours ");
-	    ms %= HOUR;
-	}
-	if (ms > MINUTE) {
-	    text.append(ms / MINUTE).append(" minutes ");
-	    ms %= MINUTE;
-	}
-	if (ms > SECOND) {
-	    text.append(ms / SECOND).append(" seconds ");
-	    ms %= SECOND;
-	}
-	return text.toString();
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTimeInMillis(ms);
+	return calendar.getTime().toString();
     }
 
 

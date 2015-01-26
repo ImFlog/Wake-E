@@ -190,8 +190,13 @@ public class AlarmIntentService extends Service implements Parcelable{
      */
     public Long computeWakeUp() {
 	Calendar c = Calendar.getInstance();
+	
+	Log.i("Calendar", Long.toString(this.travelDuration));
 	Long wake_up = c.getTimeInMillis() + this.travelDuration
 		+ this.preparationDuration;
+	
+	Log.i("End", Long.toString(this.endHour));
+	
 	if (wake_up > this.endHour) {
 	    wake_up = c.getTimeInMillis();
 	}

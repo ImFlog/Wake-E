@@ -10,7 +10,6 @@ import java.util.Vector;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,7 +18,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.wake_e.Controller;
 import com.wake_e.constants.WakeEConstants;
-import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.fragment.station.PageAgendaFragment;
 import com.wake_e.fragment.station.PageMailFragment;
 import com.wake_e.fragment.station.PageMeteoFragment;
@@ -410,7 +408,6 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
     //################ ALARMES ####################################
     public void loadAlarm() {
 	String selectQuery = "SELECT * FROM " + TABLE_ALARM;
-	Intent i = null;
 	SQLiteDatabase db = this.getReadableDatabase();
 	Cursor c = db.rawQuery(selectQuery, null);
 	// looping through all rows and adding to list
