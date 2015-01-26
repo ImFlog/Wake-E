@@ -240,8 +240,7 @@ public class ConfigActivity extends Activity {
 	    if (depart != null && arrivee != null && heureArrivee != 0 && preparation != 0 &&
 		    transport != null) {
 		try {
-		    Controller c = Controller.getInstance(Controller.getContext());
-		    Intent i = c.createAlarm(
+		    Intent i = Controller.getInstance(Controller.getContext()).createAlarm(
 			    Controller.getContext(),
 			    depart,
 			    arrivee,
@@ -250,9 +249,6 @@ public class ConfigActivity extends Activity {
 			    transport,
 			    heureArrivee);
 		    startService(i);
-		    Intent intent = new Intent();
-		    intent.putExtra("choice", "save");
-		    setResult(RESULT_OK, intent);
 		    finish();
 		} catch (NoRouteFoundException e) {
 		    Toast.makeText(

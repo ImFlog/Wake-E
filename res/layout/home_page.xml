@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:background="@drawable/w_bg"
+    android:background="@drawable/w_bg_flou"
     android:gravity="top"
     tools:context="com.wakee.MainActivity" >
 
@@ -13,8 +13,16 @@
        android:layout_height="wrap_content"
        android:gravity="top" >
 
-	   
-	    <LinearLayout 
+	    <ImageView
+	        android:id="@+id/bg_flou"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:padding="0dp"
+	        android:scaleType="matrix"
+	        android:src="@drawable/w_bg" />
+
+	    <LinearLayout
 	        android:id="@+id/linearLayout1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -23,7 +31,6 @@
 	        android:layout_margin="0dp"
 	        android:gravity="top|center_horizontal"
 	        android:orientation="vertical" >
-	        
 
 	        <com.wake_e.tools.DigitClockCustom
 	            android:id="@+id/digitalClock1"
@@ -43,6 +50,15 @@
 	            android:paddingTop="30dp"
 	            android:scaleType="fitStart"
 	            android:src="@drawable/w_active" />
+	
+	        <ImageView
+	            android:id="@+id/id_logo"
+	            android:layout_width="match_parent"
+	            android:layout_height="50dp"
+	            android:paddingLeft="50dp"
+	            android:paddingRight="50dp"
+	            android:scaleType="fitStart"
+	            android:src="@drawable/wakee_homepage" />
 
 	    </LinearLayout>
 	</RelativeLayout>

@@ -87,6 +87,7 @@ public abstract class WakeEConstants
 	public static final String RINGTONE = "ringtone";
 	public static final String TRANSPORT = "transport";
 	public static final String END_HOUR = "endhour";
+	public static final String MANAGER = "manager";
     }
     /**
      * @brief Nokia Maps contsants
@@ -118,7 +119,6 @@ public abstract class WakeEConstants
 
     public abstract class Signal{
 	public static final int SETTINGS = 1;
-	public static final int CONFIG = 2;
     }
 
     public abstract class SlidesNames {

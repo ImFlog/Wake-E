@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 public class SplashScreenActivity extends FragmentActivity {
 	// Splash screen timer
@@ -23,10 +20,6 @@ public class SplashScreenActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		that = this;
-        ImageView image = (ImageView)findViewById(R.id.imgLogo);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
-        animation.setDuration(SPLASH_TIME_OUT);
-        image.startAnimation(animation);
 		new Handler().postDelayed(new Runnable() {
 
 			/*
