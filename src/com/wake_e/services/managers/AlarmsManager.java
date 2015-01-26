@@ -2,12 +2,11 @@ package com.wake_e.services.managers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
+import com.wake_e.model.sqlite.WakeEDBHelper;
 import com.wake_e.services.AlarmIntentService;
 import com.wake_e.services.AlarmSynchroIntentService;
 
@@ -16,28 +15,26 @@ import com.wake_e.services.AlarmSynchroIntentService;
  * @author Wake-E team
  */
 
-public class AlarmsManager implements Parcelable{
+public class AlarmsManager{
     // the synchronized alarm of the application
     private AlarmSynchroIntentService alarmSynchro;
-
-    // The current alarms
-    private AlarmIntentService alarm;
 
     private static final int SECOND = 1000;
     private static final int MINUTE = 60 * SECOND;
     private static final int HOUR = 60 * MINUTE;
     private static final int DAY = 24 * HOUR;
 
-    /**
-     * 
-     */
-    public AlarmsManager() {
+    private WakeEDBHelper db;
+
+    
+    public AlarmsManager(WakeEDBHelper db) {
 	super();
+	this.db = db;
+	
     }
 
-    public AlarmsManager(Parcel in) {
-	this.alarm = in.readParcelable(AlarmIntentService.class.getClassLoader());
-	this.alarmSynchro = in.readParcelable(AlarmSynchroIntentService.class.getClassLoader());
+    public void loadAlarm(){
+	this.db.loadAlarm();
     }
 
     /**
@@ -58,7 +55,6 @@ public class AlarmsManager implements Parcelable{
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.RINGTONE, ringtone);
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.TRANSPORT, transport);
 	intent.putExtra(WakeEConstants.AlarmServiceExtras.END_HOUR, endHour);
-	intent.putExtra(WakeEConstants.AlarmServiceExtras.MANAGER, this);
 
 	return intent;
     }
@@ -70,7 +66,7 @@ public class AlarmsManager implements Parcelable{
      * @return the alarm
      */
     public AlarmIntentService getAlarm() {
-	return this.alarm;
+	return AlarmIntentService.getInstance();
     }
 
     /**
@@ -85,6 +81,7 @@ public class AlarmsManager implements Parcelable{
 	if (a != null) {
 	    if (enabled) {
 		if (!a.isEnabled()) {
+		    this.db.insertAlarm(this.getAlarm());
 		    a.enable(context);
 		}
 	    } else {
@@ -114,7 +111,7 @@ public class AlarmsManager implements Parcelable{
     }
 
     public String getWakeUpHour() {
-	Long ms = this.alarm.computeWakeUp();
+	Long ms = AlarmIntentService.getInstance().computeWakeUp();
 	StringBuffer text = new StringBuffer("");
 	if (ms > DAY) {
 	    text.append(ms / DAY).append(" days ");
@@ -135,34 +132,6 @@ public class AlarmsManager implements Parcelable{
 	return text.toString();
     }
 
-    @Override
-    public int describeContents() {
-	// TODO Auto-generated method stub
-	return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-	// TODO Auto-generated method stub
-	dest.writeParcelable(this.alarm, flags);
-	dest.writeParcelable(this.alarmSynchro, flags);
-    }
 
-    public void setAlarm(AlarmIntentService alarm) {
-	if(this.alarm != null){
-	    this.alarm.disable();
-	}
-	this.alarm = alarm;
-    }
-
-    @SuppressWarnings("rawtypes")
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-	public AlarmsManager createFromParcel(Parcel in) {
-	    return new AlarmsManager(in);
-	}
-
-	public AlarmsManager[] newArray(int size) {
-	    return new AlarmsManager[size];
-	}
-    };
 }

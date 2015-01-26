@@ -15,20 +15,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.IntentService;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
+import android.os.Process;
 import android.os.StrictMode;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.wake_e.Controller;
+import com.wake_e.MainActivity;
+import com.wake_e.R;
 import com.wake_e.SnoozeActivity;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
-import com.wake_e.services.managers.AlarmsManager;
 import com.wake_e.tools.TokenRequester;
 
 
@@ -37,7 +48,7 @@ import com.wake_e.tools.TokenRequester;
  * @brief Class representing an Alarm
  */
 
-public class AlarmIntentService extends IntentService implements Parcelable{
+public class AlarmIntentService extends Service implements Parcelable{
 
     // Alarm's id
     private ParcelUuid id;
@@ -66,18 +77,23 @@ public class AlarmIntentService extends IntentService implements Parcelable{
     // end hour
     private long endHour;
 
+    private Looper mServiceLooper;
+    private ServiceHandler mServiceHandler;
+
+    private static AlarmIntentService instance;
+
     /**
      * @brief Alarm's constructor
      */
 
     public AlarmIntentService() {
-	super("AlarmIntentService");
+	//super("AlarmIntentService");
 	this.id = new ParcelUuid(UUID.randomUUID());
     }
 
 
     public AlarmIntentService(Parcel in) {
-	super("AlarmIntentService");
+	//super("AlarmIntentService");
 	this.id = in.readParcelable(ParcelUuid.class.getClassLoader());
 	this.ringtone = in.readString();
 	this.enabled = in.readByte() != 0;
@@ -87,6 +103,19 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	this.arrivee = in.readParcelable(Location.class.getClassLoader());
 	this.modeTransport = in.readString();
     }
+
+    public AlarmIntentService(Location depart, Location arrivee,
+	    long preparation, String ringtone, String transport, long endHour, boolean enabled) {
+	this();
+	this.ringtone = ringtone;
+	this.enabled = enabled;
+	this.preparationDuration = preparation;
+	this.depart = depart;
+	this.arrivee = arrivee;
+	this.modeTransport = transport;
+	this.synchronize();
+    }
+
 
     /**
      * @brief get the alarm id
@@ -190,6 +219,7 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
 	// Une fois que le token est refreshed on lance la snooze activity
 	Intent i = new Intent(Controller.getContext(), SnoozeActivity.class);
+	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	this.startActivity(i);
     }
 
@@ -199,8 +229,6 @@ public class AlarmIntentService extends IntentService implements Parcelable{
      */
     public void enable(Context context) {
 	this.enabled = true;
-	Intent intent = new Intent(context, this.getClass());
-	this.startService(intent);
     }
 
     /**
@@ -296,59 +324,8 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-	//Initialisation
-	this.depart = intent
-		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.DEPART);
-	this.arrivee = intent
-		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.ARRIVEE);
-	this.enabled = true;
-	this.endHour = intent.getLongExtra(
-		WakeEConstants.AlarmServiceExtras.END_HOUR, -1);
-	this.modeTransport = intent
-		.getStringExtra(WakeEConstants.AlarmServiceExtras.TRANSPORT);
-	this.preparationDuration = intent.getLongExtra(
-		WakeEConstants.AlarmServiceExtras.PREPARATION, -1);
-	this.ringtone = intent
-		.getStringExtra(WakeEConstants.AlarmServiceExtras.RINGTONE);
 
-	((AlarmsManager) intent
-		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.MANAGER))
-		.setAlarm(this);
 
-	Calendar c = Calendar.getInstance();
-	boolean it_is_time = false;
-	int cpt = 0;
-
-	// On ne commence la synchronisation qu'à partir de 4h avant la date de
-	// réveil
-	while (this.computeWakeUp() < (c.getTimeInMillis() + 14400000)) {
-	}
-
-	while (!it_is_time) {
-	    try {
-		Thread.sleep(1000);
-		cpt++;
-	    } catch (InterruptedException e) {
-	    }
-
-	    // On se synchronise
-	    if (cpt == 1200000) {
-		this.synchronize();
-	    }
-
-	    // Si l'heure du portable égale ou inférieur à l'heure de réveil
-	    // on lance une activity pour sonner
-	    if (this.computeWakeUp() >= c.getTimeInMillis()) {
-		// check mails, agenda & meteo
-		it_is_time = true;
-		this.ring();
-	    }
-	}
-
-    }
-    
     @Override
     public int describeContents() {
 	return 0;
@@ -379,5 +356,160 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
     };
 
+    @Override
+    public void onCreate() {
+	super.onCreate();
+	if(AlarmIntentService.instance != null){
+	    AlarmIntentService.instance.disable();
+	}
+	AlarmIntentService.instance = this;
 
+	HandlerThread thread = new HandlerThread("ServiceStartArguments",
+		Process.THREAD_PRIORITY_BACKGROUND);
+	thread.start();
+
+	// Get the HandlerThread's Looper and use it for our Handler
+	mServiceLooper = thread.getLooper();
+	mServiceHandler = new ServiceHandler(mServiceLooper);
+    }
+
+    public static AlarmIntentService getInstance(){
+	return AlarmIntentService.instance;
+    }
+
+    @Override
+    public void onDestroy(){
+	Log.i("DESTRUCTION ALARME", "alarme détruite");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+	//Initialisation
+	this.depart = intent
+		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.DEPART);
+	this.arrivee = intent
+		.getParcelableExtra(WakeEConstants.AlarmServiceExtras.ARRIVEE);
+	this.enabled = true;
+	this.endHour = intent.getLongExtra(
+		WakeEConstants.AlarmServiceExtras.END_HOUR, -1);
+	this.modeTransport = intent
+		.getStringExtra(WakeEConstants.AlarmServiceExtras.TRANSPORT);
+	this.preparationDuration = intent.getLongExtra(
+		WakeEConstants.AlarmServiceExtras.PREPARATION, -1);
+	this.ringtone = intent
+		.getStringExtra(WakeEConstants.AlarmServiceExtras.RINGTONE);
+
+	Message msg = mServiceHandler.obtainMessage();
+	msg.arg1 = startId;
+	mServiceHandler.sendMessage(msg);
+
+
+	// If we get killed, after returning from here, restart
+	return START_REDELIVER_INTENT;
+    }
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    ;
+
+    // Handler that receives messages from the thread
+    private final class ServiceHandler extends Handler {
+	public ServiceHandler(Looper looper) {
+	    super(looper);
+	}
+	
+	private void showNotification(Context context) {
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(context)
+		.setSmallIcon(R.drawable.notification)
+		.setOngoing(true)
+		.setContentTitle("Wake-E")
+		.setContentText("Sleep tight!");
+		
+		
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(context, MainActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(MainActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+				stackBuilder.getPendingIntent(
+						0,
+						PendingIntent.FLAG_UPDATE_CURRENT
+						);
+		mBuilder.setContentIntent(resultPendingIntent);
+		
+		startForeground(WakeEConstants.Notif.NOTIFICATION, mBuilder.build());
+	}
+	@Override
+	public void handleMessage(Message msg) {
+	    // Normally we would do some work here, like download a file.
+	    // For our sample, we just sleep for 5 seconds.
+
+
+	    //Controller.getInstance(Controller.getContext()).setAlarm(this);
+	    
+	    this.showNotification(Controller.getContext());
+
+	    Calendar c = Calendar.getInstance();
+	    boolean it_is_time = false;
+	    int cpt = 0;
+
+	    // On ne commence la synchronisation qu'à partir de 4h avant la date de
+	    // réveil
+	    while (AlarmIntentService.instance.computeWakeUp() < (c.getTimeInMillis() + 14400000)) {
+		if(!AlarmIntentService.instance.isEnabled()){
+		    it_is_time = true;
+		    break;
+		}
+		Log.i("ALARME", "alarme en cours");
+	    }
+
+	    while (!it_is_time) {
+		try {
+		    Thread.sleep(1000);
+		    cpt++;
+		} catch (InterruptedException e) {
+		}
+
+		if(AlarmIntentService.instance.isEnabled()){
+		    // On se synchronise
+		    if (cpt == 1200000) {
+			AlarmIntentService.instance.synchronize();
+		    }
+
+		    // Si l'heure du portable égale ou inférieur à l'heure de réveil
+		    // on lance une activity pour sonner
+		    if (AlarmIntentService.instance.computeWakeUp() >= c.getTimeInMillis()) {
+			// check mails, agenda & meteo
+			it_is_time = true;
+			AlarmIntentService.instance.ring();
+		    }
+		}else{
+		    it_is_time = true;
+		}
+	    }
+	    // Stop the service using the startId, so that we don't stop
+	    // the service in the middle of handling another job
+	    stopSelf(msg.arg1);
+	}
+    }
+
+    public static void initialize(Location depart, Location arrivee,
+	    long preparation, String ringtone, String transport, long endHour, boolean enabled) {
+	AlarmIntentService.instance = 
+		new AlarmIntentService(depart, arrivee, preparation, ringtone, transport, endHour, enabled);
+    }
 }
