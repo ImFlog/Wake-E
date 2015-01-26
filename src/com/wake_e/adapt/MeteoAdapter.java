@@ -31,6 +31,12 @@ public class MeteoAdapter extends BaseAdapter {
 	public void setTasks(List<Meteo> meteos){
 		this.meteos = meteos;
 	}
+	
+	@Override
+	public boolean isEnabled(int position) {
+	    return false;
+	}
+	
 	@Override
 	public int getCount() {
 		return meteos.size();
