@@ -1,5 +1,6 @@
 package com.wake_e.services;
 
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -50,6 +51,11 @@ public class AlarmSynchroIntentService extends AlarmIntentService {
     @Override
     public void synchronize() {
         // TODO Update travelDuration regarding the agenda
+	
+    }
+    
+    @Override
+    protected void onHandleIntent(Intent intent) {
 	
     }
     @Override

@@ -22,13 +22,13 @@ import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.wake_e.Controller;
 import com.wake_e.SnoozeActivity;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
-import com.wake_e.services.managers.AlarmsManager;
 import com.wake_e.tools.TokenRequester;
 
 
@@ -65,6 +65,9 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 
     // end hour
     private long endHour;
+    
+    
+    private static AlarmIntentService instance;
 
     /**
      * @brief Alarm's constructor
@@ -190,6 +193,7 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
 	// Une fois que le token est refreshed on lance la snooze activity
 	Intent i = new Intent(Controller.getContext(), SnoozeActivity.class);
+	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	this.startActivity(i);
     }
 
@@ -314,7 +318,8 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 		.getStringExtra(WakeEConstants.AlarmServiceExtras.RINGTONE);
 
 
-	Controller.getInstance(Controller.getContext()).setAlarm(this);
+	//Controller.getInstance(Controller.getContext()).setAlarm(this);
+	
 
 	Calendar c = Calendar.getInstance();
 	boolean it_is_time = false;
@@ -326,12 +331,14 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
 
 	while (!it_is_time) {
+
+		Log.i("ALARME", "alarme en cours");
 	    try {
 		Thread.sleep(1000);
 		cpt++;
 	    } catch (InterruptedException e) {
 	    }
-
+	    
 	    // On se synchronise
 	    if (cpt == 1200000) {
 		this.synchronize();
@@ -378,5 +385,23 @@ public class AlarmIntentService extends IntentService implements Parcelable{
 	}
     };
 
+    @Override
+    public void onCreate() {
+	super.onCreate();
+	if(AlarmIntentService.instance != null){
+	    AlarmIntentService.instance.disable();
+	}
+	AlarmIntentService.instance = this;
+    }
 
+    public static AlarmIntentService getInstance(){
+	return AlarmIntentService.instance;
+    }
+    
+    @Override
+    public void onDestroy(){
+	Log.i("DESTRUCTION ALARME", "alarme détruite");
+    }
+
+    
 }

@@ -2,8 +2,6 @@ package com.wake_e.services.managers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
@@ -21,7 +19,7 @@ public class AlarmsManager{
     private AlarmSynchroIntentService alarmSynchro;
 
     // The current alarms
-    private AlarmIntentService alarm;
+   // private AlarmIntentService alarm;
 
     private static final int SECOND = 1000;
     private static final int MINUTE = 60 * SECOND;
@@ -65,7 +63,7 @@ public class AlarmsManager{
      * @return the alarm
      */
     public AlarmIntentService getAlarm() {
-	return this.alarm;
+	return AlarmIntentService.getInstance();
     }
 
     /**
@@ -109,7 +107,7 @@ public class AlarmsManager{
     }
 
     public String getWakeUpHour() {
-	Long ms = this.alarm.computeWakeUp();
+	Long ms = AlarmIntentService.getInstance().computeWakeUp();
 	StringBuffer text = new StringBuffer("");
 	if (ms > DAY) {
 	    text.append(ms / DAY).append(" days ");
@@ -131,11 +129,11 @@ public class AlarmsManager{
     }
 
 
-    public void setAlarm(AlarmIntentService alarm) {
-	if(this.alarm != null){
-	    this.alarm.disable();
-	}
-	this.alarm = alarm;
-    }
+//    public void setAlarm(AlarmIntentService alarm) {
+//	if(this.alarm != null){
+//	    this.alarm.disable();
+//	}
+//	this.alarm = alarm;
+//    }
 
 }

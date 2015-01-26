@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
@@ -72,6 +73,7 @@ public class Controller {
 		this.alarmsManager = new AlarmsManager();
 		this.locationsManager= new LocationsManager(context, db);
 		this.bellManager = new BellManager(context, db); 
+		this.alarmsManager.getAlarm();
 	}
 
 	/**
@@ -185,6 +187,10 @@ public class Controller {
 		Intent i = this.alarmsManager.createAlarm(context, depart, arrivee,
 				preparationDuration, ringtone, transport, endHour);
 		this.enableAlarm(true, context);
+		Log.i("CREATION ALARME", "alarme cree");
+		if(AlarmIntentService.getInstance() == null){
+		    Log.i("CREATION ALARME", "alarme non existante");
+		}
 		return i;
 	}
 
@@ -349,8 +355,8 @@ public class Controller {
 		mNotificationManager.cancel(WakeEConstants.Notif.NOTIFICATION);	
 	}
 
-	public void setAlarm(AlarmIntentService alarm) {
-	    this.alarmsManager.setAlarm(alarm);
-	}
+//	public void setAlarm(AlarmIntentService alarm) {
+//	    this.alarmsManager.setAlarm(alarm);
+//	}
 
 }
