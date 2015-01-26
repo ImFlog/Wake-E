@@ -226,7 +226,7 @@ public class MainActivity extends FragmentActivity {
 		    Toast.makeText(that, "L'alarme a été activée", Toast.LENGTH_LONG).show();
 		}
 	    } else {
-		Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();
+	    	Toast.makeText(that, "Vous devez paramétrer l'alarme avant de l'activer", Toast.LENGTH_LONG).show();
 	    }
 	}
     };
