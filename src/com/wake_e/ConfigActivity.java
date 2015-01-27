@@ -1,5 +1,7 @@
 package com.wake_e;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -197,11 +199,16 @@ public class ConfigActivity extends Activity {
 		    Log.i("Calendar time time", Long.toString(calendar.getTime().getTime(), 10));
 
 		    heureArrivee = calendar.getTimeInMillis();
-
+		    DecimalFormat df = new DecimalFormat();
 		    dialog.dismiss();
-		    ((TextView)v).setText(
-			    Integer.toString(tp.getCurrentHour()) + ":"
-				    + Integer.toString(tp.getCurrentMinute()));
+		    try {
+				((TextView)v).setText(
+				    Integer.toString(tp.getCurrentHour()) + ":"
+					    + 
+					    df.parse(Integer.toString(tp.getCurrentMinute())));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 	    });
 	    dialog.show();

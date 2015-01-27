@@ -1,5 +1,6 @@
 package com.wake_e.services.managers;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import android.content.Context;
@@ -116,7 +117,9 @@ public class AlarmsManager{
 	Calendar cal = Calendar.getInstance();
 	cal.setTimeInMillis(AlarmIntentService.getInstance().computeWakeUp());
 	text.append(cal.get(Calendar.HOUR_OF_DAY)).append(":");
-	text.append(cal.get(Calendar.MINUTE));
+	DecimalFormat df = new DecimalFormat();
+	df.applyPattern("00");
+	text.append(df.format(cal.get(Calendar.MINUTE)));
 	return text.toString();
     }
 
