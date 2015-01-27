@@ -34,7 +34,7 @@ public class SnoozeActivity extends Activity {
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_snooze);
 		
-		iv = (ImageView) this.findViewById(R.id.imageView1);
+		iv = (ImageView) this.findViewById(R.id.imageTuto);
 		iv2 = (ImageView) this.findViewById(R.id.imageView2);
 		heure = (TextView)  this.findViewById(R.id.heure);
 		tv = (TextView) this.findViewById(R.id.snooze);

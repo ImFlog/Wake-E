@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.wakee.MainActivity" >
 
     <TimePicker
@@ -21,4 +22,4 @@
         android:layout_centerVertical="true"
         android:text="@string/save" />
 
-</RelativeLayout>
+</LinearLayout>

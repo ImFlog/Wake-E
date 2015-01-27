@@ -313,10 +313,21 @@ public class Controller {
 	return this.bellManager;
     }
 
+    // ########### ALARM ###########
     public void loadAlarm() {
 	this.alarmsManager.loadAlarm();
     }
+    
 
+    public boolean isAlarmRunning() {
+	// TODO Auto-generated method stub
+	return this.alarmsManager.isAlarmRunning();
+    }
+
+    // ########### TUTO ###########
+    public boolean tutorial(){
+	return this.db.tutorial();
+    }
 
 
 }
