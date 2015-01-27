@@ -3,16 +3,10 @@ package com.wake_e;
 import java.io.IOException;
 import java.util.List;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
-import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Credentials;
 import com.wake_e.model.Location;
@@ -99,7 +93,7 @@ public class Controller {
 
     // ########### SLIDES ###########
     /**
-     * @brief retrive the manager
+     * @brief retrieve the manager
      * @return slideManager object
      */
     public SlidesManager getSlideManager() {
@@ -186,10 +180,6 @@ public class Controller {
 	    long preparationDuration, String ringtone, String transport, long endHour) throws NoRouteFoundException{
 	Intent i = this.alarmsManager.createAlarm(context, depart, arrivee,
 		preparationDuration, ringtone, transport, endHour);
-	Log.i("CREATION ALARME", "alarme cree");
-	if(AlarmIntentService.getInstance() == null){
-	    Log.i("CREATION ALARME", "alarme non existante");
-	}
 	return i;
     }
 
