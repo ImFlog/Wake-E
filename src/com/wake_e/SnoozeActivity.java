@@ -1,14 +1,8 @@
 package com.wake_e;
 
-import java.io.IOException;
-import java.net.URI;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +20,6 @@ public class SnoozeActivity extends Activity {
 	TextView heure;
 	TextView tv;
 	SnoozeActivity that;
-	MediaPlayer mediaPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,38 +42,7 @@ public class SnoozeActivity extends Activity {
 		
 		heure.setTypeface(MainActivity.future);
 		tv.setTypeface(MainActivity.future);
-
-		Uri myUri = Uri.parse(
-				Controller.getInstance(this).getBellManager().getBell().toURI().toString());
-		mediaPlayer = new MediaPlayer();
-		mediaPlayer.setScreenOnWhilePlaying(true);
-		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		try {
-			mediaPlayer.setDataSource(getApplicationContext(), myUri);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			mediaPlayer.prepare();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		mediaPlayer.start();
-
+		
 		that = this;
 	}
 
@@ -107,10 +69,7 @@ public class SnoozeActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// Stop the alarm
-			mediaPlayer.stop();
-			// Release the ressource
-			mediaPlayer.release();
+			//TODO on arrete la sonnerie et tout le bordel ICI, a toi de jouer Yoann ;)
 			Toast.makeText(that, "L'alarme a été arrété", Toast.LENGTH_LONG).show();
 		}
 	};
@@ -119,8 +78,7 @@ public class SnoozeActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			mediaPlayer.stop();
-			mediaPlayer.release();
+			//TODO on snooze, a toi de jouer Yoann ;)
 			Toast.makeText(that, "L'alarme a été snoozer", Toast.LENGTH_LONG).show();
 		}
 	};
