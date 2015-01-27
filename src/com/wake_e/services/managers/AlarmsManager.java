@@ -132,6 +132,12 @@ public class AlarmsManager{
 	return text.toString();
     }
 
+    public boolean isAlarmRunning() {
+	// TODO Auto-generated method stub
+	
+	return (this.getAlarm() != null && this.getAlarm().isEnabled());
+    }
+
 
 
 }

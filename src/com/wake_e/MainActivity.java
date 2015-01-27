@@ -6,9 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -59,12 +57,8 @@ public class MainActivity extends FragmentActivity {
 	future = Typeface.createFromAsset(getAssets(), "fonts/future.ttf");
 
 	Controller controller = Controller.getInstance(this.getApplicationContext());
-	controller.loadAlarm();
-	//	    if(i != null){
-	//		startService(i);
-	//		controller.enableAlarm(false, Controller.getContext());
-	//		stopService(i);
-	//	    }
+	//	controller.loadAlarm();
+
 	// Creation de la liste de Fragments que fera defiler le PagerAdapter
 	List<Fragment> fragments = controller.getVisibleFragments();
 
@@ -266,4 +260,20 @@ public class MainActivity extends FragmentActivity {
 	    }
 	}
     }
+
+    @Override
+    protected void onStart() {
+	// TODO Auto-generated method stub
+	super.onStart();
+
+	Controller controller = Controller.getInstance(this.getApplicationContext());
+	if(controller.isAlarmRunning()){
+	    active.setImageResource(R.drawable.w_active);
+	    heureProg.setText(Controller.getInstance(that).getWakeUpHour());
+	}else{
+	    controller.loadAlarm();
+	}
+    }
+
+
 }

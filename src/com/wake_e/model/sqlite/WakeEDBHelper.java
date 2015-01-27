@@ -138,6 +138,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	db.execSQL(CREATE_TABLE_MAIL);
 	db.execSQL(CREATE_TABLE_BELL);
 	db.execSQL(CREATE_TABLE_ALARM);
+	db.execSQL(CREATE_TABLE_TUTORIAL);
 	this.populateSlides(db);
     }
 
