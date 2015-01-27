@@ -30,7 +30,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/orange"
             android:gravity="center"
-            android:text="SKIP" />
+            android:text="PASSER" />
 
         <TextView
             android:id="@+id/next"
@@ -39,7 +39,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/orange"
             android:gravity="center"
-            android:text="NEXT" />
+            android:text="SUIVANT" />
     </LinearLayout>
 
 </RelativeLayout>
