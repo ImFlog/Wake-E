@@ -194,12 +194,12 @@ public class AlarmIntentService extends Service implements Parcelable{
 	Calendar c = Calendar.getInstance();
 	
 	Log.i("Calendar", Long.toString(this.travelDuration));
-	Long wake_up = c.getTimeInMillis() + this.travelDuration
-		+ this.preparationDuration;
+	Long wake_up = this.endHour - this.travelDuration
+		- this.preparationDuration;
 	
 	Log.i("End", Long.toString(this.endHour));
 	
-	if (wake_up > this.endHour) {
+	if (wake_up < c.getTimeInMillis()) {
 	    wake_up = c.getTimeInMillis();
 	}
 	return wake_up;
@@ -217,13 +217,6 @@ public class AlarmIntentService extends Service implements Parcelable{
      * @brief ring the alarm
      */
     public void ring() {
-	// Est-ce que l'on a déjà des credentials ?
-	Credentials c = Controller.getInstance(Controller.getContext())
-		.getCredentials(WakeEConstants.Credentials.GMAIL);
-	// Si oui on refresh le token
-	if(c != null){
-	    TokenRequester.initiateRequest(null, c.getUser());
-	}
 	// Une fois que le token est refreshed on lance la snooze activity
 	Intent i = new Intent(Controller.getContext(), SnoozeActivity.class);
 	i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

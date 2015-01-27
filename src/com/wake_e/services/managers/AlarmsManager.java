@@ -1,11 +1,8 @@
 package com.wake_e.services.managers;
 
-import java.util.Calendar;
-
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.android.gms.internal.ca;
 import com.wake_e.constants.WakeEConstants;
 import com.wake_e.exceptions.NoRouteFoundException;
 import com.wake_e.model.Location;
@@ -25,7 +22,6 @@ public class AlarmsManager{
     private static final int SECOND = 1000;
     private static final int MINUTE = 60 * SECOND;
     private static final int HOUR = 60 * MINUTE;
-    private static final int DAY = 24 * HOUR;
 
     private WakeEDBHelper db;
 
@@ -115,18 +111,15 @@ public class AlarmsManager{
 
     public String getWakeUpHour() {
 	Long ms = AlarmIntentService.getInstance().computeWakeUp();
-	Calendar c = Calendar.getInstance();
-	c.setTimeInMillis(ms);
 	StringBuffer text = new StringBuffer("");
 	if (ms > HOUR) {
-	    text.append(c.get(Calendar.HOUR_OF_DAY)).append(":");
+	    text.append(ms / HOUR).append(" hours ");
 	    ms %= HOUR;
 	}
 	if (ms > MINUTE) {
-	    text.append(c.get(Calendar.MINUTE));
+	    text.append(ms / MINUTE).append(" minutes ");
 	    ms %= MINUTE;
 	}
-
 	return text.toString();
     }
 
