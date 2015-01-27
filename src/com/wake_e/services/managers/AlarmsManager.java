@@ -114,10 +114,18 @@ public class AlarmsManager{
 
     public String getWakeUpHour() {
 	Long ms = AlarmIntentService.getInstance().computeWakeUp();
-	Calendar calendar = Calendar.getInstance();
-	calendar.setTimeInMillis(ms);
-	return calendar.getTime().toString();
+	StringBuffer text = new StringBuffer("");
+	if (ms > HOUR) {
+	    text.append(ms / HOUR).append(" hours ");
+	    ms %= HOUR;
+	}
+	if (ms > MINUTE) {
+	    text.append(ms / MINUTE).append(" minutes ");
+	    ms %= MINUTE;
+	}
+	return text.toString();
     }
+
 
 
 
