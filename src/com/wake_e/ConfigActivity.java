@@ -182,7 +182,7 @@ public class ConfigActivity extends Activity {
 		@Override
 		public void onClick(View view) {
 			Calendar calendar = Calendar.getInstance();
-			Long now = (long)(calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 3600;
+			Long now = (long)(calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 3600 ;
 			heureArrivee = (long)(tp.getCurrentHour() * 60 + tp.getCurrentMinute()) *  3600;
 			calendar.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
 	    	// Create date from a hour / minute in the current day
