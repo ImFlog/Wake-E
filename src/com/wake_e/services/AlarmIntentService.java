@@ -102,6 +102,7 @@ public class AlarmIntentService extends Service implements Parcelable{
 	this.depart = in.readParcelable(Location.class.getClassLoader());
 	this.arrivee = in.readParcelable(Location.class.getClassLoader());
 	this.modeTransport = in.readString();
+	this.endHour = in.readLong();
     }
 
     public AlarmIntentService(Location depart, Location arrivee,
@@ -347,6 +348,7 @@ public class AlarmIntentService extends Service implements Parcelable{
 	dest.writeParcelable(this.depart, flags);
 	dest.writeParcelable(this.arrivee, flags);
 	dest.writeString(this.modeTransport);
+	dest.writeLong(this.endHour);
 
     }
 
