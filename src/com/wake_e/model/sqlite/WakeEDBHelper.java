@@ -50,6 +50,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_MAIL = "mails";
     private static final String TABLE_BELL = "bell";
     private static final String TABLE_ALARM = "alarm";
+    private static final String TABLE_TUTO = "tutorial";
 
     // Table Create Statements
     private static final String CREATE_TABLE_SLIDES = "CREATE TABLE "
@@ -91,6 +92,9 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	    + " FOREIGN KEY (depart) REFERENCES TABLE_LOCATIONS (location_name),"
 	    + " FOREIGN KEY (arrivee) REFERENCES TABLE_LOCATIONS (location_name)"
 	    + ")";
+    
+    private static final String CREATE_TABLE_TUTORIAL = "CREATE TABLE "
+	    + TABLE_TUTO + " (launch_tuto INTEGER PRIMARY KEY)";
 
     /**
      * @param context
@@ -451,5 +455,31 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	String deleteQuery = "DELETE FROM " + TABLE_ALARM;
 	SQLiteDatabase db = this.getWritableDatabase();
 	db.execSQL(deleteQuery);
+    }
+    
+    //################ TUTORIAL ####################################
+    public boolean tutorial(){
+	String selectQuery = "SELECT * FROM " + TABLE_TUTO;
+	boolean launch_tuto = true;
+	SQLiteDatabase db = this.getReadableDatabase();
+	Cursor c = db.rawQuery(selectQuery, null);
+	// looping through all rows and adding to list
+	if (c.moveToFirst()) {
+	    do {
+		launch_tuto = c.getInt(c.getColumnIndex("launch_tuto")) == 1 ? true : false;
+	    } while (c.moveToNext());
+	}
+	
+	//It's the first time
+	if(launch_tuto){
+		ContentValues values = new ContentValues();
+		values.put("launch_tutorial", 0);
+
+		SQLiteDatabase db2 = this.getWritableDatabase();
+		db2.insert(TABLE_TUTO, null, values);
+		values.clear();
+	}
+	
+	return launch_tuto;
     }
 }

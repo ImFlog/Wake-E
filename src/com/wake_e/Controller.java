@@ -313,10 +313,14 @@ public class Controller {
 	return this.bellManager;
     }
 
+    // ########### ALARM ###########
     public void loadAlarm() {
 	this.alarmsManager.loadAlarm();
     }
 
-
+    // ########### TUTO ###########
+    public boolean tutorial(){
+	return this.db.tutorial();
+    }
 
 }
