@@ -49,13 +49,13 @@ public class SplashScreenActivity extends FragmentActivity {
 
 		Intent i;
 
-//		if(Controller.getInstance(Controller.getContext()).tutorial()){
-//		    i = new Intent(SplashScreenActivity.this,
-//			    TutoActivity.class);
-//		} else {
+		//if(Controller.getInstance(Controller.getContext()).tutorial()){
 		    i = new Intent(SplashScreenActivity.this,
-				MainActivity.class);
-//		}
+			    TutoActivity.class);
+		//} else {
+		//    i = new Intent(SplashScreenActivity.this,
+		//		MainActivity.class);
+		//}
 		startActivity(i);
 
 		// close this activity

@@ -474,7 +474,7 @@ public class WakeEDBHelper extends SQLiteOpenHelper {
 	//It's the first time
 	if(launch_tuto){
 		ContentValues values = new ContentValues();
-		values.put("launch_tutorial", 0);
+		values.put("launch_tuto", 0);
 
 		SQLiteDatabase db2 = this.getWritableDatabase();
 		db2.insert(TABLE_TUTO, null, values);

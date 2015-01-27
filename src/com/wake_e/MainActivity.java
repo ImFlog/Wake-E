@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity {
 	 * Old Value
 	 */
 	private float yy = 0;
+	private float yyAvant = 0;
 
 	@Override
 	public boolean onTouch(final View v, MotionEvent event) {
@@ -132,22 +133,24 @@ public class MainActivity extends FragmentActivity {
 	    {
 	    case MotionEvent.ACTION_DOWN:
 		yy = event.getY();
+		yyAvant = event.getY();;
 		break;
 	    case MotionEvent.ACTION_MOVE:
-		v.setY(v.getY() - yy + event.getY());
-		if (v.getY() > positionSlider) v.setY(positionSlider);
-		if (v.getY() < 0){v.setY(0);}
+	    	yyAvant = event.getY();
+			v.setY(v.getY() - yy + event.getY());
+			if (v.getY() > positionSlider) v.setY(positionSlider);
+			if (v.getY() < 0){v.setY(0);}
 		break;
 	    case MotionEvent.ACTION_UP:
 		v.setY(v.getY() - yy + event.getY());
 
 		if (v.getY() > positionSlider){ v.setY(positionSlider);}
 		else if (v.getY() < 0){v.setY(0);}
-		else if (v.getY() < positionSlider/2){
+		else if (event.getY() > yyAvant){
 		    while(v.getY() <= 0){
-			v.setY(v.getY() - 3);
+			v.setY(v.getY() - 1);
 			try {
-			    Thread.sleep(400);
+			    Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			    Log.e("MainActivity onTouch", e.getMessage());
 			}
@@ -156,15 +159,14 @@ public class MainActivity extends FragmentActivity {
 		}
 		else{
 		    while(v.getY() >= positionSlider){
-			v.setY(v.getY() - 3);
+			v.setY(v.getY() + 1);
 			try {
-			    Thread.sleep(400);
+			    Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			    Log.e("MainActivity onTouch", e.getMessage());
 			}
 		    }
 		    v.setY(positionSlider);
-
 		}
 		break;
 	    }
