@@ -1,11 +1,14 @@
 package com.wake_e;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +46,7 @@ public class ConfigActivity extends Activity {
 
     //DATA
     int preparation;
-    int heureArrivee;
+    Long heureArrivee;
     Location depart;
     Location arrivee;
     String transport;
@@ -55,7 +58,7 @@ public class ConfigActivity extends Activity {
 	setContentView(R.layout.activity_config);
 
 	preparation = 0;
-	heureArrivee = 0;
+	heureArrivee = (long) 0;
 	depart = null;
 	arrivee = null;
 	transport = null;
@@ -178,7 +181,23 @@ public class ConfigActivity extends Activity {
 	    validate.setOnClickListener(new OnClickListener() {
 		@Override
 		public void onClick(View view) {
-		    heureArrivee = (tp.getCurrentHour() * 60 + tp.getCurrentMinute()) *  3600;
+			Calendar calendar = Calendar.getInstance();
+			Long now = (long)(calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 3600 ;
+			heureArrivee = (long)(tp.getCurrentHour() * 60 + tp.getCurrentMinute()) *  3600;
+			calendar.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+	    	// Create date from a hour / minute in the current day
+		    calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
+		    calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
+
+		    // If the hour is in the past, we add a day to the created date.
+		    if (now > heureArrivee) {
+		    	calendar.add(Calendar.DATE, 1);
+		    }
+
+		    Log.i("Calendar time time", Long.toString(calendar.getTime().getTime(), 10));
+
+		    heureArrivee = calendar.getTimeInMillis();
+
 		    dialog.dismiss();
 		    ((TextView)v).setText(
 			    Integer.toString(tp.getCurrentHour()) + ":"
@@ -240,7 +259,8 @@ public class ConfigActivity extends Activity {
 	    if (depart != null && arrivee != null && heureArrivee != 0 && preparation != 0 &&
 		    transport != null) {
 		try {
-		    Intent i = Controller.getInstance(Controller.getContext()).createAlarm(
+		    Controller c = Controller.getInstance(Controller.getContext());
+		    Intent i = c.createAlarm(
 			    Controller.getContext(),
 			    depart,
 			    arrivee,
@@ -249,6 +269,9 @@ public class ConfigActivity extends Activity {
 			    transport,
 			    heureArrivee);
 		    startService(i);
+		    Intent intent = new Intent();
+		    intent.putExtra("choice", "save");
+		    setResult(RESULT_OK, intent);
 		    finish();
 		} catch (NoRouteFoundException e) {
 		    Toast.makeText(
